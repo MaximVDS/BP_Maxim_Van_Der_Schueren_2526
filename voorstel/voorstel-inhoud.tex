@@ -1,0 +1,169 @@
+%---------- Inleiding ---------------------------------------------------------
+%TODO: Inleiding
+\section{Inleiding}%
+\label{sec:inleiding}
+%Waarover zal je bachelorproef gaan? Introduceer het thema en zorg dat volgende zaken zeker duidelijk aanwezig zijn:
+
+%\begin{itemize}
+%  \item kaderen thema
+%  \item de doelgroep
+%  \item de probleemstelling en (centrale) onderzoeksvraag
+%  \item de onderzoeksdoelstelling
+%\end{itemize}
+
+%Denk er aan: een typische bachelorproef is \textit{toegepast onderzoek}, wat betekent dat je start vanuit een concrete probleemsituatie in bedrijfscontext, een \textbf{casus}. Het is belangrijk om je onderwerp goed af te bakenen: je gaat voor die \textit{ene specifieke probleemsituatie} op zoek naar een goede oplossing, op basis van de huidige kennis in het vakgebied.
+
+%De doelgroep moet ook concreet en duidelijk zijn, dus geen algemene of vaag gedefinieerde groepen zoals \emph{bedrijven}, \emph{developers}, \emph{Vlamingen}, enz. Je richt je in elk geval op it-professionals, een bachelorproef is geen populariserende tekst. Eén specifiek bedrijf (die te maken hebben met een concrete probleemsituatie) is dus beter dan \emph{bedrijven} in het algemeen.
+
+%Formuleer duidelijk de onderzoeksvraag! De begeleiders lezen nog steeds te veel voorstellen waarin we geen onderzoeksvraag terugvinden.
+
+%Schrijf ook iets over de doelstelling. Wat zie je als het concrete eindresultaat van je onderzoek, naast de uitgeschreven scriptie? Is het een proof-of-concept, een rapport met aanbevelingen, \ldots Met welk eindresultaat kan je je bachelorproef als een succes beschouwen?
+
+Iedereen heeft het al wel meegemaakt: je zoekt online naar een supermarkt in de buurt, je vertrekt op basis van deze gegevens, maar eenmaal aangekomen blijkt dat de winkel gesloten of zelfs verdwenen is. Voor consumenten is dit vervelend, maar voor bedrijven die hun beslissingen baseren op deze locatiegegevens kan het drastische gevolgen hebben. Deze bachelorproef onderzoekt hoe we met artificiële intelligentie dit probleem kunnen aanpakken.
+
+Organisaties die werken met locatie data maken gebruik van POI (Point-of-interest) gegevens om analyses te maken rond bezoekersgedrag, marktpotentieel en concurrentie. Daarbij is het cruciaal dat de gegevens kwalitatief en up-to-date zijn. In de praktijk blijkt echter dat POI databanken vertraging oplopen: winkels openen of sluiten zonder dat dit meteen wordt weergegeven. Dat leidt tot foutieve inzichten en beïnvloedt de betrouwbaarheid van locatiegebaseerde toepassingen.
+
+De centrale onderzoeksvraag van deze bachelorproef is: \textit{“Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open- of geslotenstatus van Points-of-Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?”}.
+Het onderzoek focust zich op supermarkten als POI type. Dit omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en de beschikbaarheid van voldoende publieke data via platformen zoals Google Maps of Tripadvisor. 
+
+Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waarmee voorspeld kan worden of een supermarkt op een bepaald moment open of gesloten is. Hiervoor worden verschillende AI-technieken onderzocht en toegepast, waaronder tijdreeksanalyse en anomaliedetectie. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, recall en precisie. Het eindresultaat is een werkend prototype, aangevuld met een evaluatie van de modellen en aanbevelingen voor verdere onderzoek. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
+
+%---------- Stand van zaken ---------------------------------------------------
+%TODO: literatuurstudie
+\section{Literatuurstudie}%
+\label{sec:literatuurstudie}
+
+%Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, doorlopende tekst over het onderzoeksdomein van je bachelorproef. Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, en niet zozeer op populariserende teksten voor een breed publiek. Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen (die misschien de aanleiding waren tot je onderzoeksvraag!)?
+
+%Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
+
+%Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
+
+%Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis \emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. Baseer nooit teveel aansluitende tekst op eenzelfde bron.
+
+%Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle nodige info aanwezig is om de bron terug te vinden (zoals uitvoerig besproken in de lessen Research Methods).
+
+% Voor literatuurverwijzingen zijn er twee belangrijke commando's:
+% \autocite{KEY} => (Auteur, jaartal) Gebruik dit als de naam van de auteur
+%   geen onderdeel is van de zin.
+% \textcite{KEY} => Auteur (jaartal)  Gebruik dit als de auteursnaam wel een
+%   functie heeft in de zin (bv. ``Uit onderzoek door Doll & Hill (1954) bleek
+%   ...'')
+
+%Je mag deze sectie nog verder onderverdelen in subsecties als dit de structuur van de tekst kan verduidelijken.
+
+De literatuurstudie biedt een overzicht van de huidige stand van zaken rond de POI-statusdetectie. Het dient als basis voor de methodologieën en is opgebouwd rond de deelvragen die het onderzoek sturen. Elke subsectie geeft een samenvatting van relevante vakliteratuur en legt de link met de gewenste toepassing van het automatisch bepalen of een Point-of-Interest (zoals een supermarkt) open of gesloten is .
+
+\subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
+%De literatuur beschrijft een veelheid aan databronnen die (soms indirect) informatie geven over de status van een POI. Psyllidis et al. (2022) onderscheiden twee hoofdtypen POI bronnen: grote techbedrijven en open platforms[7]. Grote techbedrijven (Yelp, Foursquare, Google Places, Facebook, en in China Baidu en Gaode/AMap) creëren intern uitgebreide POI databanken die via API’s toegankelijk zijn[7]. Deze bronnen bevatten vaak bedrijfskenmerken, inclusief – als ze up-to-date zijn – of een plek actief is. Open platforms zoals OpenStreetMap of Wikimapia bieden vrij beschikbare POI gegevens, ook al is de dekking en actualiteit soms minder. Verder bestaan er gespecialiseerde data providers (SafeGraph, Cuebiq, Precisely, HERE, TomTom, etc.) die locaties en metadata verzamelen en regelmatig bijwerken[7][8].
+
+\textcite{Psyllidis2022} onderscheiden twee hoofdtypen POI bronnen: grote techbedrijven en open platforms. Grote techbedrijven (Yelp, Foursquare, Google Places, Facebook, en in China Baidu en Gaode/AMap) creëren intern uitgebreide POI databanken die via API’s toegankelijk zijn \autocite{Psyllidis2022}
+
+%Daarnaast kunnen informatiebronnen buiten traditionele POI databases gebruikt worden. Zo kan webscraping worden ingezet om zelf bedrijfswebsites, lokale directories of online bedrijvengidsen af te lopen en te checken of een bedrijf nog vermeld staat en/of geopend lijkt (bijvoorbeeld door te letten op datumupdates of meldingen op de site)[9]. Dit geldt ook voor het scrapen van Google My Business profielen of Yelp/Google Places pagina’s: daar staan vaak openingstijden en een status (open/gesloten) vermeld. Het SafeGraph onderzoek benadrukt dat algoritmische detectie van bedrijfsinformatie via webpagina’s (of in het geval van Google: via het Places API) kan helpen om POI’s automatisch bij te werken[10][9].
+
+%Mobility- en activiteitendata vormen een belangrijke klasse signalen. Dat kunnen bijvoorbeeld geanonimiseerde mobiele telefoongegevens (locatietraces) zijn, creditcard- of pintransactiegegevens, of systemen als Placer.ai die winkelbezoek meten. In de studie van Yao et al. wordt een dataset gebruikt van geanonimiseerde AMap mobilitydata én postbezorgdata om de dagelijkse activiteit bij POI’s te kwantificeren[11][12]. Zeker zolang mensen winkels bezoeken en aankopen doen, kan een plotselinge daling in voetgangers  of transactionele activiteit duiden op sluiting. Yao et al. (2024) beschrijven concreet dat “POI anomalie” gelijkstaat aan een significante afname of verdwijning van bijbehorende menselijke activiteiten[5]. Ook SafeGraph adviseert om voetverkeer en transactiegegevens te controleren als indicatoren voor een (gesloten) locatie[4][13].
+
+%Beeld- en sensorbronnen zijn een andere optie. Google Maps gebruikt bijvoorbeeld Street View beelden en tekstherkenning om na te gaan of op gevels nieuwe bedrijfsnamen of borden verschijnen of juist verdwijnen[14][15]. Revaud et al. (2019) vergelijken twee sets street-view foto’s van hetzelfde winkelcentrum op verschillende tijdstippen om POI wijzigingen te detecteren met deep learning (een metriek leermodel op basis van CNN embeddings)[16]. Satelietbeelden of luchtfoto’s kunnen ook verandering in infrastructurele patronen onthullen (bijv. als een gebouw is gesloopt)[17][4].
+
+%Verder zijn er sociale en participatieve bronnen. Gedetailleerde locatiegegevens uit sociale media (geotagged posts, check ins) kunnen uitwijzen of mensen een plek nog bezoeken. Yao et al. noemt bijvoorbeeld dat gesloten attracties geen toeristen trekken of social mediaposts meer krijgen[5]. Platforms als Google Maps en Yelp voorzien gebruikers bovendien van de mogelijkheid om te melden dat een bedrijf permanent gesloten is. Dit levert weliswaar slechts incidenteel signalen op (vaak pas nadat iemand dit opmerkt), maar kan automatisch worden verwerkt. Ook berichtgeving op websites of in lokale nieuwsbronnen kan automatisch worden gescand op berichten over heropeningen of sluitingen. Ten slotte dragen geverifieerde lokale informatiepartners bij: Google werkt samen met duizenden overheidsinstanties en lokale gidsen (‘Local Guides’) die veranderingen rapporteren[15].
+
+%Kortom: voor automatische detectie van POI opening/sluiting kunnen zowel gestructureerde databronnen (API’s, registraties, logfiles), on-gestructureerde data (websites, sociale media), mobility/activiteitsdata (telefoon  of transactiepatronen), als beelddata (Street View, satelliet) benut worden[7][4]. Ieder type data heeft zijn eigen dekking en biases, waardoor een gecombineerde aanpak met meerdere bronnen vaak het meest robuuste resultaat geeft.
+
+\subsection{Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie en hoe kunnen deze worden aangepakt?}
+%Het toepassen van AI/ML voor POI statusdetectie kent verschillende uitdagingen. Ten eerste ontbreekt het vaak aan goed gelabelde trainingsdata. In veel gevallen is het tijdstip waarop een POI precies sluit (de “real anomaly time”) onbekend en beschikbaar zijn meestal alleen latere meldingen of verouderde registraties[18]. Daardoor is volledig gesuperviseerd leren moeilijk. Yao et al. (2024) lossen dit op door zwak gecontroleerde labels af te leiden uit de activiteitsdata en daarmee hun model (TSRNet) te trainen[19].
+
+%Een andere uitdaging is dat de activiteitspatronen rond POI’s ruisachtig en heterogeen zijn. Zelfs winkels van dezelfde categorie kunnen sterk verschillen in drukte of seizoenspatronen[20][21]. Korte pauzes in activiteit (zoals een weekendaﬂessin, vakantie of COVID lockdown) mogen niet per se als permanente sluiting worden geïnterpreteerd. Yao et al. wijzen erop dat korte verdwijningen van activiteit geen betrouwbare sluitingssignalen zijn, en dat er bij het ontwerp van modellen een afweging gemaakt moet worden tussen detectiegevoel—lijkheid en false alarms[21]. Traditionele RNN/LSTM modellen zijn bovendien gevoelig voor ruis en generaliseren soms slecht bij sterk fluctuerende data[22].
+
+%Verder is er in de praktijk vaak sprake van onvolledigheid en inconsistentie van data. Niet alle POI’s zijn in alle databronnen aanwezig; sommige regio’s (vooral in ontwikkelingslanden) hebben weinig digitale registratie van bedrijven[23][1]. Verschillende bronnen gebruiken soms andere naamgevingen of coördinaten, wat opschaling bemoeilijkt. SafeGraph wijst erop dat er geen “enkele autoritaire waarheid” is voor POI data, en dat formats en classificaties internationaal kunnen variëren[24][13]. Het is lastig voor een AI-systeem om dergelijke bronnen te aligneren. Gebruik van standaarden zoals Placekey kan helpen om plaatsen over datasets heen eenduidig te identificeren[13].
+
+%Tot slot spelen praktische en ethische beperkingen een rol. Mobiele telefoon- of transactiedata bieden waardevolle signalen, maar brengen privacyaspecten met zich mee. Methodes moeten geanonimiseerd en geaggregeerd zijn om niet inbreuk te maken op de privacy van individuen. Bovendien is het een grote rekentaak om op grote schaal tijdreeksen te analyseren voor miljoenen POI’s. Hier is dus efficiëntie en inzet van krachtige hardware/software nodig.
+
+%Om deze uitdagingen te adresseren, combineren onderzoekers verschillende strategieën. Naast zwak supervised leren (zoals TSRNet) kan men gebruikmaken van semi supervised of onbewaakte anomaliedetectiemethoden, waarbij het model leert van algemene patronen in de data en spontane afwijkingen detecteert zonder expliciete labels. Crowdsourcing en vrijwilligersrapportage worden geïntegreerd om labels aan te leveren of modellen bij te stellen (bijv. Google Maps Local Guides[15]). Cross validation tegen meerdere datatypes (zoals SafeGraph aanbeveelt: voetgangers- en transactiegegevens, beeldveranderingen) kan de betrouwbaarheid verhogen[4][13]. In de praktijk blijkt dat een mix van machine learning en menselijk toezicht het beste werkt: AI-algoritmen vangen de grove veranderingen op, waarna “boots-on-the-ground” verificatie of handmatige review de laatste zekerheid biedt[25]. Ook modulaire AI ontwerpen kunnen helpen: bijvoorbeeld eerst een name matching/geo matching stap om te verzekeren dat bronnen samen over dezelfde POI gaan, gevolgd door een status-detectiemodule.
+
+%TODO: mogelijke extra vraag
+\subsection{Wat is de rol van publieke en private data samenwerking in het actueel houden van POI-informatie?}
+%De literatuur wijst er namelijk op dat samenwerking met lokale overheden en crowdsourcing cruciaal is voor up-to-date POI’s[15][4]. Het ontwikkelen van standaarden en open platforms (bijv. het OpenPOI-initiatief) kan de toegankelijkheid en consistentie van real-time POI-data verder verbeteren.
+
+\subsection{Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?}
+%De literatuur biedt verschillende AI-technieken voor deze taak. Een veelgebruikte benadering is tijdreeksanalyse op voetverkeer- of transactiegegevens. Yao et al. (2024) presenteren hier een voorbeeld van: hun TSRNet-model is een zwak-gesuperviseerd neuraal netwerk met GRU-lagen dat patronen in menselijke activiteit leert en per tijdstap een POI stato¬rscores voorspelt[19]. Deze benadering kan zeer adaptief zijn en sluitingen soms weken vóór de eerste meldingen detecteren[6]. Het nadeel is dat het model veel trainingsdata vereist en gevoelig kan zijn voor ruis (bijvoorbeeld door tijdelijke dalingen die geen sluiting betekenen)[21][22].
+
+%Een geheel andere klasse methoden gebruikt computervisie. Revaud et al. (2019) zijn een voorbeeld daarvan: zij leggen de focus op het automatisch vergelijken van straatbeelden van POI’s genomen op verschillende tijdstippen. Met een deep learning model (geïnspireerd op metrische leeralgoritmen) trainen ze een embeddingruimte waarin afbeeldingen van dezelfde locatie (zonder verandering) dicht bij elkaar liggen, en gewijzigde locaties (bijvoorbeeld een verdwenen winkel) afwijkend zijn[16]. Voordeel is dat dit direct visuele veranderingen oppikt (bijv. een verdwenen uithangbord), en dat het model niet afhankelijk is van externe bedrijfsdatabases. Nadeel: het werkt alleen voor POI’s die duidelijk zichtbaar zijn in straatbeelden en waarvoor zo’n beeldmateriaal beschikbaar is. Subtiele veranderingen (een winkel die leegstaat achter gesloten deuren) kunnen gemist worden.
+
+%Een derde benadering is place embedding via mobiliteitsdata. Recent onderzoek (onder review voor ICLR) beschrijft een Mobility-Embedded POIs methode waarbij men uit grote mobiliteitsdatasets (zoals SafeGraph of telefoonlogboeken) voor elke POI een vector voor zijn activiteitsprofiel leert. Deze embeddings worden vervolgens gebruikt in downstream taken, zoals classificatie van openingsuren of detectie van permanente sluiting. Dit model (ME-POIs) blijkt veel beter te presteren in taken zoals openingsuren- en sluitingsvoorspelling dan traditionele methoden[12]. Het voordeel is dat het model kan generaliseren over lange tijdschalen en diverse gebruikers. Een nadeel is dat er veel data nodig is en dat interpretatie lastig is: men heeft geen directe verklaring waarom een embedding wijst op sluiting.
+
+%Naast deep learning bestaan nog klassieke methoden. Bijvoorbeeld anomaliedetectiealgoritmes (One-Class SVM, Isolation Forest, auto-encoders) kunnen worden toegepast op tijdreeksen of feature-vectoren van POI’s. Deze zijn minder data-intensief in training, maar hebben vaak lagere nauwkeurigheid en kunnen moeite hebben onderscheid te maken tussen normale fluctuerende patronen en echte sluitingen.
+
+%Verder kan natural language processing (NLP) worden ingezet door online tekstbronnen (social media, recensies, nieuws) automatisch te scannen op signalen van openings/afsluitingen. Hiervoor zijn echter voorbeelden in de literatuur schaars; het is eerder een aanvullend hulpmiddel.
+
+%Samengevat: neuralnets voor tijdreeksen (RNN/LSTM/GRU), deep metric learning op beeld, en representation learning uit mobiliteitsdata zijn veelbelovende moderne opties. Traditionele statistische time-seriesmethoden en classifier-approaches kunnen als baseline dienen. Elk van deze heeft voor- en nadelen: deep modellen presteren krachtig maar vereisen veel data en rekencapaciteit; beeldgebaseerde methoden vangen visuele wijzigingen, maar missen niet-visuele sluitingen; embeddings uit mobiliteit linken direct aan bezoekerspatronen, maar vereisen grootschalige trackingdata. Een hybride aanpak die meerdere technieken combineert zal waarschijnlijk de beste dekking geven.
+
+
+\subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
+%Om de betrouwbaarheid van geautomatiseerde POI-statuswijzigingen te valideren, wordt in de literatuur nadruk gelegd op het trianguleren van meerdere bronnen en methoden. SafeGraph adviseert bijvoorbeeld om een voorspelde sluiting of opening cross-checken met ondersteunende data: als de AI signalen van sluiting geeft, dan zou men in de voetgangers- of transactiegegevens daadwerkelijk een significante afwezigheid moeten zien[4][13]. Ook kunnen sateliet- of luchtfoto’s gecontroleerd worden op bouwkundige veranderingen (bijv. sloop of verbouwing) die de sluiting bevestigen[4].
+
+%Bovendien kan men gebruikers- of partnersfeedback inzetten. Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerders en lokale overheden) om actuele POI-informatie te krijgen[15]. Als algoritmisch een sluiting is gedetecteerd, kan men nagaan of bedrijfsbeheerders (via het Places API) of lokale gidsen al een melding van sluiting hebben geplaatst.
+
+%Een andere validatiestrategie is handmatige steekproef: voor een subset van POI’s kunnen veldcontroles of telefoongesprekken plaatsvinden. Hoewel tijdrovend, geeft dit een betrouwbare maat voor de foutmarge van het systeem. Bovendien kan dit worden gebruikt als feedback om het model te verbeteren.
+
+%In een formele evaluatie kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precisie/recall van de automatische detectie meten. Yao et al. (2024) konden bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen vóór de gebruikersmelding signaleert[6], wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
+
+%Tot slot wordt benadrukt dat validatie een iteratief proces is. SafeGraph stelt dat een continue vergelijking met externe bronnen cruciaal is: “er bestaat geen enkele waarheidbron” voor POI’s, dus kruisverificatie met meerdere datasets (zoals transactionele data, trafiekdata of beeldmateriaal) is noodzakelijk om zeker te zijn van een wijziging[4][13]. Waar nodig kan de combinatie van machine learning en menselijke controle worden ingezet om vals positieven te elimineren[25]. Zo kan bijvoorbeeld alleen een sluiting geaccordeerd worden als meerdere onafhankelijke indicatoren dat beamen (zoals wegvallende bezoekersdata én een officiële melding).
+
+%TODO: eventuele onderzoeksrelevantie
+\subsection{Onderzoeksrelevantie}
+
+%---------- Methodologie ------------------------------------------------------
+\section{Methodologie}%
+\label{sec:methodologie}
+
+%Hier beschrijf je hoe je van plan bent het onderzoek te voeren. Welke onderzoekstechniek ga je toepassen om elk van je onderzoeksvragen te beantwoorden? Gebruik je hiervoor literatuurstudie, interviews met belanghebbenden (bv.~voor requirements-analyse), experimenten, simulaties, vergelijkende studie, risico-analyse, PoC, \ldots?
+
+%Valt je onderwerp onder één van de typische soorten bachelorproeven die besproken zijn in de lessen Research Methods (bv.\ vergelijkende studie of risico-analyse)? Zorg er dan ook voor dat we duidelijk de verschillende stappen terug vinden die we verwachten in dit soort onderzoek!
+
+%Vermijd onderzoekstechnieken die geen objectieve, meetbare resultaten kunnen opleveren. Enquêtes, bijvoorbeeld, zijn voor een bachelorproef informatica meestal \textbf{niet geschikt}. De antwoorden zijn eerder meningen dan feiten en in de praktijk blijkt het ook bijzonder moeilijk om voldoende respondenten te vinden. Studenten die een enquête willen voeren, hebben meestal ook geen goede definitie van de populatie, waardoor ook niet kan aangetoond worden dat eventuele resultaten representatief zijn.
+
+%Uit dit onderdeel moet duidelijk naar voor komen dat je bachelorproef ook technisch voldoen\-de diepgang zal bevatten. Het zou niet kloppen als een bachelorproef informatica ook door bv.\ een student marketing zou kunnen uitgevoerd worden.
+
+%Je beschrijft ook al welke tools (hardware, software, diensten, \ldots) je denkt hiervoor te gebruiken of te ontwikkelen.
+
+%Probeer ook een tijdschatting te maken. Hoe lang zal je met elke fase van je onderzoek bezig zijn en wat zijn de concrete \emph{deliverables} in elke fase?
+
+Deze bachelorproef zal uitgewerkt worden in verschillende fasen. In elk van deze fasen wordt een andere techniek gebruikt, en wordt de focus op een ander onderdeel van het probleem gelegd. In totaal zijn er 14 werkdagen voorzien voor de bachelorproef. Aangezien er één werkdag per week besteed wordt aan het onderzoek, komt één werkdag overeen met 1 week. Een overzicht van de fasen wordt weergegeven in Figuur ~\ref{fig:gantt}.
+
+\subsection{Fase 1 – Probleemdomein onderzoeken (1 werkdag)}
+In de eerste fase van het onderzoek, wordt het concrete probleemdomein verder afgebakend. Er wordt een analyse gemaakt van hoe Point-of-Interest gegevens worden gebruikt door datagedreven organisaties, aangezien dit de primaire doelgroep van deze bachelorproef is. Daarnaast wordt onderzocht wat de impact is van verouderde of foutieve Point-of-Interest informatie op de kwaliteit van analyses. Het resultaat van deze fase is een duidelijker inzicht krijgen in het probleemdomein, dat kan gebruikt worden in de volgende fase.
+
+\subsection{Fase 2 – Literatuurstudie (2 werkdagen)}
+De tweede fase wordt toegewijd aan de literatuurstudie. Deze wordt uitgevoerd om informatie te vergaren over bestaande technieken en modellen die worden gebruikt voor de detectie van (historische) open of gesloten toestanden van Points-of-Interests (POI's). Hierbij wordt de nadruk gelegd op AI toepassingen zoals tijdreeksanalyses en anomalie detectie. De focus ligt op het identificeren van academische en wetenschappelijke publicaties waarin POI open/gesloten statusdetectie wordt behandeld aan de hand van machine learning of datagestuurde methodes.
+Het resultaat van deze fase is een onderbouwde lijst van bruikbare technieken en modellen, inclusief technische eigenschappen en eventuele beperkingen. Deze vormen de basis voor de modelkeuze in de volgende fases van het onderzoek.
+
+\subsection{Fase 3 – Data verzamelen en voorbereiden (3 werkdagen)}
+Tijdens de derde fase zal de data verzameld en voorbereid worden. Een deel van de data zal rechtstreeks ter beschikking gesteld worden door de stageplaats (Accurat). Deze bevat vermoedelijk POI informatie zoals locatiegegevens, tijdreeksen van bezoekersactiviteit en labels met open of gesloten status. Daarnaast wordt de aanvullende data verzameld aan de hand van publieke APIs (Application Programming Interfaces). Hierbij worden platformen zoals Tripadvisor, Yelp en Google services(zoals Google maps) gebruikt om  openingsuren, gebruikersrecensies en statusvermeldingen (zoals “permanent gesloten”) automatisch op te halen. Hiervoor zullen LLM of scraping tools gebruikt worden. In dit onderzoek wordt voornamelijk gefocust op supermarkten  als POI type, aangezien deze regelmatig voorkomen in publieke datasets en bronnen. Bovendien is er voor deze soort POI vaak voldoende gebruikersactiviteit en data beschikbaar, wat de betrouwbaarheid van de data ten goede komt. De verzamelde data wordt opgeschoond en gefilterd, zodat deze gebruikt kunnen worden voor het trainen van het model. Het resultaat van deze fase is een dataset die klaar is voor de modeltraining en validatie.
+
+\subsection{Fase 4 – Proof-of-Concept bouwen (3 werkdagen)}
+De vierde fase wordt toegewijd aan het bouwen van een proof-of-concept. Hierbij wordt een eerste versie van een model ontwikkeld dat automatisch de open- of gesloten toestand van POI's kan detecteren. Het model wordt getraind op basis van de dataset uit de vorige fase. Daarnaast wordt er geëxperimenteerd met AI-technieken zoals tijdreeksanalyse en anomalie detectie. De implementatie gebeurt in Python, waarbij we gebruik maken van machine learning libraries zoals Pandas, Scikit-learn, TensorFlow en eventueel PyTorch. Het getrainde model met de beste evaluatiecriteria wordt opgeslagen met behulp van Joblib. Het resultaat van deze fase is een werkende proof-of-concept die in staat is om de status van een POI op een bepaald moment te classificeren als “open” of “gesloten”.
+
+\subsection{Fase 5 – Proof-of-Concept valideren (3 werkdagen)}
+In de vijfde fase van het onderzoek worden de opgeslagen modellen geëvalueerd op basis van evaluatiemetrics zoals accuracy, recall en precisie. Mogelijke validatiemethoden zijn het vergelijken met gekende sluitingsdata of handmatige verificatie van POI status. Daarnaast wordt gekeken welke kenmerken het meeste impact hebben op het model. hiervoor wordt gebruik gemaakt van feature importance in Python. Wanneer de modellen geëvalueerd zijn, volgt de vergelijkende studie. Hierin worden de modellen met elkaar vergeleken op basis van de bovenstaande criteria. Het resultaat van deze fase is een onderbouwde evaluatie van elk model en een grondige vergelijking op basis van de bekomen resultaten.
+
+\subsection{Fase 6 – Conclusie (2 werkdagen)}
+De laatste fase wordt toegewijd aan het formuleren van de conclusie. De resultaten van het onderzoek uit de voorgaande fasen worden gebundeld om aan te tonen
+in welke mate artificiële intelligentie kan worden ingezet voor de automatische detectie van (historische) open of gesloten statussen van Point-of-interests. Daarnaast worden de bevindingen over de getrainde modellen toegelicht, met onder andere hun sterktes en zwaktes. Het resultaat van deze fase is een volledig uitgewerkte conclusie, aangevuld met eventuele suggesties voor verder onderzoek. 
+
+ \begin{figure*}
+    \centering
+    \includegraphics[width=\textwidth]{Gantt_grafiek.png}
+    \caption{\label{fig:gantt}Gantt diagram met de verschillende fasen van het onderzoek.}
+\end{figure*}
+
+%---------- Verwachte resultaten ----------------------------------------------
+%TODO: conclusie
+\section{Verwacht resultaat, conclusie}%
+\label{sec:verwachte_resultaten}
+
+Hier beschrijf je welke resultaten je verwacht. Als je metingen en simulaties uitvoert, kan je hier al mock-ups maken van de grafieken samen met de verwachte conclusies. Benoem zeker al je assen en de onderdelen van de grafiek die je gaat gebruiken. Dit zorgt ervoor dat je concreet weet welk soort data je moet verzamelen en hoe je die moet meten.
+
+Wat heeft de doelgroep van je onderzoek aan het resultaat? Op welke manier zorgt jouw bachelorproef voor een meerwaarde?
+
+Hier beschrijf je wat je verwacht uit je onderzoek, met de motivatie waarom. Het is \textbf{niet} erg indien uit je onderzoek andere resultaten en conclusies vloeien dan dat je hier beschrijft: het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overeenkomen met de resultaten.
+
