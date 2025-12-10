@@ -19,14 +19,31 @@
 
 %Schrijf ook iets over de doelstelling. Wat zie je als het concrete eindresultaat van je onderzoek, naast de uitgeschreven scriptie? Is het een proof-of-concept, een rapport met aanbevelingen, \ldots Met welk eindresultaat kan je je bachelorproef als een succes beschouwen?
 
-Iedereen heeft het al wel meegemaakt: je zoekt online naar een supermarkt in de buurt, je vertrekt op basis van deze gegevens, maar eenmaal aangekomen blijkt dat de winkel gesloten of zelfs verdwenen is. Voor consumenten is dit vervelend, maar voor bedrijven die hun beslissingen baseren op deze locatiegegevens kan het drastische gevolgen hebben. Deze bachelorproef onderzoekt hoe we met artificiële intelligentie dit probleem kunnen aanpakken.
+Iedereen heeft het wel al eens meegemaakt: je zoekt online naar een supermarkt in de buurt, je vertrekt op basis van deze gegevens, 
+maar eenmaal aangekomen blijkt dat de winkel gesloten of zelfs verdwenen is. 
+Voor consumenten is dit vervelend, maar voor bedrijven die hun beslissingen baseren op deze locatiegegevens kan het drastische gevolgen 
+hebben. Deze bachelorproef onderzoekt hoe we met artificiële intelligentie dit probleem kunnen aanpakken.
 
-Organisaties die werken met locatie data maken gebruik van POI (Point-of-interest) gegevens om analyses te maken rond bezoekersgedrag, marktpotentieel en concurrentie. Daarbij is het cruciaal dat de gegevens kwalitatief en up-to-date zijn. In de praktijk blijkt echter dat POI databanken vertraging oplopen: winkels openen of sluiten zonder dat dit meteen wordt weergegeven. Dat leidt tot foutieve inzichten en beïnvloedt de betrouwbaarheid van locatiegebaseerde toepassingen.
+Organisaties die werken met locatie data maken gebruik van POI (Point-of-interest) gegevens om analyses te maken rond bezoekersgedrag, 
+marktpotentieel en concurrentie. Daarbij is het cruciaal dat de gegevens kwalitatief en up-to-date zijn. In de praktijk blijkt echter dat 
+POI databanken vertraging oplopen: winkels openen of sluiten zonder dat dit meteen wordt weergegeven. Dat leidt tot foutieve inzichten en 
+beïnvloedt de betrouwbaarheid van locatiegebaseerde toepassingen.
 
-De centrale onderzoeksvraag van deze bachelorproef is: \textit{“Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open- of geslotenstatus van Points-of-Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?”}.
-Het onderzoek focust zich op supermarkten als POI type. Dit omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en de beschikbaarheid van voldoende publieke data via platformen zoals Google Maps of Tripadvisor. 
+Huidige methoden om deze statuswijzigingen te monitoren zijn vaak handmatig, wat resulteert in 
+een aanzienlijke vertraging tussen de daadwerkelijke status van de POI en de databanken.
 
-Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waarmee voorspeld kan worden of een supermarkt op een bepaald moment open of gesloten is. Hiervoor worden verschillende AI-technieken onderzocht en toegepast, waaronder tijdreeksanalyse en anomaliedetectie. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, recall en precisie. Het eindresultaat is een werkend prototype, aangevuld met een evaluatie van de modellen en aanbevelingen voor verdere onderzoek. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
+De centrale onderzoeksvraag van deze bachelorproef is: \textit{“Hoe kan artificiële intelligentie worden ingezet om automatisch de 
+(historische) open- of geslotenstatus van Points-of-Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in 
+locatiegebaseerde toepassingen?”}.
+
+Het onderzoek focust zich op supermarkten als POI type. Dit omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en 
+de beschikbaarheid van voldoende publieke data via platformen zoals Google Maps of Tripadvisor. 
+
+Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waarmee voorspeld kan worden of een supermarkt op een 
+bepaald moment open of gesloten is. Hiervoor worden verschillende AI-technieken onderzocht en toegepast, waaronder tijdreeksanalyse en 
+anomaliedetectie. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, 
+recall en precisie. Het eindresultaat is een werkend prototype, aangevuld met een evaluatie van de modellen en aanbevelingen voor verdere 
+onderzoek. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
 
 %---------- Stand van zaken ---------------------------------------------------
 %TODO: literatuurstudie
@@ -52,12 +69,18 @@ Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waar
 
 %Je mag deze sectie nog verder onderverdelen in subsecties als dit de structuur van de tekst kan verduidelijken.
 
-De literatuurstudie biedt een overzicht van de huidige stand van zaken rond de POI-statusdetectie. Het dient als basis voor de methodologieën en is opgebouwd rond de deelvragen die het onderzoek sturen. Elke subsectie geeft een samenvatting van relevante vakliteratuur en legt de link met de gewenste toepassing van het automatisch bepalen of een Point-of-Interest (zoals een supermarkt) open of gesloten is .
+De literatuurstudie biedt een overzicht van de huidige stand van zaken rond de POI-statusdetectie. Het dient als basis voor de methodologieën en is 
+opgebouwd rond de deelvragen die het onderzoek sturen. Elke subsectie geeft een samenvatting van relevante vakliteratuur en legt de link met de gewenste 
+toepassing van het automatisch bepalen of een Point-of-Interest (zoals een supermarkt) open of gesloten is .
 
 \subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
-%De literatuur beschrijft een veelheid aan databronnen die (soms indirect) informatie geven over de status van een POI. Psyllidis et al. (2022) onderscheiden twee hoofdtypen POI bronnen: grote techbedrijven en open platforms[7]. Grote techbedrijven (Yelp, Foursquare, Google Places, Facebook, en in China Baidu en Gaode/AMap) creëren intern uitgebreide POI databanken die via API’s toegankelijk zijn[7]. Deze bronnen bevatten vaak bedrijfskenmerken, inclusief – als ze up-to-date zijn – of een plek actief is. Open platforms zoals OpenStreetMap of Wikimapia bieden vrij beschikbare POI gegevens, ook al is de dekking en actualiteit soms minder. Verder bestaan er gespecialiseerde data providers (SafeGraph, Cuebiq, Precisely, HERE, TomTom, etc.) die locaties en metadata verzamelen en regelmatig bijwerken[7][8].
+%De literatuur beschrijft een veelheid aan databronnen die (soms indirect) informatie geven over de status van een POI. Psyllidis et al. (2022) onderscheiden twee hoofdtypen POI bronnen: grote techbedrijven en 
+%open platforms[7]. Grote techbedrijven (Yelp, Foursquare, Google Places, Facebook, en in China Baidu en Gaode/AMap) creëren intern uitgebreide POI databanken die via API’s toegankelijk zijn[7]. 
+%Deze bronnen bevatten vaak bedrijfskenmerken, inclusief – als ze up-to-date zijn – of een plek actief is. Open platforms zoals OpenStreetMap of Wikimapia bieden vrij beschikbare POI gegevens, ook al is de 
+%dekking en actualiteit soms minder. Verder bestaan er gespecialiseerde data providers (SafeGraph, Cuebiq, Precisely, HERE, TomTom, etc.) die locaties en metadata verzamelen en regelmatig bijwerken[7][8].
 
-\textcite{Psyllidis2022} onderscheiden twee hoofdtypen POI bronnen: grote techbedrijven en open platforms. Grote techbedrijven (Yelp, Foursquare, Google Places, Facebook, en in China Baidu en Gaode/AMap) creëren intern uitgebreide POI databanken die via API’s toegankelijk zijn \autocite{Psyllidis2022}
+Volgens \textcite{Psyllidis2022} onderscheiden we twee hoofdtypen POI bronnen: enerzijds grote technologiebedrijven (waaronder Yelp, Foursquare, Google Places en Facebook) vormen een belangrijke bron van POI-gegevens, waarbij hun intern gecreëerde databanken vaak via API’s worden aangeboden \autocite{Psyllidis2022}. Daarnaast worde open platforms zoals OpenStreetMap (OSM) als gratis en wereldwijd toegankelijke POI-bron gebruikt. Hierbij dient echter opgemerkt te worden dat de volledigheid van OSM kan variëren \autocite{Barrington-Leigh2017} en dat een aanzienlijk deel van de data afkomstig is van bedrijfsmatige bijdragen \autocite{Anderson2019}.
+
 
 %Daarnaast kunnen informatiebronnen buiten traditionele POI databases gebruikt worden. Zo kan webscraping worden ingezet om zelf bedrijfswebsites, lokale directories of online bedrijvengidsen af te lopen en te checken of een bedrijf nog vermeld staat en/of geopend lijkt (bijvoorbeeld door te letten op datumupdates of meldingen op de site)[9]. Dit geldt ook voor het scrapen van Google My Business profielen of Yelp/Google Places pagina’s: daar staan vaak openingstijden en een status (open/gesloten) vermeld. Het SafeGraph onderzoek benadrukt dat algoritmische detectie van bedrijfsinformatie via webpagina’s (of in het geval van Google: via het Places API) kan helpen om POI’s automatisch bij te werken[10][9].
 
