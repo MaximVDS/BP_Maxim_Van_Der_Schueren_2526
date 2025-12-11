@@ -96,9 +96,15 @@ Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in producti
 
 \subsection{Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?}
 
-De statusdetectie wordt in de academische wereld vaak behandeld als een Time-to-Event prediction probleem (Survival Analysis). Hierbij gaat het model de resterende levensduur voorspellen. Dit vereist geavanceerde Deep Learning architecturen die geschikt zijn voor het analyseren van de data \autocite{Chen2024}.
+De statusdetectie wordt in de academische wereld vaak behandeld als een Time-to-Event prediction probleem (Survival Analysis), waarbij het model de resterende levensduur van de POI probeert te voorspellen \autocite{Chen2024}. Dit vereist geavanceerde Deep Learning architecturen die geschikt zijn voor het analyseren van de data. De literatuur richt zich hierbij op drie mogelijke technieken:
 
-%TODO: klassieke methode
+Een traditionele aanpak om POI openingen en sluitingen te voorspellen is via een classificatiemodel op basis van diverse datakenmerken. Zo ontwikkelden \textcite{DSilva2018} een model dat met locatie en mobiliteitsdata berekent hoe waarschijnlijk het is dat een bedrijf binnen een bepaalde periode (bv. 6 maanden) sluit. Ze combineerden kenmerken van de buurt (diversiteit en concurrentie), bezoekpatronen en mobiliteitsstromen in een machine learning model. 
+
+\textcite{DSilva2018} bespreken het voordeel en nadeel:
+\begin{itemize}
+    \item Voordeel: Deze methode is interpreteerbaar en laat toe inzicht te krijgen in welke factoren het meest bijdragen aan het sluitingsrisico. Klassieke classifiers (zoals logistieke regressie of random forest) vereisen minder data dan deep learning en kunnen met beperkte gelabelde data worden getraind.
+    \item Nadeel: Een supervised model vergt voldoende historische data van POI openingen/sluitingen. Daarnaast werkt deze benadering op een vooraf gedefinieerde tijdsresolutie (bijv. voorspellen of een POI binnen 6 maanden zal sluiten) het is niet eenvoudig om het exacte moment van sluiting te identificeren omdat de data vaak te veel ruis heeft. Hierdoor kan het model kortetermijnveranderingen missen. 
+\end{itemize}
 
 Een veelgebruikte benadering is time series analysis (TSA) op voetverkeer- of transactiegegevens. \textcite{Yao2024} hebben een temporeel statusregressienetwerk (TSRNet) model ontwikkeld voor snelle POI-afwijkingsdetectie. Het model kan temporele kenmerken in data over menselijke activiteit extraheren en POI-statusscores voorspellen als afwijkingsindicatoren.
 
@@ -117,15 +123,11 @@ Een andere methoden gebruikt Computervision (CV) op basis van Remote Sensing of 
 \end{itemize}
 
 \subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
-%Om de betrouwbaarheid van geautomatiseerde POI-statuswijzigingen te valideren, wordt in de literatuur nadruk gelegd op het trianguleren van meerdere bronnen en methoden. SafeGraph adviseert bijvoorbeeld om een voorspelde sluiting of opening cross-checken met ondersteunende data: als de AI signalen van sluiting geeft, dan zou men in de voetgangers- of transactiegegevens daadwerkelijk een significante afwezigheid moeten zien[4][13]. Ook kunnen sateliet- of luchtfoto’s gecontroleerd worden op bouwkundige veranderingen (bijv. sloop of verbouwing) die de sluiting bevestigen[4].
+Om de betrouwbaarheid van geautomatiseerde POI-statuswijzigingen te valideren, wordt in de literatuur nadruk gelegd op het combineren van meerdere bronnen en methoden. \textcite{Taylor2022} adviseert bijvoorbeeld om een voorspelde sluiting of opening te controleren met ondersteunende data: als de AI signalen van sluiting geeft, dan zou men in de voetgangers of transactiegegevens daadwerkelijk een significante afwezigheid moeten zien. Ook kunnen sateliet of lucht foto’s gecontroleerd worden op veranderingen (zoals een verbouwing) die de sluiting bevestigen \autocite{Taylor2022}.
 
-%Bovendien kan men gebruikers- of partnersfeedback inzetten. Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerders en lokale overheden) om actuele POI-informatie te krijgen[15]. Als algoritmisch een sluiting is gedetecteerd, kan men nagaan of bedrijfsbeheerders (via het Places API) of lokale gidsen al een melding van sluiting hebben geplaatst.
+Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerders en lokale overheden) om actuele POI-informatie te krijgen. Als algoritmisch een sluiting is gedetecteerd, kan men nagaan of bedrijfsbeheerders of lokale gidsen al een melding van sluiting hebben geplaatst \autocite{Pericolosi2022}.
 
-%Een andere validatiestrategie is handmatige steekproef: voor een subset van POI’s kunnen veldcontroles of telefoongesprekken plaatsvinden. Hoewel tijdrovend, geeft dit een betrouwbare maat voor de foutmarge van het systeem. Bovendien kan dit worden gebruikt als feedback om het model te verbeteren.
-
-%In een formele evaluatie kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precisie/recall van de automatische detectie meten. Yao et al. (2024) konden bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen vóór de gebruikersmelding signaleert[6], wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
-
-%Tot slot wordt benadrukt dat validatie een iteratief proces is. SafeGraph stelt dat een continue vergelijking met externe bronnen cruciaal is: “er bestaat geen enkele waarheidbron” voor POI’s, dus kruisverificatie met meerdere datasets (zoals transactionele data, trafiekdata of beeldmateriaal) is noodzakelijk om zeker te zijn van een wijziging[4][13]. Waar nodig kan de combinatie van machine learning en menselijke controle worden ingezet om vals positieven te elimineren[25]. Zo kan bijvoorbeeld alleen een sluiting geaccordeerd worden als meerdere onafhankelijke indicatoren dat beamen (zoals wegvallende bezoekersdata én een officiële melding).
+Tot slot kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precision of recall van de automatische detectie meten. \textcite{Yao2024} kon bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen voor de gebruikersmelding signaleert, wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
 
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
