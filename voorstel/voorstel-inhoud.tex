@@ -1,5 +1,4 @@
 %---------- Inleiding ---------------------------------------------------------
-%TODO: Inleiding
 \section{Inleiding}%
 \label{sec:inleiding}
 %Waarover zal je bachelorproef gaan? Introduceer het thema en zorg dat volgende zaken zeker duidelijk aanwezig zijn:
@@ -39,6 +38,22 @@ locatiegebaseerde toepassingen?”}.
 Het onderzoek focust zich op supermarkten als POI type. Dit omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en 
 de beschikbaarheid van voldoende publieke data via platformen zoals Google Maps of Tripadvisor. 
 
+Om deze centrale onderzoeksvraag te beantwoorden worden onderstaande deelvragen onderzocht.
+Deze hebben enerzijds betrekking tot het probleemdomein, anderzijds tot het oplossingsdomein.
+
+\textbf{Deelvragen probleemdomein:}
+\begin{itemize}
+  \item Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?
+  \item Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie?
+\end{itemize}
+
+
+\textbf{Deelvragen oplossingsdomein:}
+\begin{itemize}
+    \item Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?
+    \item Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?
+\end{itemize}
+
 Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waarmee voorspeld kan worden of een supermarkt op een 
 bepaald moment open of gesloten is. Hiervoor worden verschillende AI-technieken onderzocht en toegepast, waaronder tijdreeksanalyse en 
 anomaliedetectie. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, 
@@ -46,7 +61,6 @@ recall en precisie. Het eindresultaat is een werkend prototype, aangevuld met ee
 onderzoek. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
 
 %---------- Stand van zaken ---------------------------------------------------
-%TODO: literatuurstudie
 \section{Literatuurstudie}%
 \label{sec:literatuurstudie}
 
@@ -79,26 +93,26 @@ Het verzamelen van POI data is een complex proces en tevens ook de primaire oorz
 
 \textcite{Anishma2025} bespreekt diverse methoden die gebruikt worden voor de initiële verzameling van POI gegevens. Zo worden geautomatiseerde methoden zoals Web Scraping gebruikt om grote hoeveelheden gegevens van openbare websites of online gidsen te verzamelen, maar de betrouwbaarheid van deze data is meestal relatief laag. API's stellen software in staat om gegevens rechtstreeks van vertrouwde databanken op te halen. Daarnaast wordt de data aangevuld via Bedrijfsvermeldingen (officiële inzendingen over een bedrijf) en Crowdsourcing (door de gemeenschap gedreven input). Hoewel deze laatste twee methoden realtime informatie kunnen opleveren, vereisen ze strenge moderatie om de nauwkeurigheid te waarborgen. Ten slotte is er Field Collection, dit is een tijdrovende veldmethode waarbij teams het veld worden ingestuurd om locaties handmatig te bevestigen.
 
-Volgens \textcite{Psyllidis2022} onderscheiden we twee hoofdtypen POI bronnen: enerzijds grote technologiebedrijven (waaronder Yelp, Foursquare, Google Places en Facebook) vormen een belangrijke bron van POI-gegevens, waarbij hun intern gecreëerde databanken vaak via API’s worden aangeboden \autocite{Psyllidis2022}. Daarnaast worden open platforms zoals OpenStreetMap (OSM) als gratis en wereldwijd toegankelijke POI-bron gebruikt. Hierbij dient opgemerkt te worden dat een aanzienlijk deel van de data van OSM afkomstig is van bedrijfsmatige bijdragen \autocite{Anderson2019}.
+Volgens \textcite{Psyllidis2022} onderscheiden we twee hoofdtypen POI bronnen: enerzijds grote technologiebedrijven (waaronder Yelp, Foursquare, Google Places en Facebook) vormen een belangrijke bron van POI-gegevens, waarbij hun intern gecreëerde databanken vaak via API’s worden aangeboden \autocite{Psyllidis2022}. Anderzijds worden open platforms zoals OpenStreetMap (OSM) als gratis en wereldwijd toegankelijke POI-bron gebruikt. Hierbij dient opgemerkt te worden dat een aanzienlijk deel van de data van OSM afkomstig is van bedrijfsmatige bijdragen \autocite{Anderson2019}.
 
- In de studie van \textcite{Yao2024} wordt een dataset van geanonimiseerde AMAP mobiliteitsdata gebruikt om de dagelijkse activiteit bij POI’s te meten. Het onderzoek stelt dat zolang mensen winkels bezoeken en aankopen doen, een plotselinge daling in voetgangers of transactionele activiteit een sluiting aanduid. In essentie duidt een POI-anomalie dus op een significante afname of verdwijning van de bijbehorende menselijke activiteiten. Ook \textcite{Taylor2022} adviseert het controleren van voetverkeer en transactiegegevens als belangrijke indicator voor de status van een locatie.
+ In de studie van \textcite{Yao2024} wordt een dataset van geanonimiseerde AMAP mobiliteitsdata gebruikt om de dagelijkse activiteit bij POI’s te meten. Het onderzoek stelt dat een plotselinge daling in voetgangers- of transactionele activiteiten een sluiting aanduidt, omdat deze activiteit normaal gesproken continu is zolang de winkels geopend zijn. In essentie duidt een POI-anomalie dus op een significante afname of verdwijning van de bijbehorende menselijke activiteiten. Ook \textcite{Taylor2022} adviseert het controleren van voetverkeer en transactiegegevens als belangrijke indicator voor de status van een locatie.
 
 Tot slot zijn er Beeld- en sensorbronnen, zoals google street view. Volgens \textcite{Pericolosi2022} gebruikt Google Maps bijvoorbeeld street View beelden en tekstherkenning om na te gaan of op gevels nieuwe bedrijfsnamen of borden verschijnen of deze juist verdwijnen. \textcite{Revaud2019} vergelijken twee sets google street view foto’s van hetzelfde winkelcentrum op verschillende tijdstippen om POI wijzigingen te detecteren met behulp van deep learning. 
 
-\subsection{Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectiet?}
+\subsection{Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie?}
 Het toepassen van AI voor POI statusdetectie kent verschillende uitdagingen.  
 
 Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwaliteit van POI-gegevens is een andere belangrijke uitdaging. Omdat gegevens uit meerdere bronnen worden verzameld, kunnen ze vaak gefragmenteerd, inconsistent en verouderd zijn \autocite{Rafaqat2023}. Deze uitdaging wordt versterkt door de dynamiek van de fysieke wereld. \textcite{Fernandes2020} benadrukt dat er nog openstaande uitdagingen zijn met betrekking tot de temporele en historische aspecten van deze data. Veel commerciële POI-data wordt bovendien slechts periodiek (bijvoorbeeld elke drie tot zes maanden) bijgewerkt, wat een aanzienlijke validatieachterstand creëert. Zonder tijdige validatie neemt de betrouwbaarheid van de data snel af.
 
 Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid: volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren blind voor de semantiek.
 
-Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in productie zijn, ondergaan ze onvermijdelijk prestatievermindering dat model drift ofwel data drift wordt genoemd. Deze termen wordt gebruikt als een overkoepelende term die zowel conceptuele als datadrift omvat en duidt op elke verslechtering van de modelprestaties als gevolg van veranderende datapatronen \autocite{Iyer2025}. Daarnaast kan Geospatial Bias (vooroordelen in de geografische distributie van de trainingsdata) leiden tot ongelijke prestaties, waarbij de nauwkeurigheid van het model lager is in minder bezochte gebieden en gebieden met weinig data \autocite{Raza2025}.
+Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in productie zijn, ondergaan ze onvermijdelijk prestatievermindering dat model drift ofwel data drift wordt genoemd. Deze termen wordt gebruikt als een overkoepelende term die zowel conceptuele- als datadrift omvat en duidt op elke verslechtering van de modelprestaties als gevolg van veranderende datapatronen \autocite{Iyer2025}. Daarnaast kan Geospatial Bias (vooroordelen in de geografische distributie van de trainingsdata) leiden tot ongelijke prestaties, waarbij de nauwkeurigheid van het model lager is in minder bezochte gebieden en gebieden met weinig data \autocite{Raza2025}.
 
 \subsection{Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?}
 
 De statusdetectie wordt in de academische wereld vaak behandeld als een Time-to-Event prediction probleem (Survival Analysis), waarbij het model de resterende levensduur van de POI probeert te voorspellen \autocite{Chen2024}. Dit vereist geavanceerde Deep Learning architecturen die geschikt zijn voor het analyseren van de data. De literatuur richt zich hierbij op drie mogelijke technieken:
 
-Een traditionele aanpak om POI openingen en sluitingen te voorspellen is via een classificatiemodel op basis van diverse datakenmerken. Zo ontwikkelden \textcite{DSilva2018} een model dat met locatie en mobiliteitsdata berekent hoe waarschijnlijk het is dat een bedrijf binnen een bepaalde periode (bv. 6 maanden) sluit. Ze combineerden kenmerken van de buurt (diversiteit en concurrentie), bezoekpatronen en mobiliteitsstromen in een machine learning model. 
+Een traditionele aanpak om POI openingen en sluitingen te voorspellen is via een classificatiemodel op basis van diverse datakenmerken. Zo ontwikkelden \textcite{DSilva2018} een model dat met locatie en mobiliteitsdata berekent hoe waarschijnlijk het is dat een bedrijf binnen een bepaalde periode (bv. 6 maanden) sluit. Ze combineerden kenmerken van de omgeving (diversiteit en concurrentie), bezoekpatronen en mobiliteitsstromen in een machine learning model. 
 
 \textcite{DSilva2018} bespreken het voordeel en nadeel:
 \begin{itemize}
@@ -106,15 +120,15 @@ Een traditionele aanpak om POI openingen en sluitingen te voorspellen is via een
     \item Nadeel: Een supervised model vergt voldoende historische data van POI openingen/sluitingen. Daarnaast werkt deze benadering op een vooraf gedefinieerde tijdsresolutie (bijv. voorspellen of een POI binnen 6 maanden zal sluiten) het is niet eenvoudig om het exacte moment van sluiting te identificeren omdat de data vaak te veel ruis heeft. Hierdoor kan het model kortetermijnveranderingen missen. 
 \end{itemize}
 
-Een veelgebruikte benadering is time series analysis (TSA) op voetverkeer- of transactiegegevens. \textcite{Yao2024} hebben een temporeel statusregressienetwerk (TSRNet) model ontwikkeld voor snelle POI-afwijkingsdetectie. Het model kan temporele kenmerken in data over menselijke activiteit extraheren en POI-statusscores voorspellen als afwijkingsindicatoren.
+Een veelgebruikte benadering is time series analysis (TSA) op voetverkeer- of transactiegegevens. \textcite{Yao2024} hebben een temporeel statusregressienetwerk (TSRNet) model ontwikkeld voor snelle POI-afwijkingsdetectie. Het model kan temporele kenmerken in data over menselijke activiteit extraheren en POI-statusscores voorspellen als afwijkingsindicatoren. Daarnaast wordt in het onderzoek ook besproken dat externe factoren, zoals weersomstandigheden en feestdagen, invloed hebben op het patroon van menselijke activiteit bij een POI. 
 
 \textcite{Yao2024} bespreekt het voordeel en nadeel:
 \begin{itemize}
   \item Voordeel: De benadering kan zeer adaptief zijn en sluitingen van POIs soms weken voor de eerste formele meldingen detecteren. Dit kan vooral wanneer check-in data van de POI en naburige locaties worden gebruikt.
-  \item Nadeel: Omdat het vrijwel onmogelijk is om het exacte tijdstip van een anomalie te bepalen, genereren we onnauwkeurige POI-statussequenties als zwakke labels. Het TSRNet model vereist veel trainingsdata en is gevoelig voor ruis, zoals door tijdelijke dalingen in activiteit die geen permanente sluiting betekenen. Daarnaast is het gemakkelijk om POIs met schaarse gegevens over menselijke activiteit als afwijkingen te herkennen.
+  \item Nadeel: Omdat het vrijwel onmogelijk is om het exacte tijdstip van een anomalie te bepalen, genereren we onnauwkeurige POI-statussequenties als zwakke labels. Het TSRNet model vereist veel trainingsdata en is gevoelig voor ruis, zoals door tijdelijke dalingen in activiteit die geen permanente sluiting betekenen. Daarnaast is het gemakkelijk om POIs met schaarse gegevens over menselijke activiteit als afwijkingen te herkennen. Tot slot is het model minder geschikt wanneer de data geen duidelijke seizoenspatronen vertoond.
 \end{itemize}
 
-Een andere methoden gebruikt Computervision (CV) op basis van Remote Sensing of straatbeelden om veranderingen te detecteren. \textcite{Revaud2019} hebben een Deep Learning framework ontwikkeld dat is geïnspireerd op basis van metric learning. Dit traint een embedding ruimte waarin afbeeldingen van dezelfde locatie (zonder verandering) dicht bij elkaar liggen, en gewijzigde locaties (bijvoorbeeld een verdwenen bord) afwijkend zijn. Door gebruik te maken van Siamese netwerken kunnen de evolutionaire context en sequentiële beelden over tijd worden verwerkt.
+Een andere methode is Computervision (CV) op basis van Remote Sensing of straatbeelden om veranderingen te detecteren. \textcite{Revaud2019} hebben een Deep Learning framework ontwikkeld dat is geïnspireerd op basis van metric learning. Dit traint een embedding ruimte waarin afbeeldingen van dezelfde locatie (zonder verandering) dicht bij elkaar liggen, en gewijzigde locaties (bijvoorbeeld een verdwenen bord) afwijkend zijn. Door gebruik te maken van Siamese netwerken kunnen de evolutionaire context en sequentiële beelden over tijd worden verwerkt.
 
 \textcite{Revaud2019} bespreken het voordeel en nadeel: 
 \begin{itemize}   
@@ -167,22 +181,24 @@ In de vijfde fase van het onderzoek worden de opgeslagen modellen geëvalueerd o
 De laatste fase wordt toegewijd aan het formuleren van de conclusie. De resultaten van het onderzoek uit de voorgaande fasen worden gebundeld om aan te tonen
 in welke mate artificiële intelligentie kan worden ingezet voor de automatische detectie van (historische) open of gesloten statussen van Point-of-interests. Daarnaast worden de bevindingen over de getrainde modellen toegelicht, met onder andere hun sterktes en zwaktes. Het resultaat van deze fase is een volledig uitgewerkte conclusie, aangevuld met eventuele suggesties voor verder onderzoek. 
 
- \begin{figure*}
+ \begin{figure}[p]
     \centering
     \includegraphics[width=\textwidth]{Gantt_grafiek.png}
     \caption{\label{fig:gantt}Gantt diagram met de verschillende fasen van het onderzoek.}
-\end{figure*}
+\end{figure}
 
 %---------- Verwachte resultaten ----------------------------------------------
-%TODO: conclusie
 \section{Verwacht resultaat, conclusie}%
 \label{sec:verwachte_resultaten}
 
 %Hier beschrijf je welke resultaten je verwacht. Als je metingen en simulaties uitvoert, kan je hier al mock-ups maken van de grafieken samen met de verwachte conclusies. Benoem zeker al je assen en de onderdelen van de grafiek die je gaat gebruiken. Dit zorgt ervoor dat je concreet weet welk soort data je moet verzamelen en hoe je die moet meten.
-
 %Wat heeft de doelgroep van je onderzoek aan het resultaat? Op welke manier zorgt jouw bachelorproef voor een meerwaarde?
-
 %Hier beschrijf je wat je verwacht uit je onderzoek, met de motivatie waarom. Het is \textbf{niet} erg indien uit je onderzoek andere resultaten en conclusies vloeien dan dat je hier beschrijft: het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overeenkomen met de resultaten.
 
+Het doel van deze bachelorproef is om een (werkend) prototype te ontwikkelen dat automatisch kan voorspellen of een Point-of-Interest (zoals een supermarkt) open of gesloten is. Dit gebeurt met behulp van artificiële intelligentie. Er worden minstens twee AI-technieken getest: een klassiek classificatiemodel (zoals random forest classifier) en tijdreeksanalyse. Indien de timing het toelaat, zal ook anomaliedetectie worden onderzocht.
 
+De modellen worden vergeleken op basis van evaluatiemetrics zoals accuracy, recall en precision. De validatie gebeurt met bekende sluitingsdata en eventueel handmatige controles. Daarnaast wordt bekeken welke kenmerken het meest bijdragen aan de voorspelling met behulp van een feature importance staafdiagram.
 
+\textbf{Verwachte prestaties:} Op basis van de literatuurstudie, wordt verwacht dat het klassieke classificatiemodel het beste resultaat zal opleveren. Deze modellen zijn robuust voor kleine datasets en vereisen minder trainingstijd. Tijdreeksanalyse zou beter kunnen presteren in specifieke scenario’s, zoals seizoensgebondenheid. Het nadeel hierbij is dat het veel POI data nodig heeft en meer datavoorbereiding en feature engineering vereist.
+
+Voor organisaties zoals Accurat is dit onderzoek relevant, aangezien het helpt om POI-data op een automatische manier up-to-date te houden. Dit verhoogt de kwaliteit van locatiegebaseerde analyses, zoals het meten van de marktactiviteit of bezoekersgedrag. Het onderzoek levert niet alleen een (werkend) prototype op, maar ook inzichten in welke technieken het best presteren voor het automatische detecteren van POI statussen.
