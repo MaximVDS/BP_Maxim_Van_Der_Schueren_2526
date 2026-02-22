@@ -26,5 +26,33 @@
 %% Maak voor elke fase (behalve het literatuuronderzoek) een NIEUW HOOFDSTUK aan
 %% en geef het een gepaste titel.
 
-\lipsum[21-25]
+Deze bachelorproef zal uitgewerkt worden in verschillende fasen. In elk van deze fasen wordt een andere techniek gebruikt, en wordt de focus op een ander onderdeel van het probleem gelegd. In totaal zijn er 14 weken voorzien voor de bachelorproef. Hoewel er wekelijks één dag wordt ingepland om intensief aan het onderzoek te werken, wordt de overige tijd benut voor de verdere uitwerking en diepgang van de bachelorproef.
+
+Een overzicht van de fasen wordt weergegeven in Figuur ~\ref{fig:gantt}.
+
+\subsection{Fase 1 – Probleemdomein onderzoeken}
+In de eerste fase van het onderzoek, wordt het concrete probleemdomein verder afgebakend. Er wordt een analyse gemaakt van hoe Point-of-Interest gegevens worden gebruikt door datagedreven organisaties, aangezien dit de primaire doelgroep van deze bachelorproef is. Daarnaast wordt onderzocht wat de impact is van verouderde of foutieve Point-of-Interest informatie op de kwaliteit van analyses. Het resultaat van deze fase is een duidelijker inzicht krijgen in het probleemdomein, dat kan gebruikt worden in de volgende fase.
+
+\subsection{Fase 2 – Literatuurstudie}
+De tweede fase wordt toegewijd aan de literatuurstudie. Deze wordt uitgevoerd om informatie te vergaren over bestaande technieken en modellen die worden gebruikt voor de detectie van (historische) open of gesloten toestanden van Points-of-Interests (POI's). Hierbij wordt de nadruk gelegd op AI toepassingen zoals tijdreeksanalyses en anomalie detectie. De focus ligt op het identificeren van academische en wetenschappelijke publicaties waarin POI open/gesloten statusdetectie wordt behandeld aan de hand van machine learning of datagestuurde methodes.
+Het resultaat van deze fase is een onderbouwde lijst van bruikbare technieken en modellen, inclusief technische eigenschappen en eventuele beperkingen. Deze vormen de basis voor de modelkeuze in de volgende fases van het onderzoek.
+
+\subsection{Fase 3 – Data verzamelen en voorbereiden}
+Tijdens de derde fase zal de data verzameld en voorbereid worden. Een deel van de data zal rechtstreeks ter beschikking gesteld worden door de stageplaats (Accurat). Deze bevat vermoedelijk POI informatie zoals locatiegegevens, tijdreeksen van bezoekersactiviteit en labels met open of gesloten status. Daarnaast wordt de aanvullende data verzameld aan de hand van publieke APIs (Application Programming Interfaces). Hierbij worden platformen zoals Tripadvisor, Yelp en Google services(zoals Google maps) gebruikt om  openingsuren, gebruikersrecensies en statusvermeldingen (zoals “permanent gesloten”) automatisch op te halen. Hiervoor zullen LLM of scraping tools gebruikt worden. In dit onderzoek wordt voornamelijk gefocust op supermarkten  als POI type, aangezien deze regelmatig voorkomen in publieke datasets en bronnen. Bovendien is er voor deze soort POI vaak voldoende gebruikersactiviteit en data beschikbaar, wat de betrouwbaarheid van de data ten goede komt. De verzamelde data wordt opgeschoond en gefilterd, zodat deze gebruikt kunnen worden voor het trainen van het model. Het resultaat van deze fase is een dataset die klaar is voor de modeltraining en validatie.
+
+\subsection{Fase 4 – Proof-of-Concept bouwen}
+De vierde fase wordt toegewijd aan het bouwen van een proof-of-concept. Hierbij wordt een eerste versie van een model ontwikkeld dat automatisch de open- of gesloten toestand van POI's kan detecteren. Het model wordt getraind op basis van de dataset uit de vorige fase. Daarnaast wordt er geëxperimenteerd met AI-technieken zoals tijdreeksanalyse en anomalie detectie. De implementatie gebeurt in Python, waarbij we gebruik maken van machine learning libraries zoals Pandas, Scikit-learn, TensorFlow en eventueel PyTorch. Het getrainde model met de beste evaluatiecriteria wordt opgeslagen met behulp van Joblib. Het resultaat van deze fase is een werkende proof-of-concept die in staat is om de status van een POI op een bepaald moment te classificeren als “open” of “gesloten”.
+
+\subsection{Fase 5 – Proof-of-Concept valideren}
+In de vijfde fase van het onderzoek worden de opgeslagen modellen geëvalueerd op basis van evaluatiemetrics zoals accuracy, recall en precisie. Mogelijke validatiemethoden zijn het vergelijken met gekende sluitingsdata of handmatige verificatie van POI status. Daarnaast wordt gekeken welke kenmerken het meeste impact hebben op het model. hiervoor wordt gebruik gemaakt van feature importance in Python. Wanneer de modellen geëvalueerd zijn, volgt de vergelijkende studie. Hierin worden de modellen met elkaar vergeleken op basis van de bovenstaande criteria. Het resultaat van deze fase is een onderbouwde evaluatie van elk model en een grondige vergelijking op basis van de bekomen resultaten.
+
+\subsection{Fase 6 – Conclusie}
+De laatste fase wordt toegewijd aan het formuleren van de conclusie. De resultaten van het onderzoek uit de voorgaande fasen worden gebundeld om aan te tonen
+in welke mate artificiële intelligentie kan worden ingezet voor de automatische detectie van (historische) open of gesloten statussen van Point-of-interests. Daarnaast worden de bevindingen over de getrainde modellen toegelicht, met onder andere hun sterktes en zwaktes. Het resultaat van deze fase is een volledig uitgewerkte conclusie, aangevuld met eventuele suggesties voor verder onderzoek. 
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth]{Gantt_grafiek.png}
+    \caption{\label{fig:gantt}Gantt diagram met de verschillende fasen van het onderzoek.}
+\end{figure}
 

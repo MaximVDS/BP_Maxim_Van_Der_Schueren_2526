@@ -7,45 +7,133 @@
 
 % Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+%Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+%Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+%\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+%Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{grail.jpg}
-  \caption[Voorbeeld figuur.]{\label{fig:grail}Voorbeeld van invoegen van een figuur. Zorg altijd voor een uitgebreid bijschrift dat de figuur volledig beschrijft zonder in de tekst te moeten gaan zoeken. Vergeet ook je bronvermelding niet!}
-\end{figure}
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=0.8\textwidth]{grail.jpg}
+%  \caption[Voorbeeld figuur.]{\label{fig:grail}Voorbeeld van invoegen van een figuur. Zorg altijd voor een uitgebreid bijschrift dat de figuur volledig beschrijft zonder in de tekst te moeten gaan zoeken. Vergeet ook je bronvermelding niet!}
+%\end{figure}
 
-\begin{listing}
-  \begin{minted}{python}
-    import pandas as pd
-    import seaborn as sns
+%\begin{listing}
+%  \begin{minted}{python}
+%    import pandas as pd
+%    import seaborn as sns
 
-    penguins = sns.load_dataset('penguins')
-    sns.relplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species")
-  \end{minted}
-  \caption[Voorbeeld codefragment]{Voorbeeld van het invoegen van een codefragment.}
-\end{listing}
+%    penguins = sns.load_dataset('penguins')
+%    sns.relplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species")
+%  \end{minted}
+%  \caption[Voorbeeld codefragment]{Voorbeeld van het invoegen van een codefragment.}
+%\end{listing}
 
-\lipsum[7-20]
+%\lipsum[7-20]
 
-\begin{table}
-  \centering
-  \begin{tabular}{lcr}
-    \toprule
-    \textbf{Kolom 1} & \textbf{Kolom 2} & \textbf{Kolom 3} \\
-    $\alpha$         & $\beta$          & $\gamma$         \\
-    \midrule
-    A                & 10.230           & a                \\
-    B                & 45.678           & b                \\
-    C                & 99.987           & c                \\
-    \bottomrule
-  \end{tabular}
-  \caption[Voorbeeld tabel]{\label{tab:example}Voorbeeld van een tabel.}
-\end{table}
+%\begin{table}
+%  \centering
+%  \begin{tabular}{lcr}
+%    \toprule
+%    \textbf{Kolom 1} & \textbf{Kolom 2} & \textbf{Kolom 3} \\
+%    $\alpha$         & $\beta$          & $\gamma$         \\
+%    \midrule
+%    A                & 10.230           & a                \\
+%    B                & 45.678           & b                \\
+%    C                & 99.987           & c                \\
+%    \bottomrule
+%  \end{tabular}
+%  \caption[Voorbeeld tabel]{\label{tab:example}Voorbeeld van een tabel.}
+%\end{table}
+
+De literatuurstudie biedt een overzicht van de huidige stand van zaken rond de POI-statusdetectie. Het dient als basis voor de methodologieën en is 
+opgebouwd rond de deelvragen die het onderzoek sturen. Elke subsectie geeft een samenvatting van relevante vakliteratuur en legt de link met de gewenste 
+toepassing van het automatisch bepalen of een Point-of-Interest (zoals een supermarkt) open of gesloten is.
+
+\subsection{Wat is een point of interest?}
+Een Point of interest (POI) verwijst naar plaatsen van belang die gedurende de dag vaak bezocht worden door mensen,
+waaronder restaurants, supermarkten, vervoersknooppunten, parken, cafés en toeristische attracties \autocite{Yeow2021}. Volgens \textcite{Psyllidis2022} fungeert een POI in de hedendaagse digitale context als een surrogaat voor een fysieke locatie. 
+
+Door de toenemende digitalisering is het aantal POI's (Points of Interest) dat in een gebied kan worden weergegeven niet langer beperkt door de fysieke ruimte op een kaart \autocite{Psyllidis2022}. volgens \textcite{Anishma2025b} bestaat Een POI record uit 3 lagen: basisattributen (naam en locatie), rijke attributen (metadata zoals contactgegevens) en dynamische attributen (zoals de operationele status of openingstijden). 
+
+\subsection{Onderscheid tussen POI en AOI}
+% TODO
+
+Een essentieel onderscheid binnen geospatiale data-analyse is het verschil tussen een Point of Interest (POI) en een Area of Interest (AOI). Een POI representeert een specifieke locatie als een puntgeometrie (meestal wordt dit vastgelegd door coördinaten), zoals de ingang van een gebouw of een object op de kaart. 
+
+Daartegenover is een Area of Interest (AOI) een ruimtelijk gebied dat de aandacht van mensen trekt en wordt weergegeven door een polygonale geometrie. Volgens \textcite{Hu2015} verwijzen (stedelijke) AOI’s naar gebieden binnen een stedelijke omgeving die de interesse van mensen aantrekken, zoals stadsmonumenten, commerciële centra en recreatiezones.
+
+Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaast representeert een AOI een complexere ruimtelijke context, terwijl een POI een individuele entiteit op een specifieke locatie beschrijft.
+
+
+\subsection{Levenscyclus van een POI}
+% TODO
+% Een POI is niet zomaar "open" of "dicht". Er zit een proces achter. Het is nuttig om te beschrijven welke statussen een winkel kan hebben:
+%Planned/Under Construction: Nog niet open, maar wel al aanwezig in data.
+%Active: De normale operationele status.
+%Temporarily Closed: Verbouwingen, vakantie, of incidenten.
+%Permanently Closed: De zaak stopt, maar het pand staat er nog.
+%Churn/Rebranded: De supermarkt stopt en wordt een andere keten (bijv. een Albert Heijn die een Jumbo wordt). Dit is voor AI-modellen vaak de grootste uitdaging.
+
+
+
+\subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
+
+Het verzamelen van POI data is een complex proces en tevens ook de primaire oorzaak van de veroudering van locatiegegevens, waardoor het garanderen van de actualiteit van deze data een cruciale uitdaging vormt.
+
+\textcite{Anishma2025a} bespreekt diverse methoden die gebruikt worden voor de initiële verzameling van POI gegevens. Zo worden geautomatiseerde methoden zoals Web Scraping gebruikt om grote hoeveelheden gegevens van openbare websites of online gidsen te verzamelen, maar de betrouwbaarheid van deze data is meestal relatief laag. API's stellen software in staat om gegevens rechtstreeks van vertrouwde databanken op te halen. Daarnaast wordt de data aangevuld via Bedrijfsvermeldingen (officiële inzendingen over een bedrijf) en Crowdsourcing (door de gemeenschap gedreven input). Hoewel deze laatste twee methoden realtime informatie kunnen opleveren, vereisen ze strenge moderatie om de nauwkeurigheid te waarborgen. Ten slotte is er Field Collection, dit is een tijdrovende veldmethode waarbij teams het veld worden ingestuurd om locaties handmatig te bevestigen.
+
+Volgens \textcite{Psyllidis2022} onderscheiden we twee hoofdtypen POI bronnen: enerzijds grote technologiebedrijven (waaronder Yelp, Foursquare, Google Places en Facebook) vormen een belangrijke bron van POI-gegevens, waarbij hun intern gecreëerde databanken vaak via API’s worden aangeboden \autocite{Psyllidis2022}. Anderzijds worden open platforms zoals OpenStreetMap (OSM) als gratis en wereldwijd toegankelijke POI-bron gebruikt. Hierbij dient opgemerkt te worden dat een aanzienlijk deel van de data van OSM afkomstig is van bedrijfsmatige bijdragen \autocite{Anderson2019}.
+
+In de studie van \textcite{Yao2024} wordt een dataset van geanonimiseerde AMAP mobiliteitsdata (één van de grootste webmapping aanbieders van China) gebruikt om de dagelijkse activiteit bij POI’s te meten. Het onderzoek stelt dat een plotselinge daling in voetgangers- of transactionele activiteiten een sluiting aanduidt, omdat deze activiteit normaal gesproken continu is zolang de winkels geopend zijn. In essentie duidt een POI-anomalie dus op een significante afname of verdwijning van de bijbehorende menselijke activiteiten. Ook \textcite{Taylor2022} adviseert het controleren van voetverkeer en transactiegegevens als belangrijke indicator voor de status van een locatie.
+
+Tot slot zijn er Beeld- en sensorbronnen, zoals google street view. Volgens \textcite{Pericolosi2022} gebruikt Google Maps bijvoorbeeld street View beelden en tekstherkenning om na te gaan of op gevels nieuwe bedrijfsnamen of borden verschijnen of deze juist verdwijnen. \textcite{Revaud2019} vergelijken twee sets google street view foto’s van hetzelfde winkelcentrum op verschillende tijdstippen om POI wijzigingen te detecteren met behulp van deep learning. 
+
+\subsection{Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie?}
+Het toepassen van AI voor POI statusdetectie kent verschillende uitdagingen.  
+
+Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwaliteit van POI-gegevens is een andere belangrijke uitdaging. Omdat gegevens uit meerdere bronnen worden verzameld, kunnen ze vaak gefragmenteerd, inconsistent en verouderd zijn \autocite{Rafaqat2023}. Deze uitdaging wordt versterkt door de dynamiek van de fysieke wereld. \textcite{Fernandes2020} benadrukt dat er nog openstaande uitdagingen zijn met betrekking tot de temporele en historische aspecten van deze data. Veel commerciële POI-data wordt bovendien slechts periodiek (bijvoorbeeld elke drie tot zes maanden) bijgewerkt, wat een aanzienlijke validatieachterstand creëert. Zonder tijdige validatie neemt de betrouwbaarheid van de data snel af.
+
+Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid: volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren blind voor de semantiek.
+
+Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in productie zijn, ondergaan ze onvermijdelijk prestatievermindering dat model drift ofwel data drift wordt genoemd. Deze termen wordt gebruikt als een overkoepelende term die zowel conceptuele- als datadrift omvat en duidt op elke verslechtering van de modelprestaties als gevolg van veranderende datapatronen \autocite{Iyer2025}. Daarnaast kan Geospatial Bias (vooroordelen in de geografische distributie van de trainingsdata) leiden tot ongelijke prestaties, waarbij de nauwkeurigheid van het model lager is in minder bezochte gebieden en gebieden met weinig data \autocite{Raza2025}.
+
+\subsection{Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?}
+
+De statusdetectie wordt in de academische wereld vaak behandeld als een Time-to-Event prediction probleem (Survival Analysis), waarbij het model de resterende levensduur van de POI probeert te voorspellen \autocite{Chen2024}. Dit vereist geavanceerde Deep Learning architecturen die geschikt zijn voor het analyseren van de data. De literatuur richt zich hierbij op drie mogelijke technieken:
+
+Een traditionele aanpak om POI openingen en sluitingen te voorspellen is via een classificatiemodel op basis van diverse datakenmerken. Zo ontwikkelden \textcite{DSilva2018} een model dat met locatie en mobiliteitsdata berekent hoe waarschijnlijk het is dat een bedrijf binnen een bepaalde periode (bv. 6 maanden) sluit. Ze combineerden kenmerken van de omgeving (diversiteit en concurrentie), bezoekpatronen en mobiliteitsstromen in een machine learning model. 
+
+\textcite{DSilva2018} bespreken het voordeel en nadeel:
+\begin{itemize}
+    \item Voordeel: Deze methode is interpreteerbaar en laat toe inzicht te krijgen in welke factoren het meest bijdragen aan het sluitingsrisico. Klassieke classifiers (zoals logistieke regressie of random forest) vereisen minder data dan deep learning en kunnen met beperkte gelabelde data worden getraind.
+    \item Nadeel: Een supervised model vergt voldoende historische data van POI openingen/sluitingen. Daarnaast werkt deze benadering op een vooraf gedefinieerde tijdsresolutie (bijv. voorspellen of een POI binnen 6 maanden zal sluiten) het is niet eenvoudig om het exacte moment van sluiting te identificeren omdat de data vaak te veel ruis heeft. Hierdoor kan het model kortetermijnveranderingen missen. 
+\end{itemize}
+
+Een veelgebruikte benadering is time series analysis (TSA) op voetverkeer- of transactiegegevens. \textcite{Yao2024} hebben een temporeel statusregressienetwerk (TSRNet) model ontwikkeld voor snelle POI-afwijkingsdetectie. Het model kan temporele kenmerken in data over menselijke activiteit extraheren en POI-statusscores voorspellen als afwijkingsindicatoren. Daarnaast wordt in het onderzoek ook besproken dat externe factoren, zoals weersomstandigheden en feestdagen, invloed hebben op het patroon van menselijke activiteit bij een POI. 
+
+\textcite{Yao2024} bespreekt het voordeel en nadeel:
+\begin{itemize}
+    \item Voordeel: De benadering kan zeer adaptief zijn en sluitingen van POIs soms weken voor de eerste formele meldingen detecteren. Dit kan vooral wanneer check-in data van de POI en naburige locaties worden gebruikt.
+    \item Nadeel: Omdat het vrijwel onmogelijk is om het exacte tijdstip van een anomalie te bepalen, genereren we onnauwkeurige POI-statussequenties als zwakke labels. Het TSRNet model vereist veel trainingsdata en is gevoelig voor ruis, zoals door tijdelijke dalingen in activiteit die geen permanente sluiting betekenen. Daarnaast is het gemakkelijk om POIs met schaarse gegevens over menselijke activiteit als afwijkingen te herkennen. Tot slot is het model minder geschikt wanneer de data geen duidelijke seizoenspatronen vertoond.
+\end{itemize}
+
+Een andere methode is Computervision (CV) op basis van Remote Sensing of straatbeelden om veranderingen te detecteren. \textcite{Revaud2019} hebben een Deep Learning framework ontwikkeld dat is geïnspireerd op basis van metric learning. Dit traint een embedding ruimte waarin afbeeldingen van dezelfde locatie (zonder verandering) dicht bij elkaar liggen, en gewijzigde locaties (bijvoorbeeld een verdwenen bord) afwijkend zijn. Door gebruik te maken van Siamese netwerken kunnen de evolutionaire context en sequentiële beelden over tijd worden verwerkt.
+
+\textcite{Revaud2019} bespreken het voordeel en nadeel: 
+\begin{itemize}   
+    \item Voordeel: Het model is niet afhankelijk van externe bedrijfsdatabases voor de primaire detectie van de verandering.   
+    \item Nadeel: De vergelijking is zeer complex en moet robuust zijn tegen ruis zoals wisselende belichting, schaduwen, occlusies en grote verschillen in camerastandpunt en schaling. 
+\end{itemize}
+
+\subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
+Om de betrouwbaarheid van geautomatiseerde POI-statuswijzigingen te valideren, wordt in de literatuur nadruk gelegd op het combineren van meerdere bronnen en methoden. \textcite{Taylor2022} adviseert bijvoorbeeld om een voorspelde sluiting of opening te controleren met ondersteunende data: als de AI signalen van sluiting geeft, dan zou men in de voetgangers of transactiegegevens daadwerkelijk een significante afwezigheid moeten zien. Ook kunnen satelliet of lucht foto’s gecontroleerd worden op veranderingen (zoals een verbouwing) die de sluiting bevestigen \autocite{Taylor2022}.
+
+Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerders en lokale overheden) om actuele POI-informatie te krijgen. Als algoritmisch een sluiting is gedetecteerd, kan men nagaan of bedrijfsbeheerders of lokale gidsen al een melding van sluiting hebben geplaatst \autocite{Pericolosi2022}.
+
+Tot slot kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precision of recall van de automatische detectie meten. \textcite{Yao2024} kon bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen voor de gebruikersmelding signaleert, wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
+
 

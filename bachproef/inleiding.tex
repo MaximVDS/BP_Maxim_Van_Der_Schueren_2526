@@ -5,32 +5,79 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt. Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
+%De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt. Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
 
-\begin{itemize}
-  \item context, achtergrond
-  \item afbakenen van het onderwerp
-  \item verantwoording van het onderwerp, methodologie
-  \item probleemstelling
-  \item onderzoeksdoelstelling
-  \item onderzoeksvraag
-  \item \ldots
-\end{itemize}
+%\begin{itemize}
+%  \item context, achtergrond
+%  \item afbakenen van het onderwerp
+%  \item verantwoording van het onderwerp, methodologie
+%  \item probleemstelling
+%  \item onderzoeksdoelstelling
+%  \item onderzoeksvraag
+%  \item \ldots
+%\end{itemize}
+
+
+In een wereld die steeds meer gedreven wordt door data, is de accuraatheid van locatiegegevens cruciaal. Deze bachelorproef onderzoekt hoe artificiële intelligentie kan ingezet worden om de status van Points-of-Interest (POI) automatisch te monitoren. 
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+%Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+
+Iedereen heeft het wel al eens meegemaakt: je zoekt online naar een supermarkt in de buurt, je vertrekt op basis van deze gegevens, 
+maar eenmaal aangekomen blijkt dat de winkel gesloten of zelfs verdwenen is. 
+Voor consumenten is dit vervelend, maar voor bedrijven die hun beslissingen baseren op deze locatiegegevens kan het drastische gevolgen 
+hebben. Deze bachelorproef onderzoekt hoe we met artificiële intelligentie dit probleem kunnen aanpakken.
+
+Organisaties die werken met locatie data maken gebruik van POI (Point-of-interest) gegevens om analyses te maken rond bezoekersgedrag, 
+marktpotentieel en concurrentie. Daarbij is het cruciaal dat de gegevens kwalitatief en up-to-date zijn. In de praktijk blijkt echter dat 
+POI databanken vertraging oplopen: winkels openen of sluiten zonder dat dit meteen wordt weergegeven. Dat leidt tot foutieve inzichten en 
+beïnvloedt de betrouwbaarheid van locatiegebaseerde toepassingen.
+
+% TODO: bron zoeken
+Huidige methoden om deze statuswijzigingen te monitoren zijn vaak handmatig, wat resulteert in 
+een aanzienlijke vertraging tussen de daadwerkelijke status van de POI en de databanken.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
-Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
+%Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
+
+De centrale onderzoeksvraag van deze bachelorproef is: \textit{“Hoe kan artificiële intelligentie worden ingezet om automatisch de 
+    (historische) open of gesloten status van Points-of-Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in 
+    locatiegebaseerde toepassingen?”}.
+
+Het onderzoek focust zich op supermarkten als POI type. Dit omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en 
+de beschikbaarheid van voldoende publieke data via platformen zoals Google Maps of Tripadvisor. 
+
+Om deze centrale onderzoeksvraag te beantwoorden worden onderstaande deelvragen onderzocht.
+Deze hebben enerzijds betrekking tot het probleemdomein, anderzijds tot het oplossingsdomein.
+
+\textbf{Deelvragen probleemdomein:}
+\begin{itemize}
+    \item Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?
+    \item Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie?
+\end{itemize}
+
+
+\textbf{Deelvragen oplossingsdomein:}
+\begin{itemize}
+    \item Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?
+    \item Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?
+\end{itemize}
+
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
+%Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
+
+Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waarmee voorspeld kan worden of een supermarkt op een 
+bepaald moment open of gesloten is. Hiervoor worden verschillende AI-technieken onderzocht en toegepast, waaronder tijdreeksanalyse en 
+anomaliedetectie. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, 
+recall en precisie. Het eindresultaat is een werkend prototype, aangevuld met een evaluatie van de modellen en aanbevelingen voor verdere 
+onderzoeken. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
 \label{sec:opzet-bachelorproef}
