@@ -71,14 +71,17 @@ Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaa
 
 \subsection{Levenscyclus van een POI}
 % TODO
-% Een POI is niet zomaar "open" of "dicht". Er zit een proces achter. Het is nuttig om te beschrijven welke statussen een winkel kan hebben:
-%Planned/Under Construction: Nog niet open, maar wel al aanwezig in data.
-%Active: De normale operationele status.
-%Temporarily Closed: Verbouwingen, vakantie, of incidenten.
-%Permanently Closed: De zaak stopt, maar het pand staat er nog.
-%Churn/Rebranded: De supermarkt stopt en wordt een andere keten (bijv. een Albert Heijn die een Jumbo wordt). Dit is voor AI-modellen vaak de grootste uitdaging.
+De operationele toestand van een Point-of-Interest is geen statisch gegeven, maar een dynamisch proces dat in de literatuur wordt gedefinieerd als de POI-levenscyclus. Volgens \textcite{Lu2020} evolueren POI's mee met de ontwikkeling van functionele zones. Ze ontstaan, groeien, stabiliseren gedurende een bepaalde periode en verdwijnen dan uiteindelijk.
 
+Binnen de levenscyclus van een POI worden drie primaire fasen onderscheiden door de status in een specifiek tijdvenster te vergelijken met de voorgaande periode: 
 
+\begin{itemize}
+    \item \textbf{Booming:} De fase waarin een nieuwe POI op de kaart verschijnt of een significante groei in activiteit vertoont.
+    \item \textbf{Stable:} De fase waarin een POI "in leven blijft" en een stabiel patroon van menselijke activiteit en aanwezigheid vertoont over opeenvolgende tijdsperioden.
+    \item \textbf{Decaying:} De fase waarin een POI achteruitgaat of definitief gesloten wordt. Het accuraat voorspellen van deze status is in de praktijk vaak uitdagender dan het detecteren van nieuwe openingen.
+\end{itemize}
+
+De transitie tussen deze stadia wordt gedreven door verschillende (omgevings)factoren. \textcite{Lu2020} identificeren drie kernaspecten die de levensvatbaarheid van een POI bepalen: de regionale populariteit die gemeten wordt aan de hand van menselijke mobiliteitspatronen en bezoekersstromen, de behoefte aan specifieke faciliteiten in een buurt (ook wel de regionale vraag genoemd) en de concurrentiepositie ten opzichte van gelijkaardige entiteiten.
 
 \subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
 
