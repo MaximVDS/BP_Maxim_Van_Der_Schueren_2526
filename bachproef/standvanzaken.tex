@@ -56,7 +56,7 @@ toepassing van het automatisch bepalen of een Point-of-Interest (zoals een super
 \subsection{Wat is een point of interest?}
 Een Point of interest (POI) verwijst naar plaatsen van belang die gedurende de dag vaak bezocht worden door mensen, waaronder restaurants, supermarkten, vervoersknooppunten, parken, cafés en toeristische attracties \autocite{Yeow2021}. Volgens \textcite{Psyllidis2022} fungeert een POI in de hedendaagse digitale context als een surrogaat voor een fysieke locatie. POI-systemen zijn cruciaal voor het verrijken van de gebruikerservaring, het mogelijk maken van gepersonaliseerde interacties en het optimaliseren van besluitvormingsprocessen in het digitale landschap \autocite{Zhang2025}. POI data speelt een cruciale rol in volgende use cases: event planning, aanbevelingen voor reizen, gewilde locaties in de vastgoedsector, optimale route naar een tankstation, een service om een winkel te zoeken en concurrentie analyse. 
 
-Door de toenemende digitalisering is het aantal POI's (Points of Interest) dat in een gebied kan worden weergegeven niet langer beperkt door de fysieke ruimte op een kaart \autocite{Psyllidis2022}. volgens \textcite{Anishma2025b} bestaat Een POI record uit 3 lagen: basisattributen (naam en locatie), rijke attributen (metadata zoals contactgegevens) en dynamische attributen (zoals de operationele status of openingstijden). 
+Door de toenemende digitalisering is het aantal POI's (Points of Interest) dat in een gebied kan worden weergegeven niet langer beperkt door de fysieke ruimte op een kaart \autocite{Psyllidis2022}. volgens \textcite{Anishma2025b} bestaat Een POI record uit drie lagen: basisattributen (naam en locatie), rijke attributen (metadata zoals contactgegevens) en dynamische attributen (zoals de operationele status of openingstijden). 
 
 Volgens \textcite{Psyllidis2022} bestaan POI-datasets uit de volgende componenten:
 
@@ -77,14 +77,30 @@ De waarde van een POI-dataset wordt voor een groot deel bepaald door de actualit
 
 Volgens \textcite{Yao2024} geven anomalieën in POI-gegevens onjuiste informatie over de werkelijke wereld en verminderen deze de kwaliteit van webkaarten. Daarnaast geven anomalieën een verouderd geografisch patroon weer, terwijl de sociaaleconomische omstandigheden (waarschijnlijk) zijn veranderd. De analyse van deze gegevens kan daardoor leiden tot onjuiste resultaten.
 
+\textcite{ISO2013} definieert zes fundamentele dimensies voor de kwaliteit van POI data, die in het onderzoek van \textcite{Yeow2021} uitgebreider aan bod komen. 
+
+\begin{itemize}
+    \item Volledigheid: De mate waarin de dataset alle werkelijk bestaande POI's binnen een specifiek gebied dekt. Hierbij kunnen fouten optreden door het weglaten van bestaande locaties (omission) of door de onterechte toevoeging van niet-bestaande punten (commission) aan de databank.
+    
+    \item Logische consistentie: De mate waarin de data voldoet aan structurele regels en ruimtelijke relaties (bijv. een winkel moet zich binnen een gebouwcontour bevinden)
+    
+    \item Positionele nauwkeurigheid: De precisie van de geografische coördinaten ten opzichte van de werkelijke locatie.
+    
+    \item Temporele kwaliteit: De actualiteit van de gegevens en de nauwkeurigheid van tijdsgebonden details zoals openingsuren van de POI.
+    
+    \item Thematische nauwkeurigheid: De correctheid van de eigenschappen en labels, zoals of de bedrijfsnaam en de categorie (bijv. 'restaurant') correct zijn.
+    
+    \item Bruikbaarheid: De mate waarin de dataset voldoet aan de specifieke eisen van de eindgebruiker voor een bepaalde toepassing. 
+    
+\end{itemize}
+
 \subsection{Onderscheid tussen POI en AOI}
-% TODO
 
 Een essentieel onderscheid binnen geospatiale data-analyse is het verschil tussen een Point of Interest (POI) en een Area of Interest (AOI). Een POI representeert een specifieke locatie als een puntgeometrie (meestal wordt dit vastgelegd door coördinaten), zoals de ingang van een gebouw of een object op de kaart. 
 
 Daartegenover is een Area of Interest (AOI) een ruimtelijk gebied dat de aandacht van mensen trekt en wordt weergegeven door een polygonale geometrie. Volgens \textcite{Hu2015} verwijzen (stedelijke) AOI’s naar gebieden binnen een stedelijke omgeving die de interesse van mensen aantrekken, zoals stadsmonumenten, commerciële centra en recreatiezones.
 
-Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaast representeert een AOI een complexere ruimtelijke context, terwijl een POI een individuele entiteit op een specifieke locatie beschrijft.
+Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaast representeert een AOI een complexere ruimtelijke context, terwijl een POI een individuele entiteit op een specifieke locatie beschrijft \autocite{Mai2018}.
 
 \subsection{Levenscyclus van een POI}
 % TODO
@@ -93,17 +109,23 @@ De operationele toestand van een Point-of-Interest is geen statisch gegeven, maa
 Binnen de levenscyclus van een POI worden drie primaire fasen onderscheiden door de status in een specifiek tijdvenster te vergelijken met de voorgaande periode: 
 
 \begin{itemize}
-    \item \textbf{Booming:} De fase waarin een nieuwe POI op de kaart verschijnt of een significante groei in activiteit vertoont.
-    \item \textbf{Stable:} De fase waarin een POI "in leven blijft" en een stabiel patroon van menselijke activiteit en aanwezigheid vertoont over opeenvolgende tijdsperioden.
-    \item \textbf{Decaying:} De fase waarin een POI achteruitgaat of definitief gesloten wordt. Het accuraat voorspellen van deze status is in de praktijk vaak uitdagender dan het detecteren van nieuwe openingen.
+    \item Booming: De fase waarin een nieuwe POI op de kaart verschijnt of een significante groei in activiteit vertoont.
+    \item Stable: De fase waarin een POI "in leven blijft" en een stabiel patroon van menselijke activiteit en aanwezigheid vertoont over opeenvolgende tijdsperioden.
+    \item Decaying: De fase waarin een POI achteruitgaat of definitief gesloten wordt. Het accuraat voorspellen van deze status is in de praktijk vaak uitdagender dan het detecteren van nieuwe openingen.
 \end{itemize}
 
 De transitie tussen deze stadia wordt gedreven door verschillende (omgevings)factoren. \textcite{Lu2020} identificeren drie kernaspecten die de levensvatbaarheid van een POI bepalen: de regionale populariteit die gemeten wordt aan de hand van menselijke mobiliteitspatronen en bezoekersstromen, de behoefte aan specifieke faciliteiten in een buurt (ook wel de regionale vraag genoemd) en de concurrentiepositie ten opzichte van gelijkaardige entiteiten.
 
-\subsection{Toepassingen van POI's}
-%TODO
+\subsection{Toepassingen van POI's in de retail sector}
+Supermarkten worden beschouwd als "sociale ankers" die mensen samenbrengen en bijdragen aan de vitaliteit van een stad \autocite{Chen2026}.
 
-\subsection{}
+Binnen het framework van de 15-minuten stad is het essentieel dat bewoners binnen 15 minuten wandelen of fietsen toegang hebben tot basisvoorzieningen, zoals een supermarkt \autocite{Poliakov2025}. Een onjuiste operationele status in de POI dataset kan in dit geval leiden tot foutieve bereikbaarheidsmodellen. Daarnaast kan dit ook tot gevolg hebben dat mensen die minder mobiel zijn worden uitgesloten.
+
+In sociaal-economisch onderzoek is POI-data een belangrijke bron voor het in kaart brengen van de voedselomgeving. Volgens \textcite{Vandevijvere2023} spreekt van een voedselwoestijn wanneer een buurt een gebrek heeft aan gemakkelijke toegang tot gezonde en betaalbare voeding. Onderzoek naar de (historische) status van supermarkten is hierbij cruciaal om te begrijpen hoe de sluiting van een vestiging gevolgen kan hebben op de gezondheid van een individu.
+
+Voor bedrijven is actuele POI-data cruciaal voor concurrentie analyses en voor het selecteren van een locatie om een nieuwe vestiging te openen. Het monitoren van de openings- en sluitingsdata van concurrenten helpen bij het identificeren van verzadigde en onverzadigde markten \autocite{Hoffman2026}.
+
+In de logistieke sector helpt dynamische statusinformatie de leveringsschema's te optimaliseren en onnodige ritten naar gesloten locaties te vermijden \autocite{Anishma2025a}.
 
 \subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
 
