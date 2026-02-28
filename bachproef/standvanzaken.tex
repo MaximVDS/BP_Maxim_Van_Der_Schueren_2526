@@ -54,10 +54,28 @@ opgebouwd rond de deelvragen die het onderzoek sturen. Elke subsectie geeft een 
 toepassing van het automatisch bepalen of een Point-of-Interest (zoals een supermarkt) open of gesloten is.
 
 \subsection{Wat is een point of interest?}
-Een Point of interest (POI) verwijst naar plaatsen van belang die gedurende de dag vaak bezocht worden door mensen,
-waaronder restaurants, supermarkten, vervoersknooppunten, parken, cafés en toeristische attracties \autocite{Yeow2021}. Volgens \textcite{Psyllidis2022} fungeert een POI in de hedendaagse digitale context als een surrogaat voor een fysieke locatie. 
+Een Point of interest (POI) verwijst naar plaatsen van belang die gedurende de dag vaak bezocht worden door mensen, waaronder restaurants, supermarkten, vervoersknooppunten, parken, cafés en toeristische attracties \autocite{Yeow2021}. Volgens \textcite{Psyllidis2022} fungeert een POI in de hedendaagse digitale context als een surrogaat voor een fysieke locatie. POI-systemen zijn cruciaal voor het verrijken van de gebruikerservaring, het mogelijk maken van gepersonaliseerde interacties en het optimaliseren van besluitvormingsprocessen in het digitale landschap \autocite{Zhang2025}. POI data speelt een cruciale rol in volgende use cases: event planning, aanbevelingen voor reizen, gewilde locaties in de vastgoedsector, optimale route naar een tankstation, een service om een winkel te zoeken en concurrentie analyse. 
 
 Door de toenemende digitalisering is het aantal POI's (Points of Interest) dat in een gebied kan worden weergegeven niet langer beperkt door de fysieke ruimte op een kaart \autocite{Psyllidis2022}. volgens \textcite{Anishma2025b} bestaat Een POI record uit 3 lagen: basisattributen (naam en locatie), rijke attributen (metadata zoals contactgegevens) en dynamische attributen (zoals de operationele status of openingstijden). 
+
+Volgens \textcite{Psyllidis2022} bestaan POI-datasets uit de volgende componenten:
+
+\begin{itemize}
+    \item Basisattributen: De naam van de POI, de geografische coördinaten (meestal lengte- en breedtegraad) en de categorie of het type.
+    
+    \item Metadata: Records bevatten vaak contactgegevens (bijv. website of een telefoonnummer), openingsuren en door gebruikers gegenereerde informatie zoals recensies, gemiddelde beoordelingen, prijsklassen en foto's.
+    
+    \item Typologie en categorisering: POI's worden onderverdeeld in hoofdcategorieën (bijv. gezondheid, eten en drinken, recreatie) en subcategorieën (bijv. restaurant). 
+    
+    \item Geometrie en positionering: Hoewel POI's vaak als punten worden opgeslagen, kunnen ze ook worden weergegeven als een polygoon dat de omtrek van een gebied (Area of interest) voorstelt. Dit is essentieel voor de nauwkeurigheid van toegankelijkheidsinformatie, zoals de ingang van een park of een gebouw.
+    
+    \item Dynamische en temporele attributen: Voor statusdetectie zijn met name de openingsuren en de operationele status van belang. Bovendien kunnen POI-locaties in de loop der tijd veranderen: een bedrijf kan verhuizen, een POI kan sluiten of er kan een nieuwe POI openen.
+\end{itemize}
+
+\subsection{POI data en de problematiek van veroudering}
+De waarde van een POI-dataset wordt voor een groot deel bepaald door de actualiteit. Hiermee wordt de mate waarin de data de huidige realiteit weerspiegelt bedoeld. Omdat steden op regelmatige basis veranderen, ontstaat er vaak een kloof tussen de POI databases en de werkelijkheid. Wanneer een locatie op de kaart niet meer overeenkomt met de fysieke toestand, wordt dit een POI-anomalie genoemd \autocite{Chuang2018}.
+
+Volgens \textcite{Yao2024} geven anomalieën in POI-gegevens onjuiste informatie over de werkelijke wereld en verminderen deze de kwaliteit van webkaarten. Daarnaast geven anomalieën een verouderd geografisch patroon weer, terwijl de sociaaleconomische omstandigheden (waarschijnlijk) zijn veranderd. De analyse van deze gegevens kan daardoor leiden tot onjuiste resultaten.
 
 \subsection{Onderscheid tussen POI en AOI}
 % TODO
@@ -67,7 +85,6 @@ Een essentieel onderscheid binnen geospatiale data-analyse is het verschil tusse
 Daartegenover is een Area of Interest (AOI) een ruimtelijk gebied dat de aandacht van mensen trekt en wordt weergegeven door een polygonale geometrie. Volgens \textcite{Hu2015} verwijzen (stedelijke) AOI’s naar gebieden binnen een stedelijke omgeving die de interesse van mensen aantrekken, zoals stadsmonumenten, commerciële centra en recreatiezones.
 
 Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaast representeert een AOI een complexere ruimtelijke context, terwijl een POI een individuele entiteit op een specifieke locatie beschrijft.
-
 
 \subsection{Levenscyclus van een POI}
 % TODO
@@ -84,7 +101,9 @@ Binnen de levenscyclus van een POI worden drie primaire fasen onderscheiden door
 De transitie tussen deze stadia wordt gedreven door verschillende (omgevings)factoren. \textcite{Lu2020} identificeren drie kernaspecten die de levensvatbaarheid van een POI bepalen: de regionale populariteit die gemeten wordt aan de hand van menselijke mobiliteitspatronen en bezoekersstromen, de behoefte aan specifieke faciliteiten in een buurt (ook wel de regionale vraag genoemd) en de concurrentiepositie ten opzichte van gelijkaardige entiteiten.
 
 \subsection{Toepassingen van POI's}
+%TODO
 
+\subsection{}
 
 \subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
 
