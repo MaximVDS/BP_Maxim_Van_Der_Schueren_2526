@@ -54,14 +54,14 @@ opgebouwd rond de deelvragen die het onderzoek sturen. Elke subsectie geeft een 
 toepassing van het automatisch bepalen of een Point-of-Interest (zoals een supermarkt) open of gesloten is.
 
 \subsection{Wat is een point of interest?}
-Een Point of interest (POI) verwijst naar plaatsen van belang die gedurende de dag vaak bezocht worden door mensen, waaronder restaurants, supermarkten, vervoersknooppunten, parken, cafés en toeristische attracties \autocite{Yeow2021}. Volgens \textcite{Psyllidis2022} fungeert een POI in de hedendaagse digitale context als een surrogaat voor een fysieke locatie. POI-systemen zijn cruciaal voor het verrijken van de gebruikerservaring, het mogelijk maken van gepersonaliseerde interacties en het optimaliseren van besluitvormingsprocessen in het digitale landschap \autocite{Zhang2025}. POI data speelt een cruciale rol in volgende use cases: event planning, aanbevelingen voor reizen, gewilde locaties in de vastgoedsector, optimale route naar een tankstation, een service om een winkel te zoeken en concurrentie analyse. 
+Een Point of interest (POI) verwijst naar een plaats van belang die gedurende de dag vaak bezocht wordt door mensen, waaronder: restaurants, supermarkten, vervoersknooppunten, parken, cafés en toeristische attracties \autocite{Yeow2021}. Volgens \textcite{Psyllidis2022} fungeert een POI in de hedendaagse digitale context als een surrogaat voor een fysieke locatie. POI-systemen zijn cruciaal voor het verrijken van de gebruikerservaring, het mogelijk maken van gepersonaliseerde interacties en het optimaliseren van besluitvormingsprocessen in het digitale landschap \autocite{Zhang2025}. POI data speelt een cruciale rol in volgende use cases: event planning, aanbevelingen voor reizen, gewilde locaties in de vastgoedsector, optimale route naar een tankstation, een service om een winkel te zoeken en concurrentie analyse. 
 
-Door de toenemende digitalisering is het aantal POI's (Points of Interest) dat in een gebied kan worden weergegeven niet langer beperkt door de fysieke ruimte op een kaart \autocite{Psyllidis2022}. volgens \textcite{Anishma2025b} bestaat een POI record uit drie lagen: basisattributen (naam en locatie), rijke attributen (metadata zoals contactgegevens) en dynamische attributen (zoals de operationele status of openingstijden). 
+Door de toenemende digitalisering is het aantal POI's (Points of Interest) dat in een gebied kan worden weergegeven niet langer beperkt door de fysieke ruimte op een kaart \autocite{Psyllidis2022}. Volgens \textcite{Anishma2025b} bestaat een POI record uit drie lagen: basisattributen (naam en locatie), rijke attributen (metadata zoals contactgegevens) en dynamische attributen (zoals de operationele status of openingstijden). 
 
 Volgens \textcite{Psyllidis2022} bestaan POI-datasets uit de volgende componenten:
 
 \begin{itemize}
-    \item Basisattributen: De naam van de POI, de geografische coördinaten (meestal lengte- en breedtegraad) en de categorie of het type.
+    \item Basisattributen: De naam van de POI, de geografische coördinaten (meestal lengte- en breedtegraad) en de categorie.
     
     \item Metadata: Records bevatten vaak contactgegevens (bijv. website of een telefoonnummer), openingsuren en door gebruikers gegenereerde informatie zoals recensies, gemiddelde beoordelingen, prijsklassen en foto's.
     
@@ -69,11 +69,11 @@ Volgens \textcite{Psyllidis2022} bestaan POI-datasets uit de volgende componente
     
     \item Geometrie en positionering: Hoewel POI's vaak als punten worden opgeslagen, kunnen ze ook worden weergegeven als een polygoon dat de omtrek van een gebied (Area of interest) voorstelt. Dit is essentieel voor de nauwkeurigheid van toegankelijkheidsinformatie, zoals de ingang van een park of een gebouw.
     
-    \item Dynamische en temporele attributen: Voor statusdetectie zijn met name de openingsuren en de operationele status van belang. Bovendien kunnen POI-locaties in de loop der tijd veranderen: een bedrijf kan verhuizen, een POI kan sluiten of er kan een nieuwe POI openen.
+    \item Dynamische en temporele attributen: Voor statusdetectie zijn openingsuren en de operationele status van belang. Bovendien kunnen POI locaties in de loop der tijd veranderen: een POI kan verhuizen, kan sluiten of er kan een nieuwe POI openen.
 \end{itemize}
 
 \subsection{POI data en de problematiek van veroudering}
-De waarde van een POI-dataset wordt voor een groot deel bepaald door de actualiteit. Hiermee wordt de mate waarin de data de huidige realiteit weerspiegelt bedoeld. Omdat steden op regelmatige basis veranderen, ontstaat er vaak een kloof tussen de POI databases en de werkelijkheid. Wanneer een locatie op de kaart niet meer overeenkomt met de fysieke toestand, wordt dit een POI-anomalie/veroudering genoemd \autocite{Chuang2018}.
+De waarde van een POI dataset wordt voor een groot deel bepaald door de actualiteit. Hiermee wordt de mate waarin de data de huidige realiteit weerspiegelt bedoeld. Omdat steden op regelmatige basis veranderen, ontstaat er vaak een kloof tussen de POI databases en de werkelijkheid. Wanneer een locatie op de kaart niet meer overeenkomt met de fysieke toestand, wordt dit een POI-anomalie/veroudering genoemd \autocite{Chuang2018}.
 
 Volgens \textcite{Yao2024} geven anomalieën in POI-gegevens onjuiste informatie over de werkelijke wereld en verminderen deze de kwaliteit van webkaarten. Daarnaast geven anomalieën een verouderd geografisch patroon weer, terwijl de sociaaleconomische omstandigheden (waarschijnlijk) zijn veranderd. De analyse van deze gegevens kan daardoor leiden tot onjuiste resultaten.
 
@@ -86,7 +86,7 @@ Volgens \textcite{Yao2024} geven anomalieën in POI-gegevens onjuiste informatie
     
     \item Positionele nauwkeurigheid: De precisie van de geografische coördinaten ten opzichte van de werkelijke locatie.
     
-    \item Temporele kwaliteit: De actualiteit van de gegevens en de nauwkeurigheid van tijdsgebonden details zoals openingsuren van de POI.
+    \item Temporele kwaliteit: De actualiteit van de gegevens en de nauwkeurigheid van tijdsgebonden details, zoals openingsuren van de POI.
     
     \item Thematische nauwkeurigheid: De correctheid van de eigenschappen en labels, zoals of de bedrijfsnaam en de categorie (bijv. 'restaurant') correct zijn.
     
@@ -109,12 +109,12 @@ Naast directe observaties kan de status van een POI worden afgeleid uit de geogr
 % TODO
 De operationele toestand van een Point-of-Interest is geen statisch gegeven, maar een dynamisch proces dat in de literatuur wordt gedefinieerd als de POI-levenscyclus. Volgens \textcite{Lu2020} evolueren POI's mee met de ontwikkeling van functionele zones. Ze ontstaan, groeien, stabiliseren gedurende een bepaalde periode en verdwijnen dan uiteindelijk.
 
-Binnen de levenscyclus van een POI worden drie primaire fasen onderscheiden door de status in een specifiek tijdvenster te vergelijken met de voorgaande periode: 
+Volgens \textcite{Lu2020} bestaan er drie fasen om een POI te vergelijken met de voorgaaande periode:  
 
 \begin{itemize}
     \item Booming: De fase waarin een nieuwe POI op de kaart verschijnt of een significante groei in activiteit vertoont.
     \item Stable: De fase waarin een POI "in leven blijft" en een stabiel patroon van menselijke activiteit en aanwezigheid vertoont over opeenvolgende tijdsperioden.
-    \item Decaying: De fase waarin een POI achteruitgaat of definitief gesloten wordt. Het accuraat voorspellen van deze status is in de praktijk vaak uitdagender dan het detecteren van nieuwe openingen.
+    \item Decaying: De fase waarin een POI achteruitgaat of definitief gesloten wordt. 
 \end{itemize}
 
 De transitie tussen deze stadia wordt gedreven door verschillende (omgevings)factoren. \textcite{Lu2020} identificeren drie kernaspecten die de levensvatbaarheid van een POI bepalen: de regionale populariteit die gemeten wordt aan de hand van menselijke mobiliteitspatronen en bezoekersstromen, de behoefte aan specifieke faciliteiten in een buurt (ook wel de regionale vraag genoemd) en de concurrentiepositie ten opzichte van gelijkaardige entiteiten.
@@ -140,28 +140,28 @@ Het verzamelen van POI data is een complex proces en tevens ook de primaire oorz
 
 \textcite{Anishma2025a} bespreekt diverse methoden die gebruikt worden voor de initiële verzameling van POI gegevens. Zo worden geautomatiseerde methoden zoals Web Scraping gebruikt om grote hoeveelheden gegevens van openbare websites of online gidsen te verzamelen, maar de betrouwbaarheid van deze data is meestal relatief laag. API's stellen software in staat om gegevens rechtstreeks van vertrouwde databanken op te halen. Daarnaast wordt de data aangevuld via Bedrijfsvermeldingen (officiële inzendingen over een bedrijf) en Crowdsourcing (door de gemeenschap gedreven input). Hoewel deze laatste twee methoden realtime informatie kunnen opleveren, vereisen ze strenge moderatie om de nauwkeurigheid te waarborgen. Ten slotte is er Field Collection, dit is een tijdrovende veldmethode waarbij teams het veld worden ingestuurd om locaties handmatig te bevestigen.
 
-Volgens \textcite{Psyllidis2022} onderscheiden we twee hoofdtypen POI bronnen: enerzijds grote technologiebedrijven (waaronder Yelp, Foursquare, Google Places en Facebook) vormen een belangrijke bron van POI-gegevens, waarbij hun intern gecreëerde databanken vaak via API’s worden aangeboden \autocite{Psyllidis2022}. Anderzijds worden open platforms zoals OpenStreetMap (OSM) als gratis en wereldwijd toegankelijke POI-bron gebruikt. Hierbij dient opgemerkt te worden dat een aanzienlijk deel van de data van OSM afkomstig is van bedrijfsmatige bijdragen \autocite{Anderson2019}.
+Volgens \textcite{Psyllidis2022} onderscheiden we twee hoofdtypen POI bronnen. Enerzijds vormen grote technologiebedrijven (waaronder Yelp, Foursquare, Google Places en Facebook) een belangrijke bron van POI-gegevens, waarbij hun intern gecreëerde databanken vaak via API’s worden aangeboden \autocite{Psyllidis2022}. Anderzijds worden open platforms zoals OpenStreetMap (OSM) als gratis en wereldwijd toegankelijke POI-bron gebruikt. Hierbij dient opgemerkt te worden dat een aanzienlijk deel van de data van OSM afkomstig is van bedrijfsmatige bijdragen \autocite{Anderson2019}.
 
 Aanvullend op deze platformen wordt er ook vaker gebruik gemaakt van informatie uit sociale netwerken (platformen waar gebruikers zelf locaties aanmaken en beoordelen). Hoewel deze bronnen een actueler beeld van de werkelijkheid kunnen bieden, bespreken \textcite{Jiang2015} in hun onderzoek de uitdagingen van deze 'Volunteered Geographic Information'. Omdat deze data door gebruikers wordt gegenereerd, is er vaak sprake van een gebrek aan structuur en zijn er meer inconsistenties bij het categoriseren van een POI. Het extractieproces vereist daarom geavanceerde technieken om ruwe tekstuele informatie om te zetten in bruikbare POI attributen.
 
-Naast traditionele bronnen zoals OpenStreetMap spelen geaggregeerde datasets een belangrijkere rol. Een voorbeeld hiervan is de Overture Maps POI dataset, die door \textcite{Ballantyne2024} specifiek is gevalideerd voor de retailsector. Hun onderzoek toont aan dat dergelijke grootschalige open datasets een betrouwbare bron zijn voor onderzoek naar supermarkten, mits er rekening wordt gehouden met de variatie in de kwaliteit van de metadata.
+Naast traditionele bronnen zoals OpenStreetMap, spelen geaggregeerde datasets een belangrijkere rol. Een voorbeeld hiervan is de Overture Maps POI dataset, die door \textcite{Ballantyne2024} specifiek is gevalideerd voor de retailsector. Hun onderzoek toont aan dat dergelijke grootschalige open datasets een betrouwbare bron zijn voor onderzoek naar supermarkten, mits er rekening wordt gehouden met de variatie in de kwaliteit van de metadata.
 
 In de studie van \textcite{Yao2024} wordt een dataset van geanonimiseerde AMAP mobiliteitsdata (één van de grootste webmapping aanbieders van China) gebruikt om de dagelijkse activiteit bij POI’s te meten. Het onderzoek stelt dat een plotselinge daling in voetgangers- of transactionele activiteiten een sluiting aanduidt, omdat deze activiteit normaal gesproken continu is zolang de winkels geopend zijn. In essentie duidt een POI-anomalie dus op een significante afname of verdwijning van de bijbehorende menselijke activiteiten. Ook \textcite{Taylor2022} adviseert het controleren van voetverkeer en transactiegegevens als belangrijke indicator voor de status van een locatie.
 
-Tot slot zijn er Beeld- en sensorbronnen, zoals google street view. Volgens \textcite{Pericolosi2022} gebruikt Google Maps bijvoorbeeld street View beelden en tekstherkenning om na te gaan of op gevels nieuwe bedrijfsnamen of borden verschijnen of deze juist verdwijnen. \textcite{Revaud2019} vergelijken twee sets google street view foto’s van hetzelfde winkelcentrum op verschillende tijdstippen om POI wijzigingen te detecteren met behulp van deep learning. 
+Tot slot zijn er beeld- en sensorbronnen, zoals google street view. Volgens \textcite{Pericolosi2022} gebruikt Google Maps bijvoorbeeld street View beelden en tekstherkenning om na te gaan of op gevels nieuwe bedrijfsnamen of borden verschijnen of deze juist verdwijnen. \textcite{Revaud2019} vergelijken twee sets google street view foto’s van hetzelfde winkelcentrum op verschillende tijdstippen om POI wijzigingen te detecteren met behulp van deep learning. 
 
 Het gebruik van dergelijke gegevensbronnen brengt echter een uitdaging met zich mee: records van dezelfde fysieke locatie kunnen in verschillende datasets variëren in naamgeving, coördinaten of op detailniveau. Volgens \textcite{Sun2023} is het proces van 'POI-conflation' (het samenvoegen van datasets) essentieel om een betrouwbaar beeld van de werkelijkheid te creëren. Dit proces maakt gebruik van matchingalgoritmen die kijken naar de geometrische nabijheid van punten, tekstuele gelijkenis van bedrijfsnamen en overeenkomsten in metadata om inconsistente informatie te filteren en een correcte status aan een POI toe te kennen.
 
 \subsection{Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie?}
 Het toepassen van AI voor POI statusdetectie kent verschillende uitdagingen.  
 
-Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwaliteit van POI-gegevens is een andere belangrijke uitdaging. Omdat gegevens uit meerdere bronnen worden verzameld, kunnen ze vaak gefragmenteerd, inconsistent en verouderd zijn \autocite{Rafaqat2023}. Deze uitdaging wordt versterkt door de dynamiek van de fysieke wereld. \textcite{Fernandes2020} benadrukt dat er nog openstaande uitdagingen zijn met betrekking tot de temporele en historische aspecten van deze data. Veel commerciële POI-data wordt bovendien slechts periodiek (bijvoorbeeld elke drie tot zes maanden) bijgewerkt, wat een aanzienlijke validatieachterstand creëert. Zonder tijdige validatie neemt de betrouwbaarheid van de data snel af.
+Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwaliteit van POI-gegevens is een andere belangrijke uitdaging. Omdat gegevens uit meerdere bronnen worden verzameld, kunnen ze vaak gefragmenteerd, inconsistent en verouderd zijn \autocite{Rafaqat2023}. Deze uitdaging wordt versterkt door de dynamiek van de fysieke wereld. \textcite{Fernandes2020} benadrukken dat er nog openstaande uitdagingen zijn met betrekking tot de temporele en historische aspecten van deze data. Veel commerciële POI-data wordt bovendien slechts periodiek (bijvoorbeeld elke drie tot zes maanden) bijgewerkt, wat een aanzienlijke validatieachterstand creëert. Zonder tijdige validatie neemt de betrouwbaarheid van de data snel af.
 
-Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid: volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren blind voor de semantiek. 
+Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid. Volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren, blind voor de semantiek. 
 
 Ten derde vormt privacy een groeiende uitdaging bij het gebruik van dynamische POI-gegevens. \textcite{Zhang2021} wijzen erop dat het gebruik van IoT data en locatiegebaseerde sociale netwerken (LBSN's) voor statusdetectie en aanbevelingen risico's op privacy onthulling met zich meebrengt.
 
-Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in productie zijn, ondergaan ze onvermijdelijk prestatievermindering dat model drift ofwel data drift wordt genoemd. Deze termen wordt gebruikt als een overkoepelende term die zowel conceptuele- als datadrift omvat en duidt op elke verslechtering van de modelprestaties als gevolg van veranderende datapatronen \autocite{Iyer2025}. Daarnaast kan Geospatial Bias (vooroordelen in de geografische distributie van de trainingsdata) leiden tot ongelijke prestaties, waarbij de nauwkeurigheid van het model lager is in minder bezochte gebieden en gebieden met weinig data \autocite{Raza2025}.
+Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in productie zijn, ondergaan ze onvermijdelijk prestatievermindering. Dit noemt men model drift ofwel data drift. Deze termen wordt gebruikt als een overkoepelende term die zowel conceptuele- als datadrift omvat en duidt op elke verslechtering van de modelprestaties als gevolg van veranderende datapatronen \autocite{Iyer2025}. Daarnaast kan Geospatial Bias (vooroordelen in de geografische distributie van de trainingsdata) leiden tot ongelijke prestaties, waarbij de nauwkeurigheid van het model lager is in minder bezochte gebieden en gebieden met weinig data \autocite{Raza2025}.
 
 \subsection{Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?}
 
@@ -188,7 +188,7 @@ Een andere methode is Computervision (CV) op basis van Remote Sensing of straatb
 \textcite{Revaud2019} bespreken het voordeel en nadeel: 
 \begin{itemize}   
     \item Voordeel: Het model is niet afhankelijk van externe bedrijfsdatabases voor de primaire detectie van de verandering.   
-    \item Nadeel: De vergelijking is zeer complex en moet robuust zijn tegen ruis zoals wisselende belichting, schaduwen, occlusies en grote verschillen in camerastandpunt en schaling. 
+    \item Nadeel: De vergelijking is zeer complex en moet robuust zijn tegen ruis, zoals wisselende belichting, schaduwen, occlusies en grote verschillen in camerastandpunt en schaling. 
 \end{itemize}
 
 \subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
