@@ -146,6 +146,8 @@ Aanvullend op deze platformen wordt er ook vaker gebruik gemaakt van informatie 
 
 Naast traditionele bronnen zoals OpenStreetMap, spelen geaggregeerde datasets een belangrijkere rol. Een voorbeeld hiervan is de Overture Maps POI dataset, die door \textcite{Ballantyne2024} specifiek is gevalideerd voor de retailsector. Hun onderzoek toont aan dat dergelijke grootschalige open datasets een betrouwbare bron zijn voor onderzoek naar supermarkten, mits er rekening wordt gehouden met de variatie in de kwaliteit van de metadata.
 
+Daarnaast kan de kwaliteit van POI bronnen verder worden verhoogd door gebruik te maken van visuele data. In het onderzoek van \textcite{Qing2026} wordt het concept attraction heterogeneity geïntroduceerd. Door POI data te combineren met Street View Imagery kunnen unieke visuele kenmerken van een locatie worden geëxtraheerd. Deze kenmerken zijn onmisbaar voor het accuraat valideren van de openingsstatus van een supermarkt.
+
 In de studie van \textcite{Yao2024} wordt een dataset van geanonimiseerde AMAP mobiliteitsdata (één van de grootste webmapping aanbieders van China) gebruikt om de dagelijkse activiteit bij POI’s te meten. Het onderzoek stelt dat een plotselinge daling in voetgangers- of transactionele activiteiten een sluiting aanduidt, omdat deze activiteit normaal gesproken continu is zolang de winkels geopend zijn. In essentie duidt een POI-anomalie dus op een significante afname of verdwijning van de bijbehorende menselijke activiteiten. Ook \textcite{Taylor2022} adviseert het controleren van voetverkeer en transactiegegevens als belangrijke indicator voor de status van een locatie.
 
 Tot slot zijn er beeld- en sensorbronnen, zoals google street view. Volgens \textcite{Pericolosi2022} gebruikt Google Maps bijvoorbeeld street View beelden en tekstherkenning om na te gaan of op gevels nieuwe bedrijfsnamen of borden verschijnen of deze juist verdwijnen. \textcite{Revaud2019} vergelijken twee sets google street view foto’s van hetzelfde winkelcentrum op verschillende tijdstippen om POI wijzigingen te detecteren met behulp van deep learning. 
@@ -157,9 +159,11 @@ Het toepassen van AI voor POI statusdetectie kent verschillende uitdagingen.
 
 Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwaliteit van POI-gegevens is een andere belangrijke uitdaging. Omdat gegevens uit meerdere bronnen worden verzameld, kunnen ze vaak gefragmenteerd, inconsistent en verouderd zijn \autocite{Rafaqat2023}. Deze uitdaging wordt versterkt door de dynamiek van de fysieke wereld. \textcite{Fernandes2020} benadrukken dat er nog openstaande uitdagingen zijn met betrekking tot de temporele en historische aspecten van deze data. Veel commerciële POI-data wordt bovendien slechts periodiek (bijvoorbeeld elke drie tot zes maanden) bijgewerkt, wat een aanzienlijke validatieachterstand creëert. Zonder tijdige validatie neemt de betrouwbaarheid van de data snel af.
 
-Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid. Volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren, blind voor de semantiek. 
+Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid. Volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren, blind voor de semantiek.
 
-Ten derde vormt privacy een groeiende uitdaging bij het gebruik van dynamische POI-gegevens. \textcite{Zhang2021} wijzen erop dat het gebruik van IoT data en locatiegebaseerde sociale netwerken (LBSN's) voor statusdetectie en aanbevelingen risico's op privacy onthulling met zich meebrengt.
+Ten derde vormt human bias een uitdaging. Volgens \textcite{Luo2023} zijn traditionele analysemethoden, zoals een veldonderzoek, vaak onderworpen aan de vooroordelen van experts bij het toekennen van gewichten aan de POI attributen. Wanneer een individu bepaalt welke kenmerken doorslaggevend zijn, kan dit leiden tot inconsistente of foutieve resultaten bij de statusdetectie. 
+
+Ten vierde vormt privacy een groeiende uitdaging bij het gebruik van dynamische POI-gegevens. \textcite{Zhang2021} wijzen erop dat het gebruik van IoT data en locatiegebaseerde sociale netwerken (LBSN's) voor statusdetectie en aanbevelingen risico's op privacy onthulling met zich meebrengt.
 
 Tot slot hebben we model drift en geospatial bias. Zodra AI-modellen in productie zijn, ondergaan ze onvermijdelijk prestatievermindering. Dit noemt men model drift ofwel data drift. Deze termen wordt gebruikt als een overkoepelende term die zowel conceptuele- als datadrift omvat en duidt op elke verslechtering van de modelprestaties als gevolg van veranderende datapatronen \autocite{Iyer2025}. Daarnaast kan Geospatial Bias (vooroordelen in de geografische distributie van de trainingsdata) leiden tot ongelijke prestaties, waarbij de nauwkeurigheid van het model lager is in minder bezochte gebieden en gebieden met weinig data \autocite{Raza2025}.
 
@@ -189,6 +193,14 @@ Een andere methode is Computervision (CV) op basis van Remote Sensing of straatb
 \begin{itemize}   
     \item Voordeel: Het model is niet afhankelijk van externe bedrijfsdatabases voor de primaire detectie van de verandering.   
     \item Nadeel: De vergelijking is zeer complex en moet robuust zijn tegen ruis, zoals wisselende belichting, schaduwen, occlusies en grote verschillen in camerastandpunt en schaling. 
+\end{itemize}
+
+Volgens \textcite{Luo2023} kunnen machine learning algoritmen, zoals het Kstar algoritme, gebruikt worden om patronen in data te identificeren. Hiervoor kunnen kwantitatieve kenmerken gebruikt worden, zoals de dichtheid van POI types door middel van de Kernel Density Estimation (KDE). Hierbij wordt de inschatting van welke kenmerken het zwaarst doorwegen niet langer bepaald door menselijke inschatting. Hierdoor wordt de betrouwbaarheid van de statusdetectie aanzienlijk beter.
+
+\textcite{Luo2023} bespreken het voordeel en nadeel: 
+\begin{itemize}   
+    \item Voordeel: Deze methode vermijdt human bias doordat het Kstar-algoritme zelf de relaties in de data leert. Door gebruik te maken van KDE is dit veel sneller en minder arbeidsintensief dan een traditioneel veldonderzoek.
+    \item Nadeel: In gebieden met weinig POI data is het moeilijker om een betrouwbare KDE toe te passen, omdat de dichtheid dan te laag is om representatieve patronen te vormen. Daarnaast is de actualiteit van de POI data van cruciaal belang. Als de data verouderd is, zal het model deze fouten overnemen.
 \end{itemize}
 
 \subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
