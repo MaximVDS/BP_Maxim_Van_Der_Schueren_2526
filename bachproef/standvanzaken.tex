@@ -96,13 +96,15 @@ Volgens \textcite{Yao2024} geven anomalieën in POI-gegevens onjuiste informatie
     
 \end{itemize}
 
-\subsection{Onderscheid tussen POI en AOI}
+\subsection{Onderscheid tussen POI, AOI en VOI}
 
 Een essentieel onderscheid binnen geospatiale data-analyse is het verschil tussen een Point of Interest (POI) en een Area of Interest (AOI). Een POI representeert een specifieke locatie als een puntgeometrie (meestal wordt dit vastgelegd door coördinaten), zoals de ingang van een gebouw of een object op de kaart. 
 
 Daartegenover is een Area of Interest (AOI) een ruimtelijk gebied dat de aandacht van mensen trekt en wordt weergegeven door een polygonale geometrie. Volgens \textcite{Hu2015} verwijzen (stedelijke) AOI’s naar gebieden binnen een stedelijke omgeving die de interesse van mensen aantrekken, zoals stadsmonumenten, commerciële centra en recreatiezones.
 
 Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaast representeert een AOI een complexere ruimtelijke context, terwijl een POI een individuele entiteit op een specifieke locatie beschrijft \autocite{Mai2018}.
+
+\textcite{Storymaps2023} introduceert het begrip Volume of Interest (VOI). Waar een AOI beperkt is tot een 2D-oppervlak, beschrijft een VOI de driedimensionale ruimtelijke bezetting van een locatie. Dit is cruciaal in gebouwen, waar bijvoorbeeld een supermarkt zich op de begane grond begeeft met daarboven appartementen. VOI data lossen dubbelzinnigheid op door activiteitssignalen in 3D nauwkeurig aan de juiste functie toe te wijzen.
 
 \subsection{Ruimtelijke Afhankelijkheid en invloed}
 Naast directe observaties kan de status van een POI worden afgeleid uit de geografische invloed die het uitoefent op de omgeving. Volgens \textcite{Wang2018} bezit elke POI een specifieke 'geo-influence' (het vermogen van een POI om bezoekers door te sturen naar andere POI's) en 'geo-susceptibility' (de mate waarin de POI bezoekers van elders aantrekt). Voor de statusdetectie van een supermarkt is dit relevant omdat deze vaak fungeren als ankerpunten met een groot geo-influence. Een plotselinge verandering in hun operationele status heeft daardoor een meetbaar  effect op de bezoekpatronen van geo-susceptibele POI's, zoals een nabijgelegen bakker of krantenwinkel.
@@ -112,11 +114,18 @@ Naast directe observaties kan de status van een POI worden afgeleid uit de geogr
 De invloed van een POI op zijn omgeving kan verder worden uitgediept door de 'visit context'. Volgens \textcite{Pervin2025} kan het gebruik van Contextual Transformers helpen om real time voorkeuren uit gebruikersinteracties te halen. Voor statusdetectie is dit relevant omdat een afwijking in het (verwachte) bezoekersgedrag gekoppeld aan de context van de groep een vroege indicator kan zijn van een wijziging in de operationele status.
 
 \subsection{Levenscyclus van een POI}
-% TODO
 De operationele toestand van een Point-of-Interest is geen statisch gegeven, maar een dynamisch proces dat in de literatuur wordt gedefinieerd als de POI-levenscyclus. Volgens \textcite{Lu2020} evolueren POI's mee met de ontwikkeling van functionele zones. Ze ontstaan, groeien, stabiliseren gedurende een bepaalde periode en verdwijnen dan uiteindelijk.
 
-Volgens \textcite{Lu2020} bestaan er drie fasen om een POI te vergelijken met de voorgaaande periode:  
+Recent onderzoek van \textcite{Qin2023} vult dit aan door een onderscheid te maken in bezoekerspatronen op basis van gebruikersprofielen:
+\begin{itemize}
+    \item De conservatieve bezoeker: Volgt vaste routines en bezoekt regelmatig dezelfde locaties.
+    \item De nieuwsgierige reiziger: Treedt af en toe buiten de comfortzone om nieuwe plekken te ontdekken.
+    \item De toerist: Verkent onbekende gebieden, vaak over langere afstanden binnen een stad.
+\end{itemize}
 
+\textcite{Qin2023} tonen aan dat traditionele aggregatiemethoden effectief zijn voor regelmatige routines, maar tekortschieten bij het voorspellen van gedrag in nieuwe gebieden. Dit is cruciaal voor een robuuste statusdetectie bij supermarkten, aangezien deze vaak door conservatieve bezoekers worden bezocht. Hierbij is een afwijking in deze stabiele stroom een zeer sterke indicator voor een statuswijziging.
+
+Volgens \textcite{Lu2020} bestaan er drie fasen om een POI te vergelijken met de voorgaaande periode:  
 \begin{itemize}
     \item Booming: De fase waarin een nieuwe POI op de kaart verschijnt of een significante groei in activiteit vertoont.
     \item Stable: De fase waarin een POI "in leven blijft" en een stabiel patroon van menselijke activiteit en aanwezigheid vertoont over opeenvolgende tijdsperioden.
@@ -169,6 +178,8 @@ Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwa
 
 Daarnaast wijzen \textcite{Boskovic2026} op het probleem van 'data-inflatie'. Dit gebeurt wanneer een provider zijn registratiemethoden verbetert, waardoor oude locaties plotseling als 'nieuw' in de database verschijnen. Voor een AI-model is het dan lastig om te bepalen of een winkel daadwerkelijk net geopend is, of dat het gewoon om een update van een bestaande vestiging gaat.
 
+Een specifieke uitdaging hierbij is het 'cold-start' probleem voor locaties in onbekende of nieuwe gebieden. Volgens \textcite{Qin2023} schieten traditionele modellen vaak tekort wanneer er geen of weinig historische bezoekgegevens beschikbaar zijn voor een specifieke POI. Hierdoor is het uiterst moeilijk om een betrouwbaar historisch vergelijkingskader (een zogenaamde baseline) vast te stellen voor de operationele status. Zonder deze historische gegevens weet het systeem niet wat het 'normale' bezoekerspatroon voor die specifieke locatie is, waardoor afwijkingen niet accuraat kunnen worden gemeten. Voor statusdetectie betekent dit dat AI-modellen extra moeite hebben om afwijkingen te herkennen bij pas geopende supermarkten, omdat er nog geen stabiel patroon van 'conservatieve' bezoekers is opgebouwd om de huidige activiteit mee te vergelijken.
+
 Ten tweede hebben we ruis en algoritmische dubbelzinnigheid. AI-modellen moeten in staat zijn om een daadwerkelijke statusverandering te onderscheiden van tijdelijke variaties of omgevingsruis in visuele data. Ruisbronnen zoals schaduwen, wisselende lichtomstandigheden, occlusies, of seizoensgebonden winkelindelingen kunnen ten onrechte worden gedetecteerd als permanente verandering \autocite{Revaud2019}. Deze uitdaging leidt tot algoritmische dubbelzinnigheid. Volgens \textcite{Revaud2019} zijn algoritmen die enkel op pixelniveau verandering detecteren, blind voor de semantiek.
 
 Ten derde vormt human bias een uitdaging. Volgens \textcite{Luo2023} zijn traditionele analysemethoden, zoals een veldonderzoek, vaak onderworpen aan de vooroordelen van experts bij het toekennen van gewichten aan de POI attributen. Wanneer een individu bepaalt welke kenmerken doorslaggevend zijn, kan dit leiden tot inconsistente of foutieve resultaten bij de statusdetectie. 
@@ -213,6 +224,24 @@ Volgens \textcite{Luo2023} kunnen machine learning algoritmen, zoals het Kstar a
     \item Nadeel: In gebieden met weinig POI data is het moeilijker om een betrouwbare KDE toe te passen, omdat de dichtheid dan te laag is om representatieve patronen te vormen. Daarnaast is de actualiteit van de POI data van cruciaal belang. Als de data verouderd is, zal het model deze fouten overnemen.
 \end{itemize}
 
+Een recente ontwikkeling in Point of interest analyse is de toepassing van diffusiemodellen, zoals het “Diff-POI” model van \textcite{Qin2023}. In plaats van enkel te kijken naar een gemiddelde van eerdere bezoeken, gebruikt dit systeem een techniek die stapsgewijs berekent hoe het bezoekgedrag van een gebruiker verschuift van het verleden naar de toekomst. Dit gebeurt via een reeks kleine, berekende tussenstappen die patronen in de data blootleggen. Dit is relevant voor statusdetectie omdat het model hierdoor beter begrijpt of een afname in bezoekers simpelweg komt doordat mensen toevallig een nieuwe buurt verkennen (exploratie), of dat er sprake is van een echte afwijking die duidt op de sluiting van een supermarkt.
+
+\textcite{Qin2023} bespreken het voordeel en nadeel: 
+\begin{itemize}   
+    \item Voordeel: Het Diff-POI model is sterk in het voorspellen van het aantal bezoekers bij nieuwe locaties vergeleken met de traditionele methoden. Dit omdat het de verschuiving van historisch gedrag naar toekomstige trends stapsgewijs berekent. Hierdoor kan het patronen herkennen in onregelmatige gegevens en een nauwkeuriger onderscheid maken tussen toevallige variaties in het bezoekpatroon en de daadwerkelijke statuswijzigingen.
+    
+    \item Nadeel: De methode vereist meer rekenkracht en tijd, omdat het veel kleine tussenstappen (sampling steps) moet doorlopen om tot een nauwkeurige voorspelling te komen. Daarnaast is het systeem sterk afhankelijk van zeer gedetailleerde en chronologisch geordende gegevens om de relaties tussen locaties correct in kaart te kunnen brengen.
+\end{itemize}
+
+%TODO: bron zoeken
+Een significante doorbraak in 2026 is de inzet van Vision-Language Models (VLMs) voor temporele en visuele analyse. Frameworks zoals VLM4TS renderen numerieke tijdreeksen als afbeeldingen (grafieken), waarna de VLM visuele patronen herkent op een manier die menselijke interpretatie nabootst.
+
+\textcite{} bespreken het voordeel en nadeel:
+\begin{itemize}
+    \item Voordeel: VLMs bieden een krachtig zero-shot vermogen en kunnen visuele cues (zoals "Te Huur"-borden) via natuurlijke taalinstructies direct koppelen aan de semantische context van een sluiting.
+    \item Nadeel: Deze modellen vereisen aanzienlijke rekenkracht (GPU-resources) en de interpretatie van visuele tekst is soms gevoelig voor taal-specifieke nuances.
+\end{itemize}
+
 \subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
 Om de betrouwbaarheid van geautomatiseerde POI-statuswijzigingen te valideren, wordt in de literatuur nadruk gelegd op het combineren van meerdere bronnen en methoden. \textcite{Taylor2022} adviseert bijvoorbeeld om een voorspelde sluiting of opening te controleren met ondersteunende data: als de AI signalen van sluiting geeft, dan zou men in de voetgangers of transactiegegevens daadwerkelijk een significante afwezigheid moeten zien. Ook kunnen satelliet of lucht foto’s gecontroleerd worden op veranderingen (zoals een verbouwing) die de sluiting bevestigen \autocite{Taylor2022}.
 
@@ -221,5 +250,11 @@ Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerd
 \textcite{Mauro2022} stellen dat ongestructureerde data, zoals reviews van een gebruiker, een belangrijke bron van actuele informatie vormen. Omdat databases niet altijd up-to-date zijn, fungeren deze reviews als een vorm van 'crowdsourced' validatie. Recente recensies bevatten vaak tekstuele aanwijzingen, zoals meldingen over een gesloten deur of een leegstaand pand. Hierdoor kan een statuswijziging bevestigd worden.
 
 Tot slot kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precision of recall van de automatische detectie meten. \textcite{Yao2024} kon bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen voor de gebruikersmelding signaleert, wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
+
+%TODO: bronnen zoeken
+\subsection{Agentic GeoAI}
+Een fundamentele verschuiving in de architectuur van bewakingssystemen is de opkomst van Agentic GeoAI. Waar traditionele GIS-workflows reactief zijn en wachten op menselijke commando's, werken agentic systemen doelgericht aan een missie, zoals het continu monitoren van de status van supermarkten in een specifieke regio.
+
+Deze autonome agents kunnen zelfstandig beslissen om ontbrekende informatie op te vragen wanneer een voorspelling onzeker is. Wanneer een agent bijvoorbeeld een afwijking in transactiedata detecteert maar geen bevestiging vindt in reviews, kan hij automatisch een nieuwe hogere-resolutie satellietfoto bestellen of een gerichte API-call uitvoeren naar live dataservices om de onzekerheid te minimaliseren. Door gebruik te maken van het Model Context Protocol (MCP) kunnen deze agents complexe ruimtelijke operaties aan elkaar koppelen tot meerstaps redeneerflows, waarbij ze zelfstandig navigatie- en data-extractietools aansturen om de database real-time te valideren.
 
 
