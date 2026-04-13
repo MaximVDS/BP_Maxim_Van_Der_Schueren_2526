@@ -224,6 +224,14 @@ Volgens \textcite{Luo2023} kunnen machine learning algoritmen, zoals het Kstar a
     \item Nadeel: In gebieden met weinig POI data is het moeilijker om een betrouwbare KDE toe te passen, omdat de dichtheid dan te laag is om representatieve patronen te vormen. Daarnaast is de actualiteit van de POI data van cruciaal belang. Als de data verouderd is, zal het model deze fouten overnemen.
 \end{itemize}
 
+Daarnaast kan voor de detectie van afwijkingen, Vision Language Models (VLM) gebruikt worden. Uit het onderzoek van \textcite{He2025} blijkt dat deze modellen in plaats van enkel numerieke data te verwerken, patronen in tijdreeksen te analyseren door ze als visuele grafieken te interpreteren. Er bestaan verschillende benaderingen binnen dit domein, variërend van modellen zoals GPT-4o en Gemini 1.5 Pro, tot open-source alternatieven zoals LLaVA en Qwen-VL. Deze modellen maken gebruik van een gecombineerde architectuur waarbij een vision encoder (die beelden verwerkt) wordt gekoppeld aan een large language model (dat de context begrijpt).
+
+\textcite{Singh2025} bespreekt de voordelen en nadelen:
+\begin{itemize}
+    \item Voordeel: Propriëtaire modellen (zoals GPT-4o) bieden de hoogste nauwkeurigheid en kunnen zeer complexe visuele redeneringen uitvoeren, terwijl open-source modellen (zoals LLaVA) het voordeel bieden dat ze lokaal gedraaid kunnen worden. Dit laatste is cruciaal voor gevoelige data en laat toe om de modellen specifiek te finetunen.
+    \item Nadeel: Veel van deze modellen hebben nog steeds last van hallucinaties. Bovendien brengen de krachtigste modellen hoge kosten met zich mee en vereisen ze ook meer rekenkracht.
+\end{itemize}
+
 Een recente ontwikkeling in Point of interest analyse is de toepassing van diffusiemodellen, zoals het “Diff-POI” model van \textcite{Qin2023}. In plaats van enkel te kijken naar een gemiddelde van eerdere bezoeken, gebruikt dit systeem een techniek die stapsgewijs berekent hoe het bezoekgedrag van een gebruiker verschuift van het verleden naar de toekomst. Dit gebeurt via een reeks kleine, berekende tussenstappen die patronen in de data blootleggen. Dit is relevant voor statusdetectie omdat het model hierdoor beter begrijpt of een afname in bezoekers simpelweg komt doordat mensen toevallig een nieuwe buurt verkennen (exploratie), of dat er sprake is van een echte afwijking die duidt op de sluiting van een supermarkt.
 
 \textcite{Qin2023} bespreken het voordeel en nadeel: 
@@ -231,15 +239,6 @@ Een recente ontwikkeling in Point of interest analyse is de toepassing van diffu
     \item Voordeel: Het Diff-POI model is sterk in het voorspellen van het aantal bezoekers bij nieuwe locaties vergeleken met de traditionele methoden. Dit omdat het de verschuiving van historisch gedrag naar toekomstige trends stapsgewijs berekent. Hierdoor kan het patronen herkennen in onregelmatige gegevens en een nauwkeuriger onderscheid maken tussen toevallige variaties in het bezoekpatroon en de daadwerkelijke statuswijzigingen.
     
     \item Nadeel: De methode vereist meer rekenkracht en tijd, omdat het veel kleine tussenstappen (sampling steps) moet doorlopen om tot een nauwkeurige voorspelling te komen. Daarnaast is het systeem sterk afhankelijk van zeer gedetailleerde en chronologisch geordende gegevens om de relaties tussen locaties correct in kaart te kunnen brengen.
-\end{itemize}
-
-%TODO: bron zoeken
-Een significante doorbraak in 2026 is de inzet van Vision-Language Models (VLMs) voor temporele en visuele analyse. Frameworks zoals VLM4TS renderen numerieke tijdreeksen als afbeeldingen (grafieken), waarna de VLM visuele patronen herkent op een manier die menselijke interpretatie nabootst.
-
-\textcite{} bespreken het voordeel en nadeel:
-\begin{itemize}
-    \item Voordeel: VLMs bieden een krachtig zero-shot vermogen en kunnen visuele cues (zoals "Te Huur"-borden) via natuurlijke taalinstructies direct koppelen aan de semantische context van een sluiting.
-    \item Nadeel: Deze modellen vereisen aanzienlijke rekenkracht (GPU-resources) en de interpretatie van visuele tekst is soms gevoelig voor taal-specifieke nuances.
 \end{itemize}
 
 \subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
@@ -251,10 +250,18 @@ Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerd
 
 Tot slot kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precision of recall van de automatische detectie meten. \textcite{Yao2024} kon bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen voor de gebruikersmelding signaleert, wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
 
-%TODO: bronnen zoeken
-\subsection{Agentic GeoAI}
-Een fundamentele verschuiving in de architectuur van bewakingssystemen is de opkomst van Agentic GeoAI. Waar traditionele GIS-workflows reactief zijn en wachten op menselijke commando's, werken agentic systemen doelgericht aan een missie, zoals het continu monitoren van de status van supermarkten in een specifieke regio.
+\subsection{Recente ontwikkelingen in GeoAI en Agentic GIS}
 
-Deze autonome agents kunnen zelfstandig beslissen om ontbrekende informatie op te vragen wanneer een voorspelling onzeker is. Wanneer een agent bijvoorbeeld een afwijking in transactiedata detecteert maar geen bevestiging vindt in reviews, kan hij automatisch een nieuwe hogere-resolutie satellietfoto bestellen of een gerichte API-call uitvoeren naar live dataservices om de onzekerheid te minimaliseren. Door gebruik te maken van het Model Context Protocol (MCP) kunnen deze agents complexe ruimtelijke operaties aan elkaar koppelen tot meerstaps redeneerflows, waarbij ze zelfstandig navigatie- en data-extractietools aansturen om de database real-time te valideren.
+De opkomst van Geospatial Artificial Intelligence (GeoAI) markeert de integratie van geavanceerde machine learning en deep learning technieken met geospatiale data infrastructuren \autocite{Boutayeb2024}. Binnen de retail- en stadsgeografie wordt GeoAI steeds vaker ingezet voor de automatische ophaling van Point of Interest attributen. Volgens \textcite{Mai2025} verschuift de focus bij supermarkten van statische database opslag naar dynamische statusdetectie, waarbij AI-modellen bepalen of een locatie open of gesloten is op basis van real-time datastromen.
+
+De transitie naar Agentic GIS introduceert een nieuwe vorm van intelligentie waarbij Large Language Models fungeren als de cognitieve kern van een systeem. In tegenstelling tot de traditionele GIS-systemen (die fungeren als passieve instrumenten voor menselijke experts), stellen \textcite{Li2025} dat een Agentic GIS zelfstandig workflows kan plannen en uitvoeren om de status van een POI te verifiëren. \textcite{Li2023} bespreken vijf kritieke modules die een gesloten lus van ruimtelijke intelligentie vormen: besluitvorming (het LLM), datacollectie, data-operatie, logging en zelflerend vermogen.
+
+De automatische detectie van de openingsstatus van supermarkten rust op drie recente technologische ontwikkelingen:
+
+\begin{itemize}
+    \item Multimodale GeoAI: Moderne modellen combineren computervisie voor het analyseren van street-view beelden met natuurlijke taalverwerking (NLP) voor het scannen van ongestructureerde online tekst \autocite{Mai2025}. Vision Transformers (ViT) worden hierbij ingezet om tekstuele informatie, zoals openingstijden op fysieke borden, direct uit beelden te extraheren.
+    \item Operationele Kenmerken als Voorspellers: Onderzoek van \textcite{Milias2021} toont aan dat "operation-based features", waaronder bezoekpatronen en specifieke openingstijden, de meest significante variabelen zijn voor het accuraat classificeren en monitoren van stedelijke functies.
+    \item Autonome Agenten en RAG: Door gebruik te maken van Retrieval Augmented Generation (RAG) kunnen AI-agenten feitelijke informatie uit externe kennisbronnen koppelen aan actuele waarnemingen om hallucinaties te voorkomen en een betrouwbare status-update te geven \autocite{Boutayeb2024}.
+\end{itemize}
 
 
