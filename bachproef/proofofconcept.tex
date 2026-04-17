@@ -1,4 +1,70 @@
 \chapter{\IfLanguageName{dutch}{Proof of concept}{Proof of concept}}%
 \label{ch:proof-of-concept}
 
+Dit hoofdstuk beschrijft de ontwikkeling en evaluatie van de proof-of-concept. Hierbij werden drie machine learning modellen getraind en vergeleken om de 
+operationele status van supermarkten te voorspellen.q
+
+\section{Dataset en voorbereiding}
+
+De gebruikte dataset bestaat uit Point of interest gegevens van supermarkten in België, Nederland, Frankrijk en Duitsland. Deze data is ter beschikking gesteld foor Accurat BV. Elk record bevat een 
+
+historische statussequentie, openingsuren, geografische coördinaten en een huidige operationele status en de historie.  De grondwaarheid werd gevalideerd via een steekproef van gesloten POI's, gekruisvalideerd met Google Places.
+
+\subsection{Data analyse}
 %TODO
+
+\subsection{Feature Engineering}
+%TODO
+Op basis van de beschikbare velden werden de volgende features afgeleid:
+
+\begin{itemize}
+    \item \textbf{Temporele features:} het aantal dagen sinds de laatste statuswijziging, het aantal statuswijzigingen in de historiek en het gedetecteerde sequentiepatroon (bijv. \texttt{active → unknown → closed}).
+    
+    \item \textbf{Metadata-kwaliteitsfeatures:} de volledigheidscore van de openingsuren (uitgedrukt als het aantal ingevulde dagen op zeven) en de afwijking ten opzichte van het gemiddelde van de keten.
+    
+    \item \textbf{Ruimtelijke features:} de concurrentiedichtheid binnen een straal van 500 meter en 1000 meter, berekend via Kernel Density Estimation op de eigen dataset, en de afstand tot het dichtstbijzijnde stadscentrum.
+    
+    \item \textbf{Contextuele features:} het land van de vestiging (BE, NL, FR, DE) en of de supermarkt deel uitmaakt van een keten.
+\end{itemize}
+
+\subsection{Train- en testopsplitsing}
+
+Om datalekkage te vermijden, werd een temporele train/test-splitsing toegepast. Records waarvan de statuswijziging plaatsvond vóór 1 januari 2024 werden gebruikt als trainingsset; records na deze datum vormden de testset. Deze aanpak sluit aan bij de aanbevelingen van \textcite{Yao2024}, die erop wijzen dat een willekeurige splitsing bij tijdreeksdata leidt tot een overschatting van de modelprestaties.
+
+\subsection{Hyper parametertuning}
+%TODO
+
+\section{Modellen}
+
+Er werden drie modellen getraind en met elkaar vergeleken, gekozen op basis van een bewuste complexiteitsgradiënt van interpreteerbaar naar performant.
+
+\subsection{Logistische Regressie}
+Logistische regressie werd ingezet als interpreteerbare baseline. Dit model laat toe om de bijdrage van elke individuele feature rechtstreeks af te lezen uit de coëfficiënten, wat aansluit bij de interpreteerbaarheids vereisten die \textcite{DSilva2018} formuleren voor statusdetectiemodellen.
+
+\subsection{Random Forest}
+Het Random Forest-model werd gekozen omwille van zijn robuustheid tegen ruis en ontbrekende waarden, wat relevant is gezien de vastgestelde label noise in de dataset. Een bijkomend voordeel is de ingebouwde feature importance ranking, die een rechtstreeks antwoord biedt op de deelvraag welke kenmerken het sterkst bijdragen aan de statusdetectie.
+
+\subsection{XGBoost}
+XGBoost werd toegevoegd als state-of-the-art gradient boosting methode. Dit model ondersteunt sample weights, wat werd benut om API-gelabelde records zwaarder te laten doorwegen dan HTML-gelabelde records tijdens het trainen.
+
+\section{Evaluatie}
+
+De modellen werden geëvalueerd op basis van precision, recall en F1-score, waarbij de nadruk lag op recall voor de klasse \texttt{closed}. Een hoge recall is in deze context prioritair: het missen van een daadwerkelijke sluiting heeft grotere gevolgen dan een valse positief \autocite{Taylor2022}.
+
+% TODO: resultaten invullen na uitvoering
+\begin{table}[h]
+    \centering
+    \begin{tabular}{lccc}
+        \toprule
+        \textbf{Model} & \textbf{Precision} & \textbf{Recall} & 
+        \textbf{F1-score} \\
+        \midrule
+        Logistische Regressie & - & - & - \\
+        Random Forest         & - & - & - \\
+        XGBoost               & - & - & - \\
+        \bottomrule
+    \end{tabular}
+    \caption[Vergelijking van modelprestaties]{\label{tab:modellen}
+        Vergelijking van de drie modellen op basis van precision, recall 
+        en F1-score op de testset.}
+\end{table}
