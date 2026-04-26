@@ -5,7 +5,7 @@
 \chapter{Conclusie}%
 \label{ch:conclusie}
 
-% TODO: Trek een duidelijke conclusie, in de vorm van een antwoord op de
+% Trek een duidelijke conclusie, in de vorm van een antwoord op de
 % onderzoeksvra(a)g(en). Wat was jouw bijdrage aan het onderzoeksdomein en
 % hoe biedt dit meerwaarde aan het vakgebied/doelgroep? 
 % Reflecteer kritisch over het resultaat. In Engelse teksten wordt deze sectie
@@ -14,5 +14,98 @@
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
 
-%TODO
+%TODO: aanvullen en nakijken
+Dit onderzoek vertrok vanuit een alledaags maar fundamenteel probleem: 
+de discrepantie tussen de werkelijke operationele status van een supermarkt 
+en de weergave ervan in digitale POI-databanken. De centrale onderzoeksvraag 
+luidde: \textit{"Hoe kan artificiële intelligentie worden ingezet om automatisch 
+    de (historische) open of gesloten status van Points-of-Interest te detecteren, 
+    en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde 
+    toepassingen?"}. In dit hoofdstuk worden de bevindingen per deelvraag 
+samengevat, gevolgd door een algemene conclusie en aanbevelingen voor 
+toekomstig onderzoek.
+
+\section{Antwoord op de deelvragen}
+
+\subsection{Welke gegevensbronnen kunnen worden gebruikt?}
+
+Zoals besproken in Hoofdstuk~\ref{ch:stand-van-zaken} vereist een robuuste 
+aanpak een combinatie van complementaire bronnen: structurele POI-attributen 
+als feitelijke basis, dynamische mobiliteitsbronnen voor vroegtijdige 
+signaaldetectie, straatbeeldbronnen voor visuele verificatie en crowd-sourced 
+platformen als aanvullende annotatie. In de proof-of-concept werd gewerkt 
+met de interne POI-databank van Accurat, aangevuld met historische 
+statusregistraties en gestructureerde openingstijden. Het ontbreken van 
+voetgangers- of transactiegegevens bleef een structurele beperking van 
+de huidige feature-set.
+
+\subsection{Wat zijn de uitdagingen bij de implementatie van AI?}
+
+De voornaamste uitdagingen, uitvoerig besproken in 
+Hoofdstuk~\ref{ch:stand-van-zaken}, komen ook in de praktijk duidelijk 
+naar voren. De datakwaliteit en -actualiteit vormen de meest fundamentele 
+hindernis: records zijn frequent gefragmenteerd, inconsistent of verouderd. 
+Data-inflatie bemoeilijkt het labelproces en verhoogt de kans op foutieve 
+trainingsdata. Het cold-start probleem maakt nauwkeurige classificatie 
+van jonge vestigingen structureel moeilijker, omdat gedragsfeatures zoals 
+de \texttt{inactiviteit\_ratio} voor nieuwe POI's onbetrouwbaar zijn. 
+Ten slotte vormt geospatiale bias een reëel risico: de dataset is sterk 
+geconcentreerd op Franse supermarktketens, wat de generaliseerbaarheid 
+naar kleinere regio's beperkt.
+
+\subsection{Welke AI-technieken zijn geschikt?}
+
+Op basis van de literatuurstudie en de proof-of-concept kan worden gesteld 
+dat supervised classificatiemodellen een praktisch inzetbare aanpak vormen. 
+In tegenstelling tot time series-benaderingen en computervision-methoden 
+zijn tabellaire classificatiemodellen direct toepasbaar op intern beschikbare 
+POI-data, zonder nood aan externe dynamische bronnen. De vergelijkende 
+evaluatie van Logistische Regressie, Random Forest en XGBoost toont aan 
+dat [TODO: kernbevinding op basis van de resultaten, bv. 
+\textit{``ensemble-methoden significant beter presteren dan het lineaire 
+    basismodel''}]. De feature-importantieanalyse bevestigt dat historisch 
+gedragsmatige kenmerken — en niet uitsluitend temporele attributen — 
+de sterkste predictoren zijn voor de gesloten klasse.
+
+\subsection{Hoe kan de betrouwbaarheid worden gevalideerd?}
+
+De betrouwbaarheidsvalidatie vereist een meerlagige aanpak. Op modelmatig 
+niveau werden precision, recall en F1-score voor de klasse \textit{gesloten} 
+als primaire evaluatiecriteria gehanteerd, zoals toegelicht in 
+Hoofdstuk~\ref{ch:proof-of-concept}. Een ideale validatie maakt gebruik 
+van een onafhankelijke ground truth-dataset, die in dit onderzoek 
+ontbrak. Voor productieomgevingen is een continue monitoringlaag 
+aangewezen die modeldrift detecteert en periodieke hertraining initieert.
+
+\section{Algemene conclusie}
+
+Deze bachelorproef toont aan dat het automatisch detecteren van de 
+operationele status van supermarkten via supervised machine learning 
+technisch haalbaar is op basis van intern beschikbare POI-data. De 
+ontwikkelde proof-of-concept levert een werkend classificatiesysteem 
+dat de status van een POI met [TODO: accuracy X\%] kan voorspellen.
+
+Tegelijkertijd maakt dit onderzoek duidelijk dat de kwaliteit van de 
+onderliggende data bepalend is voor de prestaties van elk 
+statusdetectiesysteem. Zolang historische registraties onvolledig zijn, 
+data-inflatie optreedt en dynamische mobiliteitsdata ontbreken, blijft 
+de detectiecapaciteit structureel beperkt. De POI-levenscyclus — van 
+\textit{booming} over \textit{stable} tot \textit{decaying} — kan worden 
+weerspiegeld in gedragsfeatures, maar vereist een rijkere en continue 
+datastroom om volledig te worden gevat.
+
+\section{Aanbevelingen voor toekomstig onderzoek}
+
+Op basis van de bevindingen worden vier concrete aanbevelingen geformuleerd. 
+Ten eerste verdient de integratie van dynamische mobiliteitsbronnen 
+prioriteit, aangezien voetgangers- of transactiedata de vroegste 
+signalen van een statuswijziging bevatten. Ten tweede biedt de toepassing 
+van deep learning-architecturen zoals LSTM-netwerken perspectief voor 
+het verwerken van temporele statussequenties. Ten derde dient geospatiale 
+bias in vervolgonderzoek expliciet te worden geadresseerd door 
+steekproefstratificatie op land- en merkniveau toe te passen. Ten slotte 
+vormt de evolutie van een statisch batchmodel naar een continu, 
+zelflerend systeem — waarbij het model proactief statuswijzigingen 
+detecteert en valideert — de meest waardevolle langetermijnrichting 
+voor dit onderzoeksdomein.
 

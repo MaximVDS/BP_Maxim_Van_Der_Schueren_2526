@@ -2,7 +2,7 @@
 %% Samenvatting
 %%=============================================================================
 
-% TODO: De "abstract" of samenvatting is een kernachtige (~ 1 blz. voor een
+% De "abstract" of samenvatting is een kernachtige (~ 1 blz. voor een
 % thesis) synthese van het document.
 %
 % Een goede abstract biedt een kernachtig antwoord op volgende vragen:
@@ -27,22 +27,70 @@
 
 %%---------- Nederlandse samenvatting -----------------------------------------
 %
-% TODO: Als je je bachelorproef in het Engels schrijft, moet je eerst een
+% Als je je bachelorproef in het Engels schrijft, moet je eerst een
 % Nederlandse samenvatting invoegen. Haal daarvoor onderstaande code uit
 % commentaar.
 % Wie zijn bachelorproef in het Nederlands schrijft, kan dit negeren, de inhoud
 % wordt niet in het document ingevoegd.
 
-\IfLanguageName{english}{%
-\selectlanguage{dutch}
-\chapter*{Samenvatting}
-\lipsum[1-4]
-\selectlanguage{english}
-}{}
+%\IfLanguageName{english}{%
+%\selectlanguage{dutch}
+%\chapter*{Samenvatting}
+%\lipsum[1-4]
+%\selectlanguage{english}
+%}{}
 
 %%---------- Samenvatting -----------------------------------------------------
 % De samenvatting in de hoofdtaal van het document
 
+%TODO: aanvullen en nakijken
 \chapter*{\IfLanguageName{dutch}{Samenvatting}{Abstract}}
 
-%TODO
+% TODO: pas de concrete cijfers en modelresultaten aan 
+% zodra de definitieve evaluatie beschikbaar is.
+POI-databanken (Points-of-Interest) vormen de ruggengraat van 
+locatiegebaseerde analyses zoals marktstudies, bezoekersstroomonderzoek 
+en concurrentie-inzicht. Een veelvoorkomend probleem is echter dat de 
+operationele status van POI's — of een locatie open dan wel gesloten is — 
+frequent verouderd of onvolledig is in deze databanken. Dit leidt tot 
+foutieve beslissingen en ondermijnt de betrouwbaarheid van 
+locatiegebaseerde toepassingen. Huidige monitoringmethoden zijn 
+grotendeels handmatig, wat resulteert in een aanzienlijke vertraging 
+tussen de werkelijke toestand van een POI en de registratie ervan.
+
+Deze bachelorproef onderzoekt hoe artificiële intelligentie kan worden 
+ingezet om automatisch de (historische) open of gesloten status van 
+POI's te detecteren, met supermarkten als specifiek toepassingsdomein. 
+Hiervoor werd een proof-of-concept ontwikkeld op basis van de interne 
+POI-databank van Accurat, aangevuld met historische statusregistraties 
+en gestructureerde openingstijden voor België, Nederland, Luxemburg 
+en Frankrijk.
+
+De methodologie omvat een uitgebreide feature engineering fase waarin 
+temporele, structurele en historisch gedragsmatige kenmerken werden 
+geconstrueerd, waaronder de \texttt{inactiviteit\_ratio} en de 
+\texttt{poi\_leeftijd\_maanden}. Drie machine learning modellen werden 
+getraind en met elkaar vergeleken: Logistische Regressie als 
+referentiemodel, Random Forest en XGBoost. De modellen werden 
+geëvalueerd op basis van accuracy, precision, recall en F1-score, 
+waarbij de detectie van gesloten vestigingen als primaire 
+evaluatiedoelstelling werd gehanteerd.
+
+% TODO: vervang onderstaande zin door de definitieve bevinding 
+% op basis van de modelresultaten.
+De resultaten tonen aan dat [TODO: bv. \textit{ensemble-methoden 
+    zoals XGBoost het sterkst presteren met een F1-score van X\% voor 
+    de gesloten klasse}], wat bevestigt dat supervised classificatie 
+een praktisch inzetbare aanpak vormt voor POI-statusdetectie op 
+basis van intern beschikbare structurele data. Tegelijkertijd 
+worden de grenzen van deze aanpak blootgelegd: het ontbreken van 
+dynamische mobiliteitsbronnen, geospatiale bias ten gevolge van de 
+onevenwichtige geografische dataverdeling en het cold-start probleem 
+voor jonge vestigingen blijven structurele uitdagingen.
+
+Dit onderzoek levert een werkend prototype op, aangevuld met een 
+vergelijkende evaluatie van de gebruikte modellen en concrete 
+aanbevelingen voor vervolgonderzoek. Voor organisaties zoals Accurat 
+biedt het een waardevol kader voor het automatisch up-to-date houden 
+van POI-data, wat de kwaliteit van locatiegebaseerde analyses 
+ten goede komt.

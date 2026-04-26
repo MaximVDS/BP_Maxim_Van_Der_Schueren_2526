@@ -6,27 +6,12 @@ Dit hoofdstuk beschrijft de ontwikkeling van de proof-of-concept (POC) voor het 
 \section{Databronnen en datastructuur}
 \subsection{Geografische afbakening}
 
-Een eerste belangrijke beslissing betreft de geografische scope van de dataset. De interne POI-databank van Accurat bevat records voor meerdere Europese landen. Voor de ontwikkeling van deze POC werd gekozen om vier coherente landen te gebruiken: België, Nederland, Luxemburg en Frankrijk. Deze vormen een regio waarin vergelijkbare supermarktketens actief zijn, wat de vergelijkbaarheid van de geleerde patronen ten goede komt. 
-
-%Voor de ontwikkeling van deze POC werd echter bewust besloten om Duitsland uit te sluiten uit de analyse. De reden hiervoor is van datastructurele aard: bepaalde Duitse supermarktketens, waaronder Aldi Süd, zijn vertegenwoordigd met honderdduizenden records. Omdat de historische statusregistraties en openingsuren van één filiaal over meerdere rijen verdeeld zijn, zou een steekproef op rijniveau de integriteit van de volledige POI-geschiedenis per filiaal schenden. Features zoals \texttt{inactiviteit\_ratio} en \texttt{historisch\_inactief\_count} zijn immers afhankelijk van de \textit{volledige} historische reeks per \texttt{poi\_id}; een abrupte afkapping zou deze features corrupt maken en de modelprestaties systematisch vertekenen. Een steekproef op het niveau van de \texttt{poi\_id} (waarbij alle records van geselecteerde filialen integraal worden meegenomen) biedt weliswaar een methodologisch correctere oplossing, maar voegt complexiteit toe die buiten de scope van deze bachelorproef valt.
+Een eerste belangrijke beslissing is het beslissen van de geografische scope van de dataset. De interne POI-databank van Accurat bevat records voor meerdere Europese landen. Voor de ontwikkeling van deze POC werd gekozen om vier coherente landen te gebruiken: België, Nederland, Luxemburg en Frankrijk. Deze vormen een regio waarin vergelijkbare supermarktketens actief zijn, wat de vergelijkbaarheid van de geleerde patronen ten goede komt. 
 
 %TODO: eventueel nog iets aan toe voegen?
 \subsection{Basisinformatie van de data}
 
-De volledige POI-dataset die door de opdrachtgever ter beschikking werd gesteld, bevat in totaal 1.337.281 POI-records voor België, Nederland, Luxemburg en Frankrijk. De dataset bestaat uit kolommen zoals: de naam, het adres, de geografische coördinaten, openingsuren, de operationele status, is\_deletes, metadata over de bron en timestamps van aanmaak en wijziging van de Point of interest.
-
-%TODO: is dit nuttig?
-\subsection{Trainingsdata}
-
-%Voor de ontwikkeling van de POC werd een geëxporteerde CSV-dataset gebruikt die de samenvoeging vormt van drie onderliggende tabellen uit de database:
-
-%\begin{itemize}
-%    \item \textbf{Poi\_history}: historische registraties van de open- of geslotenstatus van een POI, met daarin de velden \texttt{is\_active}, \texttt{status\_start} en \texttt{status\_end}.
-    
- %   \item \textbf{POI basisinfo}: basisattributen per locatie, zoals naam, adres, categorie, id gelinkt aan de brand, .
-    
-  %  \item \textbf{Openingsuren}: de verwachte openingstijden per dag van de week (\texttt{day\_of\_week}), met daarin de velden \texttt{opening\_start}, \texttt{opening\_stop}, \texttt{pause\_start}, \texttt{pause\_stop} en of de POI gesloten is \texttt{closed}. De pauze start en pauze stop zijn geen verplichte velden, aangezien dat niet elke POI een pauze inlast doorheen de dag.
-%\end{itemize}
+De volledige POI-dataset die door de opdrachtgever ter beschikking werd gesteld, bevat in totaal 1.337.281 POI-records voor België, Nederland, Luxemburg en Frankrijk. De dataset bestaat uit kolommen zoals: de naam van het bedrijf, het adres, de geografische coördinaten, openingsuren, de operationele status, is\_deletes, metadata over de bron en timestamps van aanmaak en wijziging van de Point of interest.
 
 \section{Data-analyse}
 
@@ -79,12 +64,7 @@ De sluitingsratio verschilt eveneens per land. Luxemburg kent de hoogste sluitin
 \end{figure}
 
 \section{Feature Engineering}
-%TODO
-Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken 
-geconstrueerd die relevant zijn voor de statusdetectie. De features werden 
-afgeleid uit de beschikbare tijdstempels, openingstijden en historische 
-statusregistraties. Tabel~\ref{tab:features} geeft een overzicht van alle 
-gebruikte features, samen met hun herkomst en semantische betekenis.
+Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken geconstrueerd die relevant zijn voor de statusdetectie. De features werden afgeleid uit de beschikbare timestamps, openingstijden en historische statusregistraties. Tabel~\ref{tab:features} geeft een overzicht van alle gebruikte features en de betekenis.
 
 \begin{table}[h]
     \centering
@@ -93,12 +73,11 @@ gebruikte features, samen met hun herkomst en semantische betekenis.
         \toprule
         \textbf{Feature} & \textbf{Type} & \textbf{Beschrijving} \\
         \midrule
-        \texttt{maand} & Temporeel & Kalendermaand van de statusregistratie (1–12) \\
-        \texttt{day\_of\_week} & Temporeel & Dag van de week (0 = maandag, 6 = zondag) \\
+        \texttt{day\_of\_week} & Temporeel & Dag van de week (1 = maandag, 7 = zondag) \\
         \texttt{is\_weekend} & Temporeel & Binaire vlag: 1 indien zaterdag of zondag \\
-        \texttt{is\_feestdag} & Temporeel & Binaire vlag: 1 indien een feestdag geregistreerd \\
-        \texttt{start\_min} & Openingsuren & Openingsuur omgezet naar minuten \\
-        \texttt{stop\_min} & Openingsuren & Sluitingsuur omgezet naar minuten \\
+        \texttt{heeft\_openingsuren} & Openingsuren & Binaire vlag: 1 indien start- én sluitingsuur beschikbaar zijn \\
+        \texttt{start\_min} & Openingsuren & Openingsuur omgezet naar minuten (NaN indien niet beschikbaar) \\
+        \texttt{stop\_min}  & Openingsuren & Sluitingsuur omgezet naar minuten (NaN indien niet beschikbaar) \\
         \texttt{verwachte\_openingsduur\_min} & Openingsuren & Verwacht aantal minuten dat de winkel open is \\
         \texttt{closed} & Openingsuren & Binaire vlag uit de openingsuren-tabel \\
         \texttt{ok} & Kwaliteitsvlag & Kwaliteitsvlag van het openingsurenrecord \\
@@ -108,11 +87,10 @@ gebruikte features, samen met hun herkomst en semantische betekenis.
         \texttt{cluster} & POI-metadata & Clusteridentificatie van de POI \\
         \texttt{brand\_id\_enc} & POI-metadata & Label-encoded merknummer \\
         \texttt{country\_enc} & POI-metadata & Label-encoded landcode \\
-        \texttt{visit} & Gebruikstype & Numerieke classificatie van het bezoektype \\
+        \texttt{visit} & Gebruikstype & Numerieke classificatie van het bezoektype \\ 
         \texttt{work} & Gebruikstype & Numerieke classificatie van het werktype \\
-        \texttt{historisch\_inactief\_count} & Historisch gedrag & Cumulatief aantal inactieve registraties per POI \\
-        \texttt{inactiviteit\_ratio} & Historisch gedrag & Verhouding inactieve registraties t.o.v.\ het totaal \\
         \texttt{poi\_leeftijd\_maanden} & Historisch gedrag & Leeftijd van de POI in maanden sinds eerste record \\
+        \texttt{n\_observaties\_poi} & Historisch gedrag & Totaal aantal geregistreerde observaties per POI \\
         \bottomrule
     \end{tabular}
     \caption[Overzicht van gebruikte features]{%
@@ -121,80 +99,66 @@ gebruikte features, samen met hun herkomst en semantische betekenis.
         de historische gedragsfeatures zijn berekend via een groepering per \texttt{poi\_id}.}
 \end{table}
 
-% TODO: pas de feature-lijst aan indien de definitieve dataset extra features oplevert of
-% indien features worden weggelaten na verdere analyse (bv. na een permutation importance analyse).
+% TODO: nalezen
 
-Drie van de features verdienen bijzondere aandacht vanwege hun semantische relevantie 
-voor POI-statusdetectie. Ten eerste is de \texttt{inactiviteit\_ratio} een gedragsmatige 
-indicator die de verhouding weergeeft van het aantal inactieve statusregistraties ten 
-opzichte van het totale aantal registraties per POI. Een hoge ratio kan duiden op een 
-locatie die zich in de \textit{decaying}-fase van de POI-levenscyclus bevindt, zoals 
-besproken in de literatuurstudie. Ten tweede geeft \texttt{historisch\_inactief\_count} 
-de cumulatieve teller van inactiviteiten per POI weer, berekend op basis van de 
-tijdsgeordende statusgeschiedenis. Ten derde weerspiegelt \texttt{poi\_leeftijd\_maanden} 
-de periode tussen het eerste geregistreerde record van een POI en het huidige 
-observatiemoment, uitgedrukt in maanden. Deze feature is relevant omdat jonge POI's, 
-die nog geen stabiel bezoekpatroon hebben opgebouwd, gevoeliger zijn voor het 
-cold-start probleem dat in de literatuurstudie werd besproken.
+Drie van de features verdienen bijzondere aandacht vanwege hun semantische 
+relevantie voor POI-statusdetectie. Ten eerste geeft \texttt{n\_observaties\_poi} 
+het totaal aantal geregistreerde observaties per POI weer, wat een indicatie 
+geeft van de datadichtheid per vestiging. Ten tweede weerspiegelt 
+\texttt{poi\_leeftijd\_maanden} de periode tussen het eerste geregistreerde 
+record van een POI en het huidige observatiemoment, uitgedrukt in maanden. 
+Deze feature is relevant omdat jonge POI's, die nog geen stabiel bezoekpatroon 
+hebben opgebouwd, gevoeliger zijn voor het cold-start probleem dat in de 
+literatuurstudie werd besproken. Ten derde is \texttt{brand\_id\_enc} een 
+label-encoded versie van de merknaam, die toelaat om merkspecifieke patronen 
+te capteren.
 
-De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden omgezet 
-naar numerieke waarden via Label Encoding alvorens ze als feature aan het model aan 
-te bieden. Hoewel Label Encoding een ordinale relatie impliceert die niet noodzakelijk 
-aanwezig is tussen merken of landen, werd voor deze aanpak gekozen omwille van de 
-schaalbaarheid en de compatibiliteit met de gebruikte modelarchitecturen.
+Daarnaast werd een binaire feature \texttt{heeft\_openingsuren} geconstrueerd 
+die aangeeft of voor een gegeven observatie zowel een start- als een 
+sluitingsuur beschikbaar zijn. Wanneer openingsuren ontbreken, werd dit 
+geïnterpreteerd als een inhoudelijk signaal: een POI zonder geregistreerde 
+openingsuren kan duiden op een permanente sluiting, aangezien actieve 
+vestigingen doorgaans over gestructureerde openingstijden beschikken. 
+De numerieke features \texttt{start\_min} en \texttt{stop\_min} worden 
+bij ontbrekende waarden niet ingevuld met een defaultwaarde, maar als 
+\texttt{NaN} doorgegeven aan het model, dat deze via mediaan-imputatie 
+opvult tijdens de voorbewerkingsfase.
 
-%TODO
+De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden 
+omgezet naar numerieke waarden via Label Encoding alvorens ze als feature 
+aan het model aan te bieden. Hoewel Label Encoding een ordinale relatie 
+impliceert die niet noodzakelijk aanwezig is tussen merken of landen, werd 
+voor deze aanpak gekozen omwille van de schaalbaarheid en de compatibiliteit 
+met de gebruikte modelarchitecturen.
+
+%TODO: nakijken
 \subsection{Train- en testopsplitsing}
+De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) 
+via een \textbf{gestratificeerde splitsing} met een vaste willekeurige seed 
+van 42. Initieel werd een temporele splitsing toegepast op basis van de kolom 
+\texttt{updated\_at\_history}, waarbij alle observaties vóór het 80ste 
+percentiel van de tijdsas aan de trainingsset werden toegewezen. Deze aanpak 
+introduceerde echter een systematische bias in de klasseverdeling: de testset 
+bevatte 88\% open POI's tegenover 72\% in de trainingsset, wat de 
+modelevaluatie onbetrouwbaar maakt. Daarom werd overgeschakeld naar een 
+gestratificeerde splitsing die de klasseverdeling van 74,67\% open en 
+25,33\% gesloten bewaart in zowel de train- als de testset, wat resulteert 
+in 1.069.823 trainingsrecords en 267.456 testrecords.
 
-De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) via 
-gestratificeerde steekproeftrekking (\textit{stratified train-test split}), waarbij de 
-doelvariabele \texttt{is\_active} als stratificatiefactor werd gebruikt. Dit garandeert 
-dat de klasseverdeling in beide deelsets identiek is aan die van de volledige dataset. 
-Na de splitsing resulteerde dit in een trainingsset van 35.507 records en een testset 
-van 8.877 records. Een vaste willekeurige zaad (\texttt{RANDOM\_SEED = 42}) werd 
-ingesteld om de reproduceerbaarheid van de resultaten te waarborgen.
-
-\subsection{Hyper parametertuning}
-%TODO
-
-%TODO
 \section{Modellen}
 
-In lijn met de in de literatuurstudie besproken classificatiebenaderingen werden drie 
-machine learning modellen geïmplementeerd en met elkaar vergeleken: Logistische Regressie, 
-Random Forest en XGBoost. Deze selectie laat toe om een spectrum te evalueren van een 
-eenvoudig lineair model tot een geavanceerd boosting-algoritme, wat inzicht verschaft 
-in de complexiteit die het statusdetectieprobleem vereist.
+Voor de ontwikkeling van de Proof of concept werden drie machine learning modellen geïmplementeerd en met elkaar vergeleken: Logistische Regressie, Random Forest en XGBoost. Deze keuze is gebaseerd op de classificatiebenaderingen dat in de literatuurstudie aan bod kwamen. Door te kiezen voor zowel een eenvoudig lineair model als complexere boosting modellen, kan worden nagegaan welke aanpak het meest geschikt is voor het statusdetectieprobleem.
 
 \subsection{Model 1: Logistische Regressie}
-
-Logistische Regressie werd opgenomen als basismodel (\textit{baseline}). Het model 
-biedt een lineaire beslissingsgrens en maakt geen aannames over niet-lineaire 
-verbanden in de data. De absolute waarden van de modelcoëfficiënten werden gebruikt 
-om de relatieve bijdrage van elke feature te visualiseren. Logistische Regressie is 
-in de literatuur erkend als een interpreteerbaar model dat inzicht verschaft in welke 
-features het sterkst bijdragen aan de classificatie, maar dat doorgaans minder 
-performant is bij complexe, niet-lineaire datasets.
+Logistische Regressie werd opgenomen als basismodel om een referentiepunt te bieden voor de complexere modellen. Het model leert een lineaire beslissingsgrens in de feature ruimte en is daardoor eenvoudig te interpreteren: 
+de absolute waarde van een coëfficiënt geeft rechtstreeks aan in welke mate een feature bijdraagt aan de voorspelling. Het nadeel hiervan is dat het model niet in staat is om complexe, niet-lineaire verbanden in de data te herkennen, wat bij een probleem zoals POI-statusdetectie een belangrijke beperking kan zijn. Het model werd getraind met de standaardparameters van de scikit-learn implementatie.
 
 \subsection{Model 2: Random Forest}
-
-Random Forest is een ensemble-methode die een groot aantal beslissingsbomen 
-(\textit{decision trees}) traint op willekeurige deelsets van de data en features, 
-en de voorspellingen via meerderheidsstemming combineert. Het model is robuust 
-ten opzichte van ruis en overfitting, en produceert automatisch een 
-feature-importantiescore op basis van de gemiddelde afname in onzuiverheid 
-(Gini-importantie). Het Random Forest model werd getraind met standaardparameters 
-en een vaste willekeurige zaad.
+Random Forest is een ensemblemethode dat een groot aantal beslissingsbomen traint op willekeurige deelsets van de data en features. De uiteindelijke voorspelling komt tot stand aan de hand van een meerderheidsstemming over alle bomen. Dit maakt het model robuust tegen ruis en minder gevoelig voor overfitting dan een enkelvoudige beslissingsboom. Daarnaast berekent Random Forest automatisch een feature-importantiescore op basis van de gemiddelde afname in onzuiverheden, wat toelaat om de meest relevante kenmerken voor de statusdetectie te identificeren. Het model werd getraind met de standaardparameters van de scikit-learn implementatie.
 
 \subsection{Model 3: XGBoost}
-
-XGBoost (Extreme Gradient Boosting) is een gradiënt-boostingalgoritme dat iteratief 
-zwakke leerders toevoegt om de resterende fouten van de vorige iteratie te corrigeren. 
-Het is bijzonder geschikt voor gestructureerde tabeldata en presteert in de praktijk 
-vaak beter dan traditionele ensemble-methoden. Gezien de lichte klasse-onevenwichtigheid 
-in de testset werd de \texttt{scale\_pos\_weight}-parameter ingesteld op de verhouding 
-tussen het aantal negatieve en positieve instanties in de trainingsset. De overige 
-hyperparameters zijn samengevat in Tabel~\ref{tab:xgb-params}.
+Extreme Gradient Boosting (XGBoost) is een gradiënt-boostingalgoritme dat iteratief zwakke leerders toevoegt, waarbij elke nieuwe boom zich richt op de fouten van de vorige iteratie. Het algoritme staat bekend om zijn sterke 
+prestaties op gestructureerde tabeldata en werd geconfigureerd met de hyperparameters weergegeven in Tabel~\ref{tab:xgb-params} Omdat de dataset een onevenwichtige klasseverdeling vertoont, werd de \texttt{scale\_pos\_weight}-parameter dynamisch ingesteld op de verhouding tussen het aantal negatieve en positieve instanties in de trainingsset, zodat het model niet systematisch de meerderheidsklasse bevoordeelt. Het model werd getraind met volgende parameters:
 
 \begin{table}[h]
     \centering
@@ -203,92 +167,214 @@ hyperparameters zijn samengevat in Tabel~\ref{tab:xgb-params}.
         \toprule
         \textbf{Hyperparameter} & \textbf{Waarde} \\
         \midrule
-        \texttt{n\_estimators}     & 300 \\
-        \texttt{max\_depth}        & 6 \\
-        \texttt{learning\_rate}    & 0,05 \\
-        \texttt{subsample}         & 0,8 \\
-        \texttt{colsample\_bytree} & 0,8 \\
-        \texttt{eval\_metric}      & logloss \\
+        \texttt{n\_estimators}      & 300 \\
+        \texttt{max\_depth}         & 6 \\
+        \texttt{learning\_rate}     & 0,05 \\
+        \texttt{subsample}          & 0,8 \\
+        \texttt{colsample\_bytree}  & 0,8 \\
         \texttt{scale\_pos\_weight} & verhouding negatief/positief \\
+        \texttt{eval\_metric}       & logloss \\
+        \texttt{random\_state}      & 42 \\
+        \texttt{n\_jobs}            & -1 \\
         \bottomrule
     \end{tabular}
     \caption[XGBoost hyperparameters]{%
-        \label{tab:xgb-params}Overzicht van de gebruikte hyperparameters voor het 
-        XGBoost-model. De \texttt{scale\_pos\_weight} werd dynamisch berekend op 
-        basis van de klasseverdeling in de trainingsset.}
+        \label{tab:xgb-params}Overzicht van de gebruikte hyperparameters voor het XGBoost-model.}
 \end{table}
 
 \section{Evaluatie}
 
-%TODO
+%TODO: nalezen
 \subsection{Evaluatiemetrieken}
+De modellen werden geëvalueerd aan de hand van vijf standaard 
+classificatiemetrieken: accuracy, precision, recall, F1-score en ROC-AUC. 
+De ROC-AUC score kwantificeert het onderscheidingsvermogen van het model 
+over alle mogelijke classificatiedrempels en vormt een robuuste aanvulling 
+op de F1-score, met name wanneer de klasseverdeling niet perfect gebalanceerd 
+is. In de context van POI-statusdetectie heeft de keuze van de primaire 
+evaluatiemetrieken een methodologische consequentie. Een hoge precision voor 
+de gesloten klasse garandeert dat een als gesloten gedetecteerde POI 
+effectief gesloten is, wat belangrijk is om foutieve updates in de 
+POI-databank te vermijden. Een hoge recall voor dezelfde klasse garandeert 
+dat werkelijk gesloten POI's niet worden gemist. De F1-score combineert 
+beide metrieken als het harmonisch gemiddelde. Omdat het bijwerken van de 
+POI-databank prioriteit geeft aan het correct identificeren van gesloten 
+vestigingen, wordt de gesloten klasse beschouwd als de meest kritische klasse 
+bij de interpretatie van de resultaten.
 
-De modellen werden geëvalueerd aan de hand van vier standaard classificatiemetrieken: 
-accuracy, precision, recall en F1-score. In de context van POI-statusdetectie 
-heeft de keuze van de primaire evaluatiemetrie een methodologische consequentie. 
-Een hoge \textit{precision} voor de klasse \textit{gesloten} garandeert dat een 
-als gesloten gedetecteerde POI effectief gesloten is, wat belangrijk is om 
-foutieve updates in de POI-databank te vermijden. Een hoge \textit{recall} voor 
-diezelfde klasse garandeert dat werkelijk gesloten POI's niet worden gemist, 
-wat cruciaal is wanneer verouderde data directe operationele gevolgen heeft 
-voor de eindgebruiker. De F1-score combineert beide metrieken als het harmonisch 
-gemiddelde en fungeert als samengestelde indicator voor de algemene modelprestatie.
-
+%TODO
 \subsection{Resultaten}
 
 % TODO: vervang de [TODO]-placeholders in de tabel hieronder door de definitieve 
 % resultaten na de volledige run op de productiedataset (België, Nederland, 
 % Luxemburg en Frankrijk). Voeg ook een bespreking toe van de verkregen cijfers.
 
-De resultaten van de definitieve evaluatie op de volledige dataset worden weergegeven 
-in Tabel~\ref{tab:resultaten}.
+De resultaten van de definitieve evaluatie op de volledige dataset worden weergegeven in Tabel~\ref{tab:resultaten}.
+
+\begin{table}[h]
+    \centering
+    \small
+    \begin{tabular}{lccccc}
+        \toprule
+        \textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{ROC-AUC} \\
+        \midrule
+        \multicolumn{6}{l}{\textit{Baseline — historische metadata}} \\
+        \midrule
+        Logistische Regressie  & 0.66 & 0.81 & 0.71 & 0.76 & 0.65 \\
+        Random Forest          & 0.78 & 0.94 & 0.76 & 0.84 & 0.86 \\
+        XGBoost                & 0.76 & 0.92 & 0.74 & 0.82 & 0.86 \\
+        \midrule
+        \multicolumn{6}{l}{\textit{Uitbreiding — synthetische mobiliteitsdata}} \\
+        \midrule
+        Logistische Regressie (mob.) & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+        Random Forest (mob.)         & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+        XGBoost (mob.)               & 1.00 & 1.00 & 1.00 & 1.00 & 1.00 \\
+        \bottomrule
+    \end{tabular}
+    \caption[Vergelijking van modelresultaten]{%
+        \label{tab:resultaten}Vergelijking van alle modellen op de testset. 
+        De bovenste drie rijen betreffen de baseline-modellen op historische 
+        metadata; de onderste drie betreffen de uitbreidingsmodellen met 
+        synthetische mobiliteitsfeatures.}
+\end{table}
+
+%TODO: nalezen
+\subsubsection{Bespreking baseline modellen}
+Random Forest behaalt de hoogste gewogen F1-score (0.84) en ROC-AUC (0.86), 
+gevolgd door XGBoost (F1 = 0.82, AUC = 0.86). Logistische Regressie presteert 
+significant zwakker (F1 = 0.76, AUC = 0.65), wat bevestigt dat de relatie 
+tussen de features en de doelvariabele niet-lineair van aard is.
+
+Een per-klasse analyse onthult een belangrijke nuance. Alle modellen 
+presteren significant beter op de open klasse dan op de gesloten klasse:
 
 \begin{table}[h]
     \centering
     \small
     \begin{tabular}{lcccc}
         \toprule
-        \textbf{Model} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} \\
+        \textbf{Model} & \multicolumn{2}{c}{\textbf{Gesloten}} & 
+        \multicolumn{2}{c}{\textbf{Open}} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        & \textbf{Precision} & \textbf{F1} & \textbf{Precision} & \textbf{F1} \\
         \midrule
-        Logistische Regressie & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} \\
-        Random Forest         & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} \\
-        XGBoost               & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} & \textit{[TODO]} \\
+        Random Forest         & 0.54 & 0.67 & 0.94 & 0.84 \\
+        XGBoost               & 0.52 & 0.63 & 0.92 & 0.82 \\
+        Logistische Regressie & 0.38 & 0.43 & 0.81 & 0.76 \\
         \bottomrule
     \end{tabular}
-    \caption[Vergelijking van modelresultaten]{%
-        \label{tab:resultaten}Vergelijking van de drie modellen op de testset 
-        (20\% van de volledige dataset). Alle scores worden gerapporteerd op de 
-        gewogen gemiddelden over beide klassen.}
+    \caption[Per-klasse resultaten baseline modellen]{%
+        \label{tab:perklasse}Per-klasse precision en F1-score voor de 
+        baseline modellen op de testset.}
 \end{table}
 
-%TODO
-\subsection{Feature-importantie}
+De gesloten klasse behaalt een F1-score van slechts 0.67 (Random Forest) 
+en 0.63 (XGBoost). Dit wijst erop dat statische metadata zonder dynamische 
+bezoekerspatronen onvoldoende discriminerende kracht heeft om gesloten 
+POI's betrouwbaar te identificeren. Dit is een centrale bevinding van dit 
+onderzoek en motiveert direct de mobiliteitsuitbreiding.
 
-Een analyse van de feature-importantie laat toe om te begrijpen welke kenmerken 
-het sterkst bijdragen aan de classificatiebeslissing. Voor het Random Forest model 
-werd de Gini-importantie gebruikt, die aangeeft hoeveel de gemiddelde onzuiverheid 
-van de knooppunten afneemt wanneer een bepaalde feature wordt gebruikt voor een 
-splitsing. Voor het XGBoost-model werd de ingebouwde feature-importantiescore 
-berekend op basis van het gemiddeld aantal keren dat een feature wordt gebruikt 
-in de boosting-rondes (\textit{gain}). Voor de Logistische Regressie werd de 
-absolute waarde van de modelcoëfficiënt als maatstaf gebruikt.
+%TODO: nalezen
+\subsubsection{Bespreking mobiliteitsmodellen}
+De mobiliteitsmodellen behalen opvallend hoge scores (F1 $\approx$ 1.00), 
+wat een rechtstreeks gevolg is van de synthetische aard van de data. 
+Omdat de bezoekersprofielen gegenereerd worden op basis van expliciete 
+faseregels, zijn de klassen nagenoeg perfect scheidbaar. De feature 
+importance analyse toont aan dat \texttt{gem\_bezoekers} (0.247) en 
+\texttt{std\_bezoekers} (0.178) de sterkste voorspellers zijn, wat 
+bevestigt dat dynamische bezoekerspatronen theoretisch een sterk signaal 
+vormen voor statusdetectie \autocite{Yao2024}. Deze resultaten dienen 
+geïnterpreteerd te worden als een theoretische bovengrens, niet als een 
+verwachte prestatie op echte mobiliteitsdata.
 
-% TODO: voeg hier een bespreking toe van de top-features na de definitieve run,
-% bij voorkeur ondersteund door de gegenereerde staafdiagrammen uit het notebook.
+%TODO: nalezen
+\subsection{Feature-importance}
 
-Op basis van de initiële testrun kan worden vastgesteld dat temporele features 
-(\texttt{day\_of\_week}, \texttt{maand}, \texttt{is\_weekend}) en 
-openingstijdfeatures (\texttt{start\_min}, \texttt{stop\_min}, 
-\texttt{verwachte\_openingsduur\_min}) naar verwachting een hoge 
-importantiescore zullen behalen. Dit sluit aan bij de bevindingen van 
-\textcite{Milias2021}, die aantonen dat operationele kenmerken, waaronder 
-bezoekpatronen en specifieke openingstijden, de meest significante variabelen 
-zijn voor het classificeren van stedelijke functies. Eveneens wordt verwacht dat 
-de gedragsmatige features \texttt{inactiviteit\_ratio} en 
-\texttt{historisch\_inactief\_count} een substantiële bijdrage zullen leveren, 
-aangezien deze de historische stabiliteit van een POI weerspiegelen en 
-daarmee aansluiten bij het concept van de POI-levenscyclus 
-zoals gedefinieerd door \textcite{Lu2020}.
+Een analyse van de feature-importance laat toe om te begrijpen welke kenmerken het sterkst bijdragen aan het model. Voor het Random Forest model werd de Gini-importance gebruikt, die aangeeft hoeveel de gemiddelde onzuiverheid van de knooppunten afneemt wanneer een bepaalde feature wordt gebruikt voor een splitsing. Voor het XGBoost-model werd de ingebouwde feature importance score berekend op basis van het gemiddeld aantal keren dat een feature wordt gebruikt in de “boosting” rondes. Voor de Logistische Regressie werd de absolute waarde van de modelcoëfficiënt als norm gebruikt.
+
+Figuur~\ref{fig:fi_lr} toont de absolute coëfficiënten van het Logistische Regressiemodel als maatstaf voor de feature importance. Wat opvalt is dat de openingsuren features hier een belangrijkere rol spelen dan bij de andere modellen. Dit is waarschijnlijk te verklaren doordat Logistische Regressie enkel lineaire verbanden kan leggen, en de aanwezigheid van openingsuren vrij rechtstreeks samenhangt met of een POI al dan niet open is. Dat het model toch relatief zwak presteert (F1 = 0.76) geeft aan dat deze lineaire verbanden niet volstaan om het volledige probleem te vatten.
+
+\begin{figure}[H]
+         \centering
+         \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_lr.png}
+         \caption[Feature-importantie Logistische Regressie]{\label{fig:fi_lr}Top 15 features van het Logistisch Regressie model.}
+\end{figure}
+
+Figuur~\ref{fig:fi_rf} toont de top 15 features op basis van de Gini importance voor het Random Forest model. De feature \texttt{n\_observaties\_poi} springt er duidelijk uit met een importance van 0.30, wat aangeeft dat het aantal keren dat een POI werd geobserveerd een sterk signaal is voor de operationele status. Daarnaast blijken het merk (\texttt{brand\_id\_enc}, 0.22) en het land (\texttt{country\_enc}, 0.14) ook belangrijk. Dit is logisch aangezien de data-analyse eerder al een duidelijke variatie in sluitingsratio per merk en per land weergaf.
+    
+\begin{figure}[H]
+         \centering
+         \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_random_forest.png}
+         \caption[Feature-importantie Random Forest]{\label{fig:fi_rf}Top 15 features van het Random Forest model.}\\
+\end{figure}
+
+Figuur~\ref{fig:fi_xgb} toont de top 15 features voor het XGBoost model. Het patroon lijkt sterk op dat van het Random Forest model: \texttt{n\_observaties\_poi}, \texttt{brand\_id\_enc} en \texttt{country\_enc} zijn opnieuw de belangrijkste features. Aangezien deze twee modellen leiden tot dezelfde conclusies, kunnen we concluderen dat deze kenmerken effectief relevante informatie bevatten voor de statusdetectie.
+
+\begin{figure}[H]
+         \centering
+         \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_xgboost.png}
+         \caption[Feature-importantie XGBoost]{\label{fig:fi_xgb}Top 15 features van het XGBoost model.}
+\end{figure}
+
+%TODO: bekijken
+\section{Uitbreiding: Synthetische Mobiliteitsdata}
+
+\subsection{Motivatie}
+De drie voorgaande modellen baseren zich uitsluitend op statische metadata. 
+Zoals besproken in de literatuurstudie vormen dynamische mobiliteitspatronen 
+een sterk aanvullend signaal voor statusdetectie \autocite{Yao2024, Taylor2022}. 
+Om de potentiële meerwaarde van dergelijke data te onderzoeken, werd een 
+uitbreidingsexperiment opgezet op basis van de basisinfo-dataset (een statische 
+snapshot van 57.082 POI's zonder historische tijdreeks).
+
+\subsection{Synthetische datageeneratie}
+Omdat echte GPS-mobiliteitsdata niet beschikbaar is binnen de scope van dit 
+onderzoek, werden bezoekersprofielen per POI gesimuleerd. De simulatie 
+onderscheidt drie fasen die aansluiten bij de POI-levenscyclus:
+
+\begin{itemize}
+    \item \textbf{Stabiele fase}: het bezoekersaantal volgt een realistisch 
+    weekpatroon met stochastische ruis ($\sigma$ = 15\% van $\mu$), met een 
+    piek op vrijdag en zaterdag en een dal op zondag.
+    \item \textbf{Decay fase}: het bezoekersaantal daalt lineair over 8 weken 
+    vóór de sluiting, met verhoogde ruis ($\sigma$ = 25\%) om onzekerheid 
+    te simuleren.
+    \item \textbf{Gesloten fase}: het bezoekersaantal is gelijk aan nul.
+\end{itemize}
+
+Elk POI-profiel werd gegenereerd over een periode van 26 weken. Per POI werd 
+een individuele variatiefactor toegepast om heterogeniteit tussen vestigingen 
+te modelleren.
+
+\subsection{Mobiliteitsfeatures}
+Uit de gegenereerde tijdreeksen werden de volgende features geaggregeerd op 
+POI-niveau:
+
+\begin{itemize}
+    \item \texttt{gem\_bezoekers}: gemiddeld dagelijks bezoekersaantal
+    \item \texttt{std\_bezoekers}: standaarddeviatie als maat voor variabiliteit
+    \item \texttt{max\_bezoekers}: piekbezoekersaantal
+    \item \texttt{pct\_nul\_dagen}: fractie dagen met nul bezoekers
+    \item \texttt{trend\_coefficient}: lineaire trendcoëfficiënt over de 
+    volledige observatieperiode; een sterk negatieve waarde duidt op een 
+    dalend bezoekerspatroon en is een proxy voor de decay-fase
+\end{itemize}
+
+De features \texttt{pct\_nul\_dagen} en \texttt{trend\_coefficient} werden 
+initieel berekend maar uitgesloten uit de definitieve feature-set. Beide 
+bleken te sterk discriminatief in de gesimuleerde data: 
+\texttt{trend\_coefficient} vertoonde een gemiddelde waarde van $-$1.02 
+voor sluitende POI's tegenover $-$0.006 voor open POI's, waardoor het 
+model triviaal kon classificeren op basis van deze ene feature. Dit is 
+een inherente beperking van synthetische data waarbij de sluitingsdynamiek 
+expliciet gedefinieerd wordt.
+
+\subsection{Experimentopzet}
+De mobiliteitsmodellen werden getraind op de gecombineerde feature-set 
+(statische metadata + mobiliteitsfeatures) en vergeleken met de 
+baseline-modellen op statische metadata alleen. Dezelfde drie modellen 
+werden gebruikt: Random Forest, XGBoost en Logistische Regressie. De 
+resultaten worden gerapporteerd in Tabel~\ref{tab:resultaten}.
 
 %TODO
 \subsection{Beperkingen van de huidige POC}
@@ -296,20 +382,18 @@ zoals gedefinieerd door \textcite{Lu2020}.
 De huidige implementatie kent een aantal methodologische beperkingen die in acht 
 dienen te worden genomen bij de interpretatie van de resultaten.
 
-Ten eerste is de testset in de huidige fase beperkt tot twee merken uit één land, 
-waardoor de generaliseerbaarheid van de resultaten naar andere ketens en 
-geografische contexten niet kan worden gegarandeerd. Wanneer de definitieve dataset 
-meerdere landen en merken omvat, is het mogelijk dat de modellen worden geconfronteerd 
-met een verhoogde geospatiale variabiliteit, wat de classificatieprestaties kan 
-beïnvloeden.
+Ten eerste omvat de dataset vier landen met een sterk ongelijke geografische 
+verdeling: Frankrijk is veruit het best vertegenwoordigd met circa 42.000 records, 
+terwijl Luxemburg slechts 500 records telt. Het model zal daardoor voornamelijk 
+patronen leren op basis van Franse supermarkten, wat de generaliseerbaarheid 
+naar kleinere landen kan beperken.
 
-Ten tweede werd in de huidige implementatie geen gebruik gemaakt van 
-kruisvalidatie (\textit{k-fold cross-validation}), maar van een enkelvoudige 
-train-testsplitsing. Hoewel de gestratificeerde splitsing de klasseverdeling 
-bewaart, is een enkelvoudige opsplitsing gevoeliger voor toevallige variaties in 
-de samenstelling van de test- en trainingsset. Voor de definitieve evaluatie 
-verdient het aanbeveling om k-fold kruisvalidatie toe te passen om een 
-betrouwbaardere schatting van de generalisatiefout te verkrijgen.
+Ten tweede werd initieel een temporele splitsing toegepast maar 
+overgeschakeld naar een gestratificeerde splitsing wegens een systematische 
+bias in de klasseverdeling. Dit impliceert dat het model mogelijk patronen 
+leert die niet strikt temporeel generaliseerbaar zijn, wat een beperking 
+vormt bij gebruik in een productieomgeving waar het model op toekomstige 
+data wordt toegepast.
 
 Ten derde bevat de dataset geen expliciete voetgangers- of transactiegegevens, 
 die in de literatuur als krachtige indicatoren voor statuswijzigingen worden 
@@ -325,7 +409,7 @@ geselecteerd op basis van gangbare standaardwaarden uit de literatuur; een
 systematische zoekprocedure zoals \textit{grid search} of \textit{Bayesian 
     optimization} kan de modelprestaties verder verbeteren.
 
-Ten slotte dient te worden benadrukt dat het probleem van \textit{data-inflatie}, 
+Ten vijfde dient te worden benadrukt dat het probleem van \textit{data-inflatie}, 
 zoals besproken door \textcite{Boskovic2026}, ook hier van toepassing kan zijn. 
 Wanneer een data-provider zijn registratiemethoden aanpast, kunnen bestaande 
 POI-records onterecht als nieuw in de database verschijnen. Dit kan leiden tot 
@@ -333,9 +417,16 @@ foutieve labels in de trainingsdata, waarbij een record als \textit{open}
 wordt geclassificeerd terwijl de onderliggende locatie in werkelijkheid al 
 geruime tijd inactief was.
 
-%TODO: nakijken
+Tot slot dient te worden benadrukt dat het mobiliteitsexperiment in deze 
+POC gebaseerd is op \textbf{synthetisch gegenereerde bezoekersdata}. 
+Hoewel de simulatie gebaseerd is op empirisch onderbouwde assumpties over 
+supermarktbezoekersgedrag, vertegenwoordigen de resultaten van dit experiment 
+de theoretische bovengrens van wat mobiliteitsdata zou kunnen bijdragen. 
+De integratie van echte mobiliteitsdata (zoals SafeGraph of Google Popular 
+Times) vormt een aanbeveling voor toekomstig onderzoek.
+
 \section{Implementatiedetails}
 
-De volledige POC werd geïmplementeerd in Python 3.12. De volgende bibliotheken werden gebruikt: \texttt{pandas} en \texttt{numpy} voor data-inlading en verwerking, \texttt{scikit-learn} voor de implementatie van Logistische Regressie en Random Forest alsook voor de evaluatiemetrieken en de train-testsplitsing, \texttt{xgboost} voor de XGBoost-implementatie, \texttt{matplotlib} en \texttt{seaborn} voor de visualisaties, \texttt{joblib} voor het persisteren van de getrainde modellen en \texttt{holidays} voor het identificeren van feestdagen per land.
+De volledige POC werd geïmplementeerd in Python 3.12. De volgende bibliotheken werden gebruikt: \texttt{pandas} en \texttt{numpy} voor data-inlading en verwerking, \texttt{scikit-learn} voor de implementatie van Logistische Regressie en Random Forest alsook voor de evaluatiemetrieken en de train-testsplitsing, \texttt{xgboost} voor de XGBoost-implementatie, \texttt{matplotlib} en \texttt{seaborn} voor de visualisaties, \texttt{joblib} voor het persisteren van de getrainde modellen.
 
-De getrainde modellen worden na afloop van het trainingsproces opgeslagen in een lokale map (\texttt{./models}) via \texttt{joblib.dump()}, zodat ze zonder opnieuw getraind kunnen worden hergebruikt.
+De getrainde modellen worden na afloop van het trainingsproces opgeslagen in een lokale map (\texttt{./models}) via \texttt{joblib.dump()}, zodat ze hergebruikt kunnen worden zonder dat de modellen opnieuw getraind moeten worden.
