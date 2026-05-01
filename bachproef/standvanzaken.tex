@@ -105,6 +105,8 @@ Dit onderscheid is relevant omdat een AOI meerdere POI’s kan bevatten. Daarnaa
 \textcite{Storymaps2023} introduceert het begrip Volume of Interest (VOI). Waar een AOI beperkt is tot een 2D-oppervlak, beschrijft een VOI de driedimensionale ruimtelijke bezetting van een locatie. Dit is cruciaal in gebouwen, waar bijvoorbeeld een supermarkt zich op de begane grond begeeft met daarboven appartementen. VOI data lossen dubbelzinnigheid op door activiteitssignalen in 3D nauwkeurig aan de juiste functie toe te wijzen.
 
 \subsection{Ruimtelijke Afhankelijkheid en invloed}
+\label{sec:Afhankelijkheid}
+
 Naast directe observaties kan de status van een POI worden afgeleid uit de geografische invloed die het uitoefent op de omgeving. Volgens \textcite{Wang2018} bezit elke POI een specifieke 'geo-influence' (het vermogen van een POI om bezoekers door te sturen naar andere POI's) en 'geo-susceptibility' (de mate waarin de POI bezoekers van elders aantrekt). Voor de statusdetectie van een supermarkt is dit relevant omdat deze vaak fungeren als ankerpunten met een groot geo-influence. Een plotselinge verandering in hun operationele status heeft daardoor een meetbaar  effect op de bezoekpatronen van geo-susceptibele POI's, zoals een nabijgelegen bakker of krantenwinkel.
 
 \textcite{Boskovic2026} tonen aan dat de dichtheid en de verandering van specifieke commerciële functies, zoals fastfoodketens en supermarkten, sterk samenhangend zijn met de sociaaleconomische status van een gebied. Gebieden met een sociale achterstand hebben doorgaans meer ongezonde voedselpunten. Voor het valideren van statusdetectie is dit relevant omdat het aantoont dat omgevingsfactoren, zoals de deprivatie index van een bepaalde wijk, kunnen gebruikt worden als een indicator. Wanneer een statuswijziging aansluit bij de sociaaleconomische trends in de buurt, wordt de waarschijnlijkheid dat de detectie correct is groter.
@@ -112,6 +114,8 @@ Naast directe observaties kan de status van een POI worden afgeleid uit de geogr
 De invloed van een POI op zijn omgeving kan verder worden uitgediept door de 'visit context'. Volgens \textcite{Pervin2025} kan het gebruik van Contextual Transformers helpen om real time voorkeuren uit gebruikersinteracties te halen. Voor statusdetectie is dit relevant omdat een afwijking in het (verwachte) bezoekersgedrag gekoppeld aan de context van de groep een vroege indicator kan zijn van een wijziging in de operationele status.
 
 \subsection{Levenscyclus van een POI}
+\label{sec:Levenscyclus}
+
 De operationele toestand van een Point-of-Interest is geen statisch gegeven, maar een dynamisch proces dat in de literatuur wordt gedefinieerd als de POI-levenscyclus. Volgens \textcite{Lu2020} evolueren POI's mee met de ontwikkeling van functionele zones. Ze ontstaan, groeien, stabiliseren gedurende een bepaalde periode en verdwijnen dan uiteindelijk.
 
 Recent onderzoek van \textcite{Qin2023} vult dit aan door een onderscheid te maken in bezoekerspatronen op basis van gebruikersprofielen:
@@ -150,6 +154,7 @@ Voor bedrijven is actuele POI-data cruciaal voor concurrentie analyses en voor h
 Volgens \textcite{Anishma2025a} stellen Real-time inzichten in openingsuren adverteerders in staat om marketingcampagnes exact te timen tijdens piekuren of wanneer winkels daadwerkelijk actief zijn. Dit verhoogt de relevantie van advertenties en verbetert de online-to-offline attributie, waarbij digitale impressies worden gekoppeld aan fysieke bezoeken.
 
 \subsection{Welke gegevensbronnen kunnen worden gebruikt voor het automatisch bepalen of een POI (historisch) open of gesloten is?}
+\label{sec:gegevensbronnen}
 
 Het verzamelen van POI data is een complex proces en tevens ook de primaire oorzaak van de veroudering van locatiegegevens, waardoor het garanderen van de actualiteit van deze data een cruciale uitdaging vormt.
 
@@ -170,6 +175,8 @@ Tot slot zijn er beeld- en sensorbronnen, zoals google street view. Volgens \tex
 Het gebruik van dergelijke gegevensbronnen brengt echter een uitdaging met zich mee: records van dezelfde fysieke locatie kunnen in verschillende datasets variëren in naamgeving, coördinaten of op detailniveau. Volgens \textcite{Sun2023} is het proces van 'POI-conflation' (het samenvoegen van datasets) essentieel om een betrouwbaar beeld van de werkelijkheid te creëren. Dit proces maakt gebruik van matchingalgoritmen die kijken naar de geometrische nabijheid van punten, tekstuele gelijkenis van bedrijfsnamen en overeenkomsten in metadata om inconsistente informatie te filteren en een correcte status aan een POI toe te kennen.
 
 \subsection{Wat zijn de uitdagingen bij het implementeren van AI voor POI status detectie?}
+\label{sec:uitdagingen}
+
 Het toepassen van AI voor POI statusdetectie kent verschillende uitdagingen.  
 
 Ten eerste hebben we de data kwaliteit en actualiteit. Het waarborgen van de kwaliteit van POI-gegevens is een andere belangrijke uitdaging. Omdat gegevens uit meerdere bronnen worden verzameld, kunnen ze vaak gefragmenteerd, inconsistent en verouderd zijn \autocite{Rafaqat2023}. Deze uitdaging wordt versterkt door de dynamiek van de fysieke wereld. \textcite{Fernandes2020} benadrukken dat er nog openstaande uitdagingen zijn met betrekking tot de temporele en historische aspecten van deze data. Veel commerciële POI-data wordt bovendien slechts periodiek (bijvoorbeeld elke drie tot zes maanden) bijgewerkt, wat een aanzienlijke validatieachterstand creëert. Zonder tijdige validatie neemt de betrouwbaarheid van de data snel af. 
