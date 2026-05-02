@@ -247,6 +247,7 @@ Een recente ontwikkeling in Point of interest analyse is de toepassing van diffu
 \end{itemize}
 
 \subsection{Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?}
+\label{sec:validatie}
 Om de betrouwbaarheid van geautomatiseerde POI-statuswijzigingen te valideren, wordt in de literatuur nadruk gelegd op het combineren van meerdere bronnen en methoden. \textcite{Taylor2022} adviseert bijvoorbeeld om een voorspelde sluiting of opening te controleren met ondersteunende data: als de AI signalen van sluiting geeft, dan zou men in de voetgangers of transactiegegevens daadwerkelijk een significante afwezigheid moeten zien. Ook kunnen satelliet of lucht foto’s gecontroleerd worden op veranderingen (zoals een verbouwing) die de sluiting bevestigen \autocite{Taylor2022}.
 
 Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerders en lokale overheden) om actuele POI-informatie te krijgen. Als algoritmisch een sluiting is gedetecteerd, kan men nagaan of bedrijfsbeheerders of lokale gidsen al een melding van sluiting hebben geplaatst \autocite{Pericolosi2022}.
@@ -256,6 +257,7 @@ Google maakt intensief gebruik van haar community (Local Guides, bedrijfsbeheerd
 Tot slot kan men gebruik maken van een “ground truth” dataset van bekende opening- en sluitingstijden (zoals bijvoorbeeld POI’s waarvan de sluiting publiek bekend is) en daarop de precision of recall van de automatische detectie meten. \textcite{Yao2024} kon bijvoorbeeld aantonen dat hun model POI-afwijkingen gemiddeld 15,7 dagen voor de gebruikersmelding signaleert, wat aangeeft dat het systeem grotendeels betrouwbaar vroegtijdig identificeert.
 
 \subsection{Recente ontwikkelingen in GeoAI en Agentic GIS}
+\label{sec:geoai}
 
 De opkomst van Geospatial Artificial Intelligence (GeoAI) markeert de integratie van geavanceerde machine learning en deep learning technieken met geospatiale data infrastructuren \autocite{Boutayeb2024}. Binnen de retail- en stadsgeografie wordt GeoAI steeds vaker ingezet voor de automatische ophaling van Point of Interest attributen. Volgens \textcite{Mai2025} verschuift de focus bij supermarkten van statische database opslag naar dynamische statusdetectie, waarbij AI-modellen bepalen of een locatie open of gesloten is op basis van real-time datastromen.
 

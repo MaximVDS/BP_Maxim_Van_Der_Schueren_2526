@@ -43,54 +43,13 @@
 %%---------- Samenvatting -----------------------------------------------------
 % De samenvatting in de hoofdtaal van het document
 
-%TODO: aanvullen en nakijken
 \chapter*{\IfLanguageName{dutch}{Samenvatting}{Abstract}}
+Point of Interest (POI) databanken vormen de basis van locatiegebaseerde analyses zoals marktstudies en inzicht over concurrentie binnen een gebied. Een veelvoorkomend probleem is dat de operationele status van POI's in databanken vaak verouderd of onvolledig is. Dit kan leiden tot foutieve beslissingen en ondermijnt de betrouwbaarheid van locatiegebaseerde toepassingen. Momenteel gebeurt de controle van de gegevens grotendeels handmatig. Dit zorgt voor een aanzienlijke vertraging tussen de werkelijke toestand van een POI en de registratie ervan.
 
-% TODO: pas de concrete cijfers en modelresultaten aan 
-% zodra de definitieve evaluatie beschikbaar is.
-POI-databanken (Points-of-Interest) vormen de ruggengraat van 
-locatiegebaseerde analyses zoals marktstudies, bezoekersstroomonderzoek 
-en concurrentie-inzicht. Een veelvoorkomend probleem is echter dat de 
-operationele status van POI's — of een locatie open dan wel gesloten is — 
-frequent verouderd of onvolledig is in deze databanken. Dit leidt tot 
-foutieve beslissingen en ondermijnt de betrouwbaarheid van 
-locatiegebaseerde toepassingen. Huidige monitoringmethoden zijn 
-grotendeels handmatig, wat resulteert in een aanzienlijke vertraging 
-tussen de werkelijke toestand van een POI en de registratie ervan.
+De centrale onderzoeksvraag van dit onderzoek is: \textit{In welke mate kan artificiële intelligentie ingezet worden om de operationele status van supermarkten automatisch en betrouwbaar te detecteren op basis van historische POI-data?}. Om dit te onderzoeken werd een proof of concept ontwikkeld op basis van de interne POI databank van Accurat BV voor België, Nederland, Luxemburg en Frankrijk.
 
-Deze bachelorproef onderzoekt hoe artificiële intelligentie kan worden 
-ingezet om automatisch de (historische) open of gesloten status van 
-POI's te detecteren, met supermarkten als specifiek toepassingsdomein. 
-Hiervoor werd een proof-of-concept ontwikkeld op basis van de interne 
-POI-databank van Accurat, aangevuld met historische statusregistraties 
-en gestructureerde openingstijden voor België, Nederland, Luxemburg 
-en Frankrijk.
+Voor de proof of concept werd een uitgebreide feature engineering fase opgezet waarbij relevante kenmerken werden ontwikkeld voor het trainen van de modellen, zoals \texttt{poi\_leeftijd\_maanden}, \texttt{n\_observaties\_poi} en \texttt{heeft\_openingsuren}. Er werden drie machine learning modellen getraind en met elkaar vergeleken: Logistische Regressie als basismodel, Random Forest en XGBoost. De modellen werden geëvalueerd op basis van accuracy, precision, recall, F1-score en ROC-AUC, waarbij de detectie van gesloten vestigingen als voornaamste doelstelling werd gebruikt.
 
-De methodologie omvat een uitgebreide feature engineering fase waarin 
-temporele, structurele en historisch gedragsmatige kenmerken werden 
-geconstrueerd, waaronder de \texttt{inactiviteit\_ratio} en de 
-\texttt{poi\_leeftijd\_maanden}. Drie machine learning modellen werden 
-getraind en met elkaar vergeleken: Logistische Regressie als 
-referentiemodel, Random Forest en XGBoost. De modellen werden 
-geëvalueerd op basis van accuracy, precision, recall en F1-score, 
-waarbij de detectie van gesloten vestigingen als primaire 
-evaluatiedoelstelling werd gehanteerd.
+Het Random Forest model presteerde het beste met een accuracy van 78\% en een F1-score van 84\% op een testset van 267.456 records. Het XGBoost model had een accuracy van 76\% en een F1-score van 82\%. Logistische Regressie haalde als basismodel de laagste scores met een accuracy van 66\%. Daarnaast werd een experiment opgezet met kunstmatig gegenereerde mobiliteitsdata, waarbij alle drie de modellen scores haalden van circa 99,9\%. Dit toont het potentieel aan van dynamische bezoekersdata als statusindicator, al moet dit eerst worden gevalideerd op reële mobiliteitsdata voordat verdere conclusies kunnen worden genomen.
 
-% TODO: vervang onderstaande zin door de definitieve bevinding 
-% op basis van de modelresultaten.
-De resultaten tonen aan dat [TODO: bv. \textit{ensemble-methoden 
-    zoals XGBoost het sterkst presteren met een F1-score van X\% voor 
-    de gesloten klasse}], wat bevestigt dat supervised classificatie 
-een praktisch inzetbare aanpak vormt voor POI-statusdetectie op 
-basis van intern beschikbare structurele data. Tegelijkertijd 
-worden de grenzen van deze aanpak blootgelegd: het ontbreken van 
-dynamische mobiliteitsbronnen, geospatiale bias ten gevolge van de 
-onevenwichtige geografische dataverdeling en het cold-start probleem 
-voor jonge vestigingen blijven structurele uitdagingen.
-
-Dit onderzoek levert een werkend prototype op, aangevuld met een 
-vergelijkende evaluatie van de gebruikte modellen en concrete 
-aanbevelingen voor vervolgonderzoek. Voor organisaties zoals Accurat 
-biedt het een waardevol kader voor het automatisch up-to-date houden 
-van POI-data, wat de kwaliteit van locatiegebaseerde analyses 
-ten goede komt.
+Het resultaat van deze bachelorproef is een werkend prototype, aangevuld met een vergelijkende evaluatie van de drie gebruikte modellen en concrete aanbevelingen voor toekomstig onderzoek. Een belangrijke beperking van het onderzoek is dat de mobiliteitsdata kunstmatig werd gegenereerd en dat de dataset geografisch gedomineerd wordt door Frankrijk. Dit kan ervoor zorgen dat de generaliseerbaarheid naar kleinere landen beperkter is. Voor organisaties zoals Accurat BV biedt dit onderzoek een nuttig kader voor het automatisch up to date houden van POI data, wat de kwaliteit van locatiegebaseerde analyses ten goede komt.

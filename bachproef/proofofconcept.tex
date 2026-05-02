@@ -177,6 +177,16 @@ De resultaten van de definitieve evaluatie op de volledige dataset worden weerge
         \label{tab:resultaten}Vergelijking van alle modellen op de testset. De bovenste drie rijen betreffen de baseline modellen. De onderste drie betreffen de uitbreidingsmodellen met kunstmatig gegenereerde mobiliteitsfeatures.}
 \end{table}
 
+Figuur~\ref{fig:eindvergelijking} geeft een visueel overzicht van alle modellen en hun prestaties op de vijf evaluatiemetrieken.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../proof_of_concept/Grafieken/eindvergelijking.png}
+    \caption[Eindvergelijking alle modellen]{\label{fig:eindvergelijking}
+        Vergelijking van alle zes modellen op accuracy, precision, recall, 
+        F1-score en ROC-AUC.}
+\end{figure}
+
 \subsubsection{Bespreking baseline modellen}
 Het random Forest model behaalt de hoogste F1-score (0.84) en ROC-AUC (0.86). Het XGBoost model behaalt een F1 score van 0.82 en een AUC van 0.86. Logistische Regressie presteert veel slechter met een F1 score van 0.76 en een AUC van 0.65. Dit bevestigt dat de relatie tussen de features en de doelvariabele niet lineair is.
 
@@ -200,6 +210,26 @@ Het random Forest model behaalt de hoogste F1-score (0.84) en ROC-AUC (0.86). He
 \end{table}
 
 De gesloten klasse behaalt een F1-score van 0.67 bij Random Forest en 0.63 bij XGBoost. Dit suggereert dat statische metadata alleen onvoldoende is om gesloten POI's betrouwbaar te detecteren. Dit is een belangrijke vaststelling en vormt meteen de motivatie voor de uitbreiding met mobiliteitsdata.
+
+Figuur~\ref{fig:cm_rf}, \ref{fig:cm_xgb} en \ref{fig:cm_lr} tonen de confusion matrices voor de drie baseline modellen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../proof_of_concept/Grafieken/conv_matrix_random_forest.png}
+    \caption[Confusion matrix Random Forest]{\label{fig:cm_rf}Confusion matrix van het Random Forest model op de testset.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../proof_of_concept/Grafieken/conv_matrix_xgboost.png}
+    \caption[Confusion matrix XGBoost]{\label{fig:cm_xgb}Confusion matrix van het XGBoost model op de testset.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../proof_of_concept/Grafieken/conv_matrix_logistic_regression.png}
+    \caption[Confusion matrix Logistische Regressie]{\label{fig:cm_lr}Confusion matrix van het Logistische Regressie model op de testset.}
+\end{figure}
 
 \subsubsection{Bespreking mobiliteitsmodellen}
 De mobiliteitsmodellen behalen opvallend hoge scores. Dit is een rechtstreeks gevolg van de kunstmatig gegenereerde aard van de data. Omdat de bezoekersprofielen gegenereerd worden op basis van expliciete faseregels, zijn de klassen nagenoeg perfect scheidbaar. De feature importance analyse toont aan dat \texttt{gem\_bezoekers} (0.247) en \texttt{std\_bezoekers} (0.178) de sterkste voorspellers zijn. Dit bevestigt dat de dynamische bezoekerspatronen theoretisch een sterk signaal vormen voor statusdetectie, zoals besproken in sectie~\ref{sec:gegevensbronnen}. Deze resultaten geven dus eerder een indicatie van wat mogelijk zou zijn met echte mobiliteitsdata.
@@ -238,7 +268,7 @@ Figuur~\ref{fig:fi_xgb} geeft de top 15 features weer voor het XGBoost model. De
 De drie voorgaande modellen baseren zich uitsluitend op statische metadata. Zoals besproken in de literatuurstudie vormen dynamische mobiliteitspatronen een sterk aanvullend signaal voor de statusdetectie van een POI. Om de potentiële meerwaarde hiervan te onderzoeken, werd een uitbreidingsexperiment opgezet op basis van de basisinfo-dataset (zelfde dataset die gebruikt wordt voor de data analyse).
 
 \subsection{Datageeneratie}
-Omdat echte GPS-mobiliteitsdata niet beschikbaar is binnen de scope van dit onderzoek, deze data per POI gesimuleerd. De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een POI:
+Omdat echte GPS-mobiliteitsdata niet beschikbaar is binnen de scope van dit onderzoek, werd deze data per POI gesimuleerd. De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een POI:
 
 \begin{itemize}
     \item \textbf{Stabiele fase}: het bezoekersaantal volgt een realistisch weekpatroon met stochastische ruis ($\sigma$ = 40\% van $\mu$), met een piek op vrijdag en zaterdag en een dal op zondag.
@@ -247,6 +277,24 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar is binnen de scope van dit onde
 \end{itemize}
 
 Elk POI-profiel werd gegenereerd over een periode van 26 weken. Om het verschil in bezoekersaantal tussen vestigingen te simuleren, werd per POI een individuele variatiefactor toegepast.
+
+Figuur~\ref{fig:mob_weekprofiel} toont het gesimuleerde bezoekersprofiel per dag van de week voor elk de drie fases.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../proof_of_concept/Grafieken/mob_weekprofiel_per_fase.png}
+    \caption[Synthetisch bezoekersprofiel per fase]{\label{fig:mob_weekprofiel}
+        Gemiddeld aantal bezoekers per dag van de week.}
+\end{figure}
+
+Figuur~\ref{fig:mob_tijdsverloop} toont het tijdsverloop van het bezoekersaantal voor een voorbeeld van een sluitende supermarkt over 26 weken.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../proof_of_concept/Grafieken/mob_tijdsverloop.png}
+    \caption[Tijdsverloop bezoekersprofiel sluitende POI]{\label{fig:mob_tijdsverloop}
+        Tijdsverloop van het bezoekersaantal voor een sluitende supermarkt.}
+\end{figure}
 
 \subsection{Mobiliteitsfeatures}
 Uit de gegenereerde tijdreeksen werden de volgende features geaggregeerd op POI-niveau:
@@ -264,7 +312,7 @@ De features \texttt{pct\_nul\_dagen} en \texttt{trend\_coefficient} werden wel b
 \subsection{Experimentopzet}
 De mobiliteitsmodellen werden getraind op een combinatie van statische metadata en mobiliteitsfeatures. Vervolgens werden ze vergeleken met de baseline modellen (die enkel op statische metadata gebaseerd zijn). Voor dit experiment werden dezelfde drie modellen gebruikt als bij de baseline: Random Forest, XGBoost en Logistische Regressie. De resultaten worden weergegeven in Tabel~\ref{tab:resultaten}.
 
-\subsection{Beperkingen van de huidige POC}
+\section{Beperkingen van de huidige POC}
 De huidige implementatie kent een aantal beperkingen die in acht dienen te worden genomen bij de interpretatie van de resultaten.
 
 Ten eerste omvat de dataset vier landen met een sterk ongelijke verdeling: Frankrijk is veruit het meest vertegenwoordigd met circa 42.000 records, terwijl Luxemburg slechts 500 records heeft. Dit betekent dat het model voornamelijk patronen leert op basis van Franse supermarkten. Het is dus mogelijk dat het model minder goed presteert voor kleinere landen zoals Luxemburg. Dit komt doordat het voor deze soort landen, veel minder voorbeelden heeft gezien tijdens het trainen van de modellen.
