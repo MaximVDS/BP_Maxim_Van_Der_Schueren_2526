@@ -1,0 +1,5 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{df\PYGZus{}raw} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{read\PYGZus{}csv}\PYG{p}{(}\PYG{n}{DATA\PYGZus{}PATH}\PYG{p}{,} \PYG{n}{low\PYGZus{}memory}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}Geladen: }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{df\PYGZus{}raw}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{l+s+si}{:}\PYG{l+s+s2}{,}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ rijen x }\PYG{l+s+si}{\PYGZob{}}\PYG{n}{df\PYGZus{}raw}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ kolommen\PYGZdq{}}\PYG{p}{)}
+\PYG{n}{df\PYGZus{}raw}\PYG{o}{.}\PYG{n}{head}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{)}
+\end{MintedVerbatim}

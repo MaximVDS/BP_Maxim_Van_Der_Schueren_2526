@@ -1,0 +1,26 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}BASIS} \PYG{o}{=} \PYG{p}{[}
+\PYG{n}{col} \PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}
+\PYG{l+s+s2}{\PYGZdq{}name\PYGZus{}enc\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}country\PYGZus{}enc\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}source\PYGZus{}enc\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}priority\PYGZus{}enc\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}category\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}polygon\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}source\PYGZus{}id\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}leeftijd\PYGZus{}dagen\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}dagen\PYGZus{}sinds\PYGZus{}update\PYGZdq{}}\PYG{p}{,}
+\PYG{p}{]} \PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}uitgebreid}\PYG{o}{.}\PYG{n}{columns}
+\PYG{p}{]}
+
+\PYG{n}{MOB\PYGZus{}COLS} \PYG{o}{=} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}gem\PYGZus{}bezoekers\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}std\PYGZus{}bezoekers\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}max\PYGZus{}bezoekers\PYGZdq{}}\PYG{p}{]}
+\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}MOB} \PYG{o}{=} \PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}BASIS} \PYG{o}{+} \PYG{n}{MOB\PYGZus{}COLS}
+
+\PYG{n}{df\PYGZus{}m} \PYG{o}{=} \PYG{n}{df\PYGZus{}uitgebreid}\PYG{p}{[}\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}MOB} \PYG{o}{+} \PYG{p}{[}\PYG{n}{TARGET\PYGZus{}COL}\PYG{p}{]]}\PYG{o}{.}\PYG{n}{dropna}\PYG{p}{(}\PYG{n}{subset}\PYG{o}{=}\PYG{p}{[}\PYG{n}{TARGET\PYGZus{}COL}\PYG{p}{])}
+\PYG{n}{df\PYGZus{}m}\PYG{p}{[}\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}MOB}\PYG{p}{]} \PYG{o}{=} \PYG{n}{df\PYGZus{}m}\PYG{p}{[}\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}MOB}\PYG{p}{]}\PYG{o}{.}\PYG{n}{fillna}\PYG{p}{(}
+\PYG{n}{df\PYGZus{}m}\PYG{p}{[}\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}MOB}\PYG{p}{]}\PYG{o}{.}\PYG{n}{median}\PYG{p}{(}\PYG{n}{numeric\PYGZus{}only}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+\PYG{p}{)}
+
+\PYG{n}{X\PYGZus{}m} \PYG{o}{=} \PYG{n}{df\PYGZus{}m}\PYG{p}{[}\PYG{n}{FEATURE\PYGZus{}COLS\PYGZus{}MOB}\PYG{p}{]}
+\PYG{n}{y\PYGZus{}m} \PYG{o}{=} \PYG{n}{df\PYGZus{}m}\PYG{p}{[}\PYG{n}{TARGET\PYGZus{}COL}\PYG{p}{]}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
+
+\PYG{n}{X\PYGZus{}train\PYGZus{}m}\PYG{p}{,} \PYG{n}{X\PYGZus{}test\PYGZus{}m}\PYG{p}{,} \PYG{n}{y\PYGZus{}train\PYGZus{}m}\PYG{p}{,} \PYG{n}{y\PYGZus{}test\PYGZus{}m} \PYG{o}{=} \PYG{n}{train\PYGZus{}test\PYGZus{}split}\PYG{p}{(}
+\PYG{n}{X\PYGZus{}m}\PYG{p}{,} \PYG{n}{y\PYGZus{}m}\PYG{p}{,} \PYG{n}{test\PYGZus{}size}\PYG{o}{=}\PYG{n}{TEST\PYGZus{}SIZE}\PYG{p}{,} \PYG{n}{random\PYGZus{}state}\PYG{o}{=}\PYG{n}{RANDOM\PYGZus{}SEED}\PYG{p}{,} \PYG{n}{stratify}\PYG{o}{=}\PYG{n}{y\PYGZus{}m}
+\PYG{p}{)}
+\end{MintedVerbatim}

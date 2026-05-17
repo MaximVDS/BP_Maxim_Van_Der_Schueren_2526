@@ -1,0 +1,14 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}weekend\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}day\PYGZus{}of\PYGZus{}week\PYGZdq{}}\PYG{p}{]} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{5}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
+
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}openingsuren\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}start.oh\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{notna}\PYG{p}{()} \PYG{o}{\PYGZam{}} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}stop.oh\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{notna}\PYG{p}{())}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}start\PYGZus{}min\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}start.oh\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{k}{lambda} \PYG{n}{x}\PYG{p}{:} \PYG{n}{tijd\PYGZus{}naar\PYGZus{}minuten}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{k}{if} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{notna}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{k}{else} \PYG{n}{np}\PYG{o}{.}\PYG{n}{nan}\PYG{p}{)}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}stop\PYGZus{}min\PYGZdq{}}\PYG{p}{]}  \PYG{o}{=} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}stop.oh\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{apply}\PYG{p}{(}\PYG{k}{lambda} \PYG{n}{x}\PYG{p}{:} \PYG{n}{tijd\PYGZus{}naar\PYGZus{}minuten}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{k}{if} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{notna}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)} \PYG{k}{else} \PYG{n}{np}\PYG{o}{.}\PYG{n}{nan}\PYG{p}{)}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}verwachte\PYGZus{}openingsduur\PYGZus{}min\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}stop\PYGZus{}min\PYGZdq{}}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}start\PYGZus{}min\PYGZdq{}}\PYG{p}{]}
+
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{fillna}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
+
+\PYG{n}{le} \PYG{o}{=} \PYG{n}{LabelEncoder}\PYG{p}{()}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZus{}enc\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{le}\PYG{o}{.}\PYG{n}{fit\PYGZus{}transform}\PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}name\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{))}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}country\PYGZus{}enc\PYGZdq{}}\PYG{p}{]}  \PYG{o}{=} \PYG{n}{le}\PYG{o}{.}\PYG{n}{fit\PYGZus{}transform}\PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}country\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{))}
+\end{MintedVerbatim}

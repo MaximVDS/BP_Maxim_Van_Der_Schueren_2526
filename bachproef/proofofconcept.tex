@@ -13,9 +13,28 @@ Voor deze POC werden twee afzonderlijke datasets gebruikt die door Accurat BV te
 \paragraph{Historische dataset}
 Deze dataset vormt de primaire bron voor het trainen van de drie modellen en bevat in totaal 1.337.279 POI-records voor België, Nederland, Luxemburg en Frankrijk. De dataset is opgebouwd uit drie gekoppelde tabellen: een hoofdtabel met basisinformatie per POI (naam, adres, geografische coördinaten, merk, bron en operationele status), een historische statustabel die onder andere de \texttt{is\_active} gegevens doorheen de tijd bijhoudt, en een tabel van de openingsuren met de dagelijkse openings- en sluitingstijden per POI.
 
+\begin{listing}[H]
+    \begin{minted}{python}
+        df_raw = pd.read_csv(DATA_PATH, low_memory=False)
+        print(f"Geladen: {df_raw.shape[0]:,} rijen x {df_raw.shape[1]} kolommen")
+        df_raw.head(3)
+    \end{minted}
+    \caption[Data inladen]{Inladen van de historische dataset.}
+\end{listing}
+
 \paragraph{Basisinfo dataset}
 %TODO: aantal records controleren
 Deze dataset bevat enkel de meest recente operationele toestand van elke POI op het moment, zonder de historische statusregistraties. Deze dataset telt 120.422 records en 29 kolommen, en werd gebruikt als basis voor het uitbreidingsexperiment met kunstmatig gegenereerde mobiliteitsdata (zie sectie~\ref{sec:mobiliteitsdata}).
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        df_basis = pd.read_csv("../../data accurat/Basisinfo2.csv", low_memory=False, delimiter=";")
+        
+        label_counts = df_basis["is_active"].value_counts().sort_index()
+        label_pct    = label_counts / len(df_basis) * 100
+    \end{minted}
+    \caption[Inladen Basisinfo-dataset]{Inladen van de momentopname-dataset gebruikt als basis voor het mobiliteitsexperiment.}
+\end{listing}
 
 \vspace{1em}
 
@@ -48,6 +67,16 @@ De analyse van ontbrekende waarden onthulde een aantal kolommen die volledig of 
 aangezien deze geen bruikbare informatie kunnen bijdragen aan het model. In de volledige dataset was dit het geval voor \texttt{district\_id}.
 
 Andere kolommen vertoonden een aanzienlijk percentage ontbrekende waarden. Zo ontbrak \texttt{status\_end} in 49,55\% en \texttt{status\_start} in 42,68\% van de records. Dit is te verklaren doordat een ontbrekend eindtijdstip (\texttt{status\_end = Null}) doorgaans aangeeft dat de POI op dat moment nog steeds operationeel is. De openingsuren (\texttt{start.oh} en \texttt{stop.oh}) waren aanwezig in slechts 84,70\% respectievelijk 84,71\% van de records, wat erop wijst dat voor een deel van de POI's geen gestructureerde openingsuren beschikbaar zijn in de databank. Ontbrekende numerieke waarden in de overige feature-kolommen werden aangevuld met de mediaan van de betreffende kolom alvorens het model te trainen.
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        missing = df_raw.isnull().sum()
+        missing_pct = (missing / len(df_raw) * 100).round(2)
+        missing_df = pd.DataFrame({"missing": missing, "percentage": missing_pct})
+        missing_df[missing_df["missing"] > 0].sort_values("percentage", ascending=False)
+    \end{minted}
+    \caption[Analyse ontbrekende waarden]{Berekening van het percentage ontbrekende waarden per kolom.}
+\end{listing}
 
 \subsection{Verdeling top 15 merken}
 Om een beter inzicht te krijgen in de verdeling van de operationele status per merk werden de top 15 meest voorkomende merken gevisualiseerd op basis van hun open en geslotenstatus.
@@ -108,6 +137,57 @@ Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken 
         \label{tab:features}Overzicht van de gebruikte features om het model te trainen.}
 \end{table}
 
+Alvorens de features te construeren, werden de datumkolommen en numerieke kolommen omgezet naar het juiste datatype.
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        # Datumkolommen parsen
+        for col in ["status_start", "status_end", "inserted_at.poi",
+        "updated_at_history", "start_valid", "end_valid"]:
+        df[col] = pd.to_datetime(df[col], errors="coerce")
+        
+        # Numerieke kolommen saneren
+        numerieke_cols = [
+        "day_of_week", "visit", "work", "closed", "ok",
+        "is_deleted", "is_sensitive", "is_reserved_poi", "cluster",
+        "brand_id", "priority"
+        ]
+        for col in numerieke_cols:
+        if col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    \end{minted}
+    \caption[Datatype conversie]{Omzetting van datumkolommen naar het datetime-formaat en numerieke kolommen naar het juiste datatype.}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        df["is_weekend"] = (df["day_of_week"] >= 5).astype(int)
+        
+        df["heeft_openingsuren"] = (df["start.oh"].notna() & df["stop.oh"].notna()).astype(int)
+        df["start_min"] = df["start.oh"].apply(lambda x: tijd_naar_minuten(x) if pd.notna(x) else np.nan)
+        df["stop_min"]  = df["stop.oh"].apply(lambda x: tijd_naar_minuten(x) if pd.notna(x) else np.nan)
+        df["verwachte_openingsduur_min"] = df["stop_min"] - df["start_min"]
+        
+        df["is_deleted"] = df["is_deleted"].fillna(0).astype(int)
+        
+        le = LabelEncoder()
+        df["brand_id_enc"] = le.fit_transform(df["name"].astype(str))
+        df["country_enc"]  = le.fit_transform(df["country"].astype(str))
+    \end{minted}
+    \caption[Feature engineering: overige kenmerken]{Constructie van binaire, openingsuren- en categorische features.}
+\end{listing}
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        df = df.sort_values(["poi_id", "updated_at_history"])
+        df["poi_leeftijd_maanden"] = (
+        (df["updated_at_history"] - df.groupby("poi_id")["updated_at_history"].transform("min"))
+        .dt.days / 30).round()
+        df["n_observaties_poi"] = df.groupby("poi_id")["poi_id"].transform("count")
+    \end{minted}
+    \caption[Feature engineering: temporele kenmerken]{Constructie van de temporele en gedragsmatige features op basis van de historische dataset.}
+\end{listing}
+
 Drie van de features verdienen bijzondere aandacht vanwege hun relevantie voor POI-statusdetectie. Ten eerste gaf \texttt{n\_observaties\_poi} het totaal aantal geregistreerde observaties per POI weer. Dit gaf een indicatie van de datadichtheid per vestiging. Ten tweede weerspiegelde \texttt{poi\_leeftijd\_maanden} de periode tussen het eerste geregistreerde record van een POI in de databank en het huidige observatiemoment. Deze feature was relevant voor het model omdat jonge POI's, die nog geen stabiel bezoekpatroon hadden opgebouwd, gevoeliger zijn voor het cold-start probleem, zoals besproken in de literatuurstudie. Ten derde was \texttt{brand\_id\_enc} een label-encoded versie van de naam van het merk. Dit liet toe om merkspecifieke patronen te capteren.
 
 Daarnaast werden ook enkele andere features aangemaakt. Zo werd een feature \texttt{heeft\_openingsuren} gemaakt die aangaf of voor een gegeven observatie zowel een start- als een sluitingsuur aanwezig is. Wanneer openingsuren ontbraken, werd dit geïnterpreteerd als een duidelijk signaal. Een POI zonder geregistreerde openingsuren in de databank kan aangeven dat een point of interest gesloten is, aangezien actieve vestigingen doorgaans  een start- en einduur hebben. De numerieke features \texttt{start\_min} en \texttt{stop\_min} worden bij ontbrekende waarden niet ingevuld met een defaultwaarde. In plaats daarvan werden ze als \texttt{NaN} doorgegeven aan het model.
@@ -117,6 +197,30 @@ De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden omge
 \subsection{Train- en testopsplitsing}
 De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) via een gelaagde splitsing met een vaste willekeurige seed van 42. Oorspronkelijk werd een temporele splitsing toegepast op basis van de kolom \texttt{updated\_at\_history}, waarbij alle observaties voor de 80\% drempelwaarde aan de trainingsset werden toegewezen. Deze aanpak zorgde echter voor een bias in de klasseverdeling: de testset bevatte 88\% open POI's tegenover 72\% in de trainingsset. Hierdoor was de modelevaluatie onbetrouwbaar. Daarom werd er gekozen om een gelaagde splitsing te gebruiken dat de klasseverdeling van 74,67\% open en 25,33\% gesloten bewaart in zowel de trainingsset als de testset. Het resultaat hiervan is 1.069.823 trainingsrecords en 267.456 testrecords.
 
+\begin{listing}[H]
+    \begin{minted}{python}
+        df_model = df[FEATURE_COLS + [TARGET_COL]].dropna(subset=[TARGET_COL])
+        df_model[FEATURE_COLS] = df_model[FEATURE_COLS].fillna(
+        df_model[FEATURE_COLS].median(numeric_only=True)
+        )
+        
+        X = df_model[FEATURE_COLS]
+        y = df_model[TARGET_COL].astype(int)
+        
+        X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
+        test_size=0.2,
+        random_state=RANDOM_SEED,
+        stratify=y
+        )
+        
+        print(f"Train: {len(X_train):,} | Test: {len(X_test):,}")
+        print(f"Label-verdeling train — open: {y_train.mean():.2%}")
+        print(f"Label-verdeling test  — open: {y_test.mean():.2%}")
+    \end{minted}
+    \caption[Train- en testopsplitsing]{Gelaagde opsplitsing van de dataset in een trainingsset van 80\% en een testset van 20\%.}
+\end{listing}
+
 \section{Modellen}
 Voor de ontwikkeling van de Proof of concept werden drie machine learning modellen geïmplementeerd en met elkaar vergeleken: Logistische Regressie, Random Forest en XGBoost. Deze keuze is gebaseerd op de classificatiebenaderingen dat in de literatuurstudie aan bod kwamen. Door te kiezen voor zowel een eenvoudig lineair model als complexere boosting modellen kan worden nagegaan welke aanpak het meest geschikt is voor het statusdetectieprobleem.
 
@@ -124,8 +228,35 @@ Voor de ontwikkeling van de Proof of concept werden drie machine learning modell
 Logistische Regressie werd opgenomen als basismodel om een referentiepunt te bieden voor de complexere modellen. Het model leert een lineaire beslissingsgrens in de feature ruimte en is daardoor eenvoudig te interpreteren: 
 de absolute waarde van een coëfficiënt geeft rechtstreeks aan in welke mate een feature bijdraagt aan de voorspelling. Het nadeel hiervan is dat het model niet in staat is om complexe, niet-lineaire verbanden in de data te herkennen, wat bij een probleem zoals POI-statusdetectie een belangrijke beperking kan zijn. Het model maakte gebruik van de standaardparameters van de scikit-learn implementatie.
 
+\begin{listing}[H]
+    \begin{minted}{python}
+        lr = LogisticRegression(
+        class_weight="balanced",
+        max_iter=5000,
+        random_state=RANDOM_SEED
+        )
+        lr.fit(X_train, y_train)
+    \end{minted}
+    \caption[Training Logistische Regressie]{Initialisatie en training van het Logistische Regressie model.}
+\end{listing}
+
 \subsection{Model 2: Random Forest}
-Random Forest is een ensemblemethode dat een groot aantal beslissingsbomen traint op willekeurige deelsets van de data en features. De uiteindelijke voorspelling kwam tot stand aan de hand van een meerderheidsstemming over alle bomen. Dit maakte het model robuust tegen ruis en minder gevoelig voor overfitting dan een enkelvoudige beslissingsboom. Daarnaast berekent Random Forest automatisch een feature importance score op basis van de gemiddelde afname in onzuiverheden, wat toelaat om de meest relevante kenmerken voor de statusdetectie te identificeren. Het model werd getraind met de standaardparameters van de scikit-learn implementatie.Het model maakte gebruik van de standaardparameters van de scikit-learn implementatie.
+Random Forest is een ensemblemethode dat een groot aantal beslissingsbomen traint op willekeurige deelsets van de data en features. De uiteindelijke voorspelling kwam tot stand aan de hand van een meerderheidsstemming over alle bomen. Dit maakte het model robuust tegen ruis en minder gevoelig voor overfitting dan een enkelvoudige beslissingsboom. Daarnaast berekent Random Forest automatisch een feature importance score op basis van de gemiddelde afname in onzuiverheden, wat toelaat om de meest relevante kenmerken voor de statusdetectie te identificeren. Het model werd getraind met de standaardparameters van de scikit-learn implementatie.
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        rf = RandomForestClassifier(
+        n_estimators=200,
+        max_depth=None,
+        min_samples_leaf=5,
+        class_weight="balanced",
+        random_state=RANDOM_SEED,
+        n_jobs=-1
+        )
+        rf.fit(X_train, y_train)
+    \end{minted}
+    \caption[Training Random Forest]{Initialisatie en training van het Random Forest model.}
+\end{listing}
 
 \subsection{Model 3: XGBoost}
 Extreme Gradient Boosting (XGBoost) is een gradiënt-boostingalgoritme dat iteratief zwakke leerders toevoegt, waarbij elke nieuwe boom zich richt op de fouten van de vorige iteratie. Het algoritme staat bekend om zijn sterke 
@@ -152,6 +283,27 @@ prestaties op gestructureerde tabeldata en maakte gebruik van de hyperparameters
     \caption[XGBoost hyperparameters]{%
         \label{tab:xgb-params}Overzicht van de gebruikte hyperparameters voor het XGBoost-model.}
 \end{table}
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        neg, pos    = (y_train == 0).sum(), (y_train == 1).sum()
+        scale_pw    = neg / pos if pos > 0 else 1
+        
+        xgb_model = xgb.XGBClassifier(
+        n_estimators=300,
+        max_depth=6,
+        learning_rate=0.05,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        scale_pos_weight=scale_pw,
+        eval_metric="logloss",
+        random_state=RANDOM_SEED,
+        n_jobs=-1
+        )
+        xgb_model.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)
+    \end{minted}
+    \caption[Training XGBoost]{Initialisatie en training van het XGBoost model met dynamisch berekende klassengewichten.}
+\end{listing}
 
 \section{Evaluatie}
 
@@ -278,14 +430,94 @@ Figuur~\ref{fig:fi_xgb} geeft de top 15 features weer voor het XGBoost model. De
 \subsection{Motivatie}
 De drie voorgaande modellen baseerden zich uitsluitend op statische metadata. Zoals besproken in de literatuurstudie vormen dynamische mobiliteitspatronen een sterk aanvullend signaal voor de statusdetectie van een POI. Om de potentiële meerwaarde hiervan te onderzoeken, werd een uitbreidingsexperiment opgezet op basis van de basisinfo-dataset (zelfde dataset die gebruikt wordt voor de data analyse).
 
-\subsection{Datageeneratie}
-Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit onderzoek, werd deze data per POI gesimuleerd. De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een POI:
+\subsection{Datageneratie}
+Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit onderzoek, werd deze data per POI gesimuleerd. 
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        df_mob_basis = df_basis.copy()
+        
+        # Categorische kolommen omzetten
+        le = LabelEncoder()
+        for col in ["name", "country", "source", "priority"]:
+        if col in df_mob_basis.columns:
+        df_mob_basis[f"{col}_enc"] = le.fit_transform(
+        df_mob_basis[col].fillna("onbekend").astype(str)
+        )
+        
+        # Numerieke kolommen omzetten
+        for col in ["brand_id", "main_category_id", "cluster",
+        "is_deleted", "is_sensitive", "is_reserved_poi", "visit", "work"]:
+        if col in df_mob_basis.columns:
+        df_mob_basis[col] = pd.to_numeric(df_mob_basis[col], errors="coerce")
+        
+        if "polygon" in df_mob_basis.columns:
+        df_mob_basis["heeft_polygon"] = df_mob_basis["polygon"].notna().astype(int)
+        if "source_id" in df_mob_basis.columns:
+        df_mob_basis["heeft_source_id"] = df_mob_basis["source_id"].notna().astype(int)
+        
+        for col in ["inserted_at", "updated_at"]:
+        if col in df_mob_basis.columns:
+        df_mob_basis[col] = pd.to_datetime(df_mob_basis[col], errors="coerce")
+        
+        if "inserted_at" in df_mob_basis.columns:
+        df_mob_basis["poi_leeftijd_dagen"] = (
+        df_mob_basis["inserted_at"].max() - df_mob_basis["inserted_at"]
+        ).dt.days
+        
+        if "updated_at" in df_mob_basis.columns:
+        df_mob_basis["dagen_sinds_update"] = (
+        df_mob_basis["updated_at"].max() - df_mob_basis["updated_at"]
+        ).dt.days
+    \end{minted}
+    \caption[Voorbereiding Basisinfo-dataset]{Encoding en feature constructie op de momentopname-dataset als voorbereiding op het mobiliteitsexperiment.}
+\end{listing}
+
+De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een POI:
 
 \begin{itemize}
     \item Stabiele fase: het bezoekersaantal volgt een realistisch weekpatroon met stochastische ruis ($\sigma$ = 40\% van $\mu$). Met een piek op vrijdag, zaterdag en een dal op zondag.
     \item Decay fase: het bezoekersaantal daalt lineair over tien weken voor de sluiting, met een verhoogde ruis ($\sigma$ = 50\%) om onzekerheid te simuleren.
     \item Gesloten fase: het bezoekersaantal is nagenoeg nul, met een gemiddelde van circa twee bezoekers per dag als gevolg van occasioneel bezoek.
 \end{itemize}
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        WEEK_PATROON    = np.array([0.75, 0.80, 0.82, 0.85, 1.00, 0.95, 0.45])
+        BASIS_BEZOEKERS = 250
+        DECAY_WEKEN     = 10
+        N_WEKEN         = 26  # half jaar
+        
+        mob_rng = np.random.default_rng(RANDOM_SEED)
+        
+        def genereer_bezoekersprofiel(poi_id, is_actief, n_weken=N_WEKEN,
+        decay_weken=DECAY_WEKEN, basis=BASIS_BEZOEKERS):
+        records    = []
+        poi_factor = mob_rng.uniform(0.7, 1.3)
+        
+        for week in range(n_weken):
+        for dag in range(7):
+        mu_basis = basis * poi_factor * WEEK_PATROON[dag]
+        
+        if is_actief:
+        bezoekers = max(0, int(mob_rng.normal(mu_basis, mu_basis * 0.40)))
+        else:
+        weken_tot_sluiting = n_weken - week
+        if weken_tot_sluiting > decay_weken:
+        bezoekers = max(0, int(mob_rng.normal(mu_basis, mu_basis * 0.40)))
+        elif weken_tot_sluiting > 2:
+        decay_factor = weken_tot_sluiting / decay_weken
+        mu_decay     = mu_basis * decay_factor
+        bezoekers    = max(0, int(mob_rng.normal(mu_decay, mu_decay * 0.50 + 5)))
+        else:
+        bezoekers = max(0, int(mob_rng.normal(2, 3)))
+        
+        records.append({"poi_id": poi_id, "week": week,
+            "dag": dag, "bezoekers": bezoekers})
+        return pd.DataFrame(records)
+    \end{minted}
+    \caption[Generatiefunctie synthetische mobiliteitsdata]{Parameters en functie voor het simuleren van dagelijkse bezoekersaantallen per POI over 26 weken.}
+\end{listing}
 
 Elk POI-profiel werd gegenereerd over een periode van 26 weken. Om het verschil in bezoekersaantal tussen vestigingen te simuleren, kreeg elk POI een individuele variatiefactor toegepast.
 
@@ -318,10 +550,65 @@ Uit de gegenereerde tijdreeksen werden de volgende features geaggregeerd op POI-
     \item trend\_coefficient: geeft aan of het bezoekersaantal stijgt of daalt over de tijd, een negatieve waarde wijst op een dalende trend
 \end{itemize}
 
+\begin{listing}[H]
+    \begin{minted}{python}
+        open_ids     = df_mob_basis[df_mob_basis["is_active"] == 1]["id"].tolist()
+        gesloten_ids = df_mob_basis[df_mob_basis["is_active"] == 0]["id"].tolist()
+        
+        alle_profielen = []
+        for poi_id in open_ids:
+        alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=True))
+        for poi_id in gesloten_ids:
+        alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=False))
+        
+        df_mob_raw = pd.concat(alle_profielen, ignore_index=True)
+        
+        # Aggregeren op POI-niveau
+        agg_per_poi = (
+        df_mob_raw.sort_values(["poi_id", "week", "dag"])
+        .groupby("poi_id")["bezoekers"]
+        .agg(gem_bezoekers="mean", std_bezoekers="std",
+        max_bezoekers="max", pct_nul_dagen=lambda x: (x == 0).mean())
+        .reset_index()
+        )
+    \end{minted}
+    \caption[Generatie en aggregatie mobiliteitsdata]{Generatie van bezoekersprofielen per POI en aggregatie naar POI-niveau features.}
+\end{listing}
+
 De features \texttt{pct\_nul\_dagen} en \texttt{trend\_coefficient} zijn wel berekend maar vielen uiteindelijk buiten de finale feature set. Beide features maakten het voor het model te eenvoudig om de twee klassen te onderscheiden: zo vertoonde \texttt{trend\_coefficient} een gemiddelde waarde van $-$1.02 voor sluitende POI's tegenover $-$0.006 voor open POI's. 
 
 \subsection{Experimentopzet}
 De mobiliteitsmodellen maakten gebruik van een combinatie van statische metadata en mobiliteitsfeatures. Vervolgens werden ze vergeleken met de baseline modellen (die enkel op statische metadata gebaseerd zijn). Voor dit experiment werden dezelfde drie modellen gebruikt als bij de baseline: Random Forest, XGBoost en Logistische Regressie. De resultaten zijn weergegeven in Tabel~\ref{tab:resultaten}.
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        FEATURE_COLS_BASIS = [
+        col for col in [
+        "name_enc", "country_enc", "source_enc", "priority_enc",
+        "brand_id", "main_category_id", "cluster",
+        "is_sensitive", "is_reserved_poi",
+        "visit", "work", "heeft_polygon", "heeft_source_id",
+        "poi_leeftijd_dagen", "dagen_sinds_update",
+        ] if col in df_uitgebreid.columns
+        ]
+        
+        MOB_COLS = ["gem_bezoekers", "std_bezoekers", "max_bezoekers"]
+        FEATURE_COLS_MOB = FEATURE_COLS_BASIS + MOB_COLS
+        
+        df_m = df_uitgebreid[FEATURE_COLS_MOB + [TARGET_COL]].dropna(subset=[TARGET_COL])
+        df_m[FEATURE_COLS_MOB] = df_m[FEATURE_COLS_MOB].fillna(
+        df_m[FEATURE_COLS_MOB].median(numeric_only=True)
+        )
+        
+        X_m = df_m[FEATURE_COLS_MOB]
+        y_m = df_m[TARGET_COL].astype(int)
+        
+        X_train_m, X_test_m, y_train_m, y_test_m = train_test_split(
+        X_m, y_m, test_size=TEST_SIZE, random_state=RANDOM_SEED, stratify=y_m
+        )
+    \end{minted}
+    \caption[Train/test-splitsing mobiliteitsmodellen]{Opbouw van de feature set en gelaagde splitsing voor de mobiliteitsmodellen.}
+\end{listing}
 
 \section{Beperkingen van de huidige POC}
 De huidige implementatie kent een aantal beperkingen die in acht dienen te worden genomen bij de interpretatie van de resultaten.
@@ -340,6 +627,31 @@ Tot slot zijn de resultaten van het mobiliteitsexperiment gebaseerd op kunstmati
 
 \section{Implementatiedetails}
 De volledige POC is geïmplementeerd in Python 3.12.8. Tabel~\ref{tab:bibliotheken} geeft een overzicht van de gebruikte bibliotheken.
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        DATA_PATH   = "../../data accurat/Data_accurat.csv"
+        MODEL_DIR   = "./models"
+        RANDOM_SEED = 42
+        TEST_SIZE   = 0.2
+        
+        import numpy as np
+        import pandas as pd
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        from sklearn.model_selection import train_test_split
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn.preprocessing import LabelEncoder
+        from sklearn.metrics import (
+        accuracy_score, precision_score, recall_score,
+        f1_score, roc_auc_score
+        )
+        from sklearn.linear_model import LogisticRegression
+        import joblib
+        import xgboost as xgb
+    \end{minted}
+    \caption[Configuratie en bibliotheken]{Configuratie van de notebook en importeren van de gebruikte bibliotheken.}
+\end{listing}
 
 \begin{table}[H]
     \centering
