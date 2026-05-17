@@ -1,14 +1,28 @@
 \chapter{\IfLanguageName{dutch}{Proof of concept}{Proof of concept}}%
 \label{ch:proof-of-concept}
 
-Dit hoofdstuk beschrijft de ontwikkeling van de proof-of-concept (POC) voor het automatisch detecteren van de open of gesloten status van supermarkten op basis van historische POI-data. De POC is volledig geïmplementeerd in Python en bestaat uit de volgende fasen: data en bibliotheken inladen, data analyse, feature engineering, het trainen van de modellen en evaluatie. De implementatie is gedocumenteerd in een Jupyter Notebook.
+Dit hoofdstuk beschrijft de ontwikkeling van de proof-of-concept (POC) voor het automatisch detecteren van de open of gesloten status van supermarkten op basis van historische POI-data. De POC is volledig geïmplementeerd in Python en bestaat uit de volgende fasen: data en bibliotheken inladen, data analyse, feature engineering, het trainen van de modellen en evaluatie. De implementatie is gedocumenteerd in een Jupyter Notebook. De volledige broncode van de POC is beschikbaar op GitHub: \url{https://github.com/MaximVDS/BP_Maxim_Van_Der_Schueren_2526}.
 
 \section{Databronnen en datastructuur}
 \subsection{Geografische scope}
 Een eerste belangrijke beslissing is het beslissen van de geografische scope van de dataset. De interne POI-databank van Accurat bevat records voor meerdere Europese landen. Voor de ontwikkeling van deze POC werd gekozen om vier coherente landen te gebruiken: België, Nederland, Luxemburg en Frankrijk. Deze vormen een regio waarin vergelijkbare supermarktketens actief zijn, wat de vergelijkbaarheid van de geleerde patronen ten goede komt. 
 
 \subsection{Basisinformatie van de data}
-De volledige POI-dataset dat door Accurat BV ter beschikking werd gesteld, bevat in totaal 1.337.281 POI-records voor België, Nederland, Luxemburg en Frankrijk. De dataset is opgebouwd uit drie gekoppelde tabellen: een hoofdtabel met basisinformatie per POI (naam, adres, geografische coördinaten, merk, bron en operationele status), een historische statustabel dat onder andere de \texttt{is\_active} gegevens doorheen de tijd bijhoudt, en een tabel van de openingsuren met de dagelijkse openings- en sluitingstijden per POI.
+Voor deze POC werden twee afzonderlijke datasets gebruikt die door Accurat BV ter beschikking werden gesteld.
+
+\paragraph{Historische dataset}
+Deze dataset vormt de primaire bron voor het trainen van de drie modellen en bevat in totaal 1.337.279 POI-records voor België, Nederland, Luxemburg en Frankrijk. De dataset is opgebouwd uit drie gekoppelde tabellen: een hoofdtabel met basisinformatie per POI (naam, adres, geografische coördinaten, merk, bron en operationele status), een historische statustabel die onder andere de \texttt{is\_active} gegevens doorheen de tijd bijhoudt, en een tabel van de openingsuren met de dagelijkse openings- en sluitingstijden per POI.
+
+\paragraph{Basisinfo dataset}
+%TODO: aantal records controleren
+Deze dataset bevat enkel de meest recente operationele toestand van elke POI op het moment, zonder de historische statusregistraties. Deze dataset telt 120.422 records en 29 kolommen, en werd gebruikt als basis voor het uitbreidingsexperiment met kunstmatig gegenereerde mobiliteitsdata (zie sectie~\ref{sec:mobiliteitsdata}).
+
+\vspace{1em}
+
+Beide datasets worden op regelmatige basis bijgewerkt: de data van Accurat wordt elke 30 dagen ververst. Dit betekent dat er steeds een validatieachterstand kan optreden van maximaal één maand tussen de werkelijke toestand van een POI en de toestand die in de databank is geregistreerd. Dit is een uitdaging die aansluit bij de bespreking van de data-actualiteit in sectie~\ref{sec:uitdagingen}.
+
+% TODO: Nagaan of de vermelding van Locatus en andere externe bronnen (naast zelf gescrapte data) expliciet vermeld mag worden in de bachelorproef. De data van Accurat is afkomstig uit een combinatie van eigen scraping en externe dataleveranciers zoals Locatus.
+De data is afkomstig uit meerdere bronnen: enerzijds vergaart Accurat zelf data van de POI's via HTML en API scraping, anderzijds worden ook data van externe dataleveranciers gebruikt. Dezen aanpak vergroot de dekking maar introduceert ook de uitdagingen van POI-conflation zoals besproken in sectie~\ref{sec:gegevensbronnen}.
 
 \section{Data-analyse}
 
@@ -259,6 +273,7 @@ Figuur~\ref{fig:fi_xgb} geeft de top 15 features weer voor het XGBoost model. De
 \end{figure}
 
 \section{Uitbreiding: kunstmatig gegenereerde mobiliteitsdata}
+\label{sec:mobiliteitsdata}
 
 \subsection{Motivatie}
 De drie voorgaande modellen baseerden zich uitsluitend op statische metadata. Zoals besproken in de literatuurstudie vormen dynamische mobiliteitspatronen een sterk aanvullend signaal voor de statusdetectie van een POI. Om de potentiële meerwaarde hiervan te onderzoeken, werd een uitbreidingsexperiment opgezet op basis van de basisinfo-dataset (zelfde dataset die gebruikt wordt voor de data analyse).
