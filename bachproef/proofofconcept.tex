@@ -431,6 +431,7 @@ De drie voorgaande modellen baseerden zich uitsluitend op statische metadata. Zo
 \subsection{Datageneratie}
 Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit onderzoek, werd deze data per POI gesimuleerd. 
 
+%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         df_mob_basis = df_basis.copy()
@@ -449,13 +450,13 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit ond
         df_mob_basis[col] = pd.to_numeric(df_mob_basis[col], errors="coerce")
         
         if "polygon" in df_mob_basis.columns:
-        df_mob_basis["heeft_polygon"] = df_mob_basis["polygon"].notna().astype(int)
+            df_mob_basis["heeft_polygon"] = df_mob_basis["polygon"].notna().astype(int)
         if "source_id" in df_mob_basis.columns:
-        df_mob_basis["heeft_source_id"] = df_mob_basis["source_id"].notna().astype(int)
+            df_mob_basis["heeft_source_id"] = df_mob_basis["source_id"].notna().astype(int)
         
         for col in ["inserted_at", "updated_at"]:
-        if col in df_mob_basis.columns:
-        df_mob_basis[col] = pd.to_datetime(df_mob_basis[col], errors="coerce")
+            if col in df_mob_basis.columns:
+                df_mob_basis[col] = pd.to_datetime(df_mob_basis[col], errors="coerce")
         
         if "inserted_at" in df_mob_basis.columns:
         df_mob_basis["poi_leeftijd_dagen"] = (
@@ -478,40 +479,39 @@ De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een 
     \item Gesloten fase: het bezoekersaantal is nagenoeg nul, met een gemiddelde van circa twee bezoekers per dag als gevolg van occasioneel bezoek.
 \end{itemize}
 
+%TODO
 \begin{listing}[H]
     \begin{minted}{python}
-        WEEK_PATROON    = np.array([0.75, 0.80, 0.82, 0.85, 1.00, 0.95, 0.45])
+        WEEK_PATROON = np.array([0.75, 0.80, 0.82, 0.85, 1.00, 0.95, 0.45])
         BASIS_BEZOEKERS = 250
-        DECAY_WEKEN     = 10
-        N_WEKEN         = 26  # half jaar
+        DECAY_WEKEN = 10
+        N_WEKEN = 26  # half jaar
         
         mob_rng = np.random.default_rng(RANDOM_SEED)
         
-        def genereer_bezoekersprofiel(poi_id, is_actief, n_weken=N_WEKEN,
-        decay_weken=DECAY_WEKEN, basis=BASIS_BEZOEKERS):
-        records    = []
-        poi_factor = mob_rng.uniform(0.7, 1.3)
-        
-        for week in range(n_weken):
-        for dag in range(7):
-        mu_basis = basis * poi_factor * WEEK_PATROON[dag]
-        
-        if is_actief:
-        bezoekers = max(0, int(mob_rng.normal(mu_basis, mu_basis * 0.40)))
-        else:
-        weken_tot_sluiting = n_weken - week
-        if weken_tot_sluiting > decay_weken:
-        bezoekers = max(0, int(mob_rng.normal(mu_basis, mu_basis * 0.40)))
-        elif weken_tot_sluiting > 2:
-        decay_factor = weken_tot_sluiting / decay_weken
-        mu_decay     = mu_basis * decay_factor
-        bezoekers    = max(0, int(mob_rng.normal(mu_decay, mu_decay * 0.50 + 5)))
-        else:
-        bezoekers = max(0, int(mob_rng.normal(2, 3)))
-        
-        records.append({"poi_id": poi_id, "week": week,
-            "dag": dag, "bezoekers": bezoekers})
-        return pd.DataFrame(records)
+        def genereer_bezoekersprofiel(poi_id, is_actief, n_weken=N_WEKEN, decay_weken=DECAY_WEKEN, basis=BASIS_BEZOEKERS):
+            records    = []
+            poi_factor = mob_rng.uniform(0.7, 1.3)
+            
+            for week in range(n_weken):
+                for dag in range(7):
+                    mu_basis = basis * poi_factor * WEEK_PATROON[dag]
+            
+                    if is_actief:
+                        bezoekers = max(0, int(mob_rng.normal(mu_basis, mu_basis * 0.40)))
+                    else:
+                        weken_tot_sluiting = n_weken - week
+                        if weken_tot_sluiting > decay_weken:
+                            bezoekers = max(0, int(mob_rng.normal(mu_basis, mu_basis * 0.40)))
+                        elif weken_tot_sluiting > 2:
+                            decay_factor = weken_tot_sluiting / decay_weken
+                            mu_decay     = mu_basis * decay_factor
+                            bezoekers    = max(0, int(mob_rng.normal(mu_decay, mu_decay * 0.50 + 5)))
+                        else:
+                            bezoekers = max(0, int(mob_rng.normal(2, 3)))
+            
+                    records.append({"poi_id": poi_id, "week": week, "dag": dag, "bezoekers": bezoekers})
+            return pd.DataFrame(records)
     \end{minted}
     \caption[Generatiefunctie synthetische mobiliteitsdata]{Parameters en functie voor het simuleren van dagelijkse bezoekersaantallen per POI over 26 weken.}
 \end{listing}
@@ -547,27 +547,32 @@ Uit de gegenereerde tijdreeksen werden de volgende features geaggregeerd op POI-
     \item trend\_coefficient: geeft aan of het bezoekersaantal stijgt of daalt over de tijd, een negatieve waarde wijst op een dalende trend
 \end{itemize}
 
+%TODO
 \begin{listing}[H]
     \begin{minted}{python}
-        open_ids     = df_mob_basis[df_mob_basis["is_active"] == 1]["id"].tolist()
+        open_ids = df_mob_basis[df_mob_basis["is_active"] == 1]["id"].tolist()
         gesloten_ids = df_mob_basis[df_mob_basis["is_active"] == 0]["id"].tolist()
         
         alle_profielen = []
         for poi_id in open_ids:
-        alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=True))
+            alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=True))
         for poi_id in gesloten_ids:
-        alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=False))
+            alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=False))
         
         df_mob_raw = pd.concat(alle_profielen, ignore_index=True)
         
-        # Aggregeren op POI-niveau
         agg_per_poi = (
-        df_mob_raw.sort_values(["poi_id", "week", "dag"])
-        .groupby("poi_id")["bezoekers"]
-        .agg(gem_bezoekers="mean", std_bezoekers="std",
-        max_bezoekers="max", pct_nul_dagen=lambda x: (x == 0).mean())
-        .reset_index()
+            df_mob_sorted.groupby("poi_id")["bezoekers"]
+            .agg(gem_bezoekers="mean", std_bezoekers="std",
+            max_bezoekers="max", pct_nul_dagen=lambda x: (x == 0).mean())
+            .reset_index()
         )
+        
+        df_uitgebreid = df_mob_basis.merge(
+        df_mob_features.rename(columns={"poi_id": "id"}), on="id", how="left"
+        )
+        
+        MOB_COLS = ["gem_bezoekers", "std_bezoekers", "max_bezoekers"]
     \end{minted}
     \caption[Generatie en aggregatie mobiliteitsdata]{Generatie van bezoekersprofielen per POI en aggregatie naar POI-niveau features.}
 \end{listing}
@@ -577,16 +582,17 @@ De features \texttt{pct\_nul\_dagen} en \texttt{trend\_coefficient} zijn wel ber
 \subsection{Experimentopzet}
 De mobiliteitsmodellen maakten gebruik van een combinatie van statische metadata en mobiliteitsfeatures. Vervolgens werden ze vergeleken met de baseline modellen (die enkel op statische metadata gebaseerd zijn). Voor dit experiment werden dezelfde drie modellen gebruikt: Random Forest, XGBoost en Logistische Regressie. De resultaten zijn weergegeven in Tabel~\ref{tab:resultaten}.
 
+%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         FEATURE_COLS_BASIS = [
-        col for col in [
-        "name_enc", "country_enc", "source_enc", "priority_enc",
-        "brand_id", "main_category_id", "cluster",
-        "is_sensitive", "is_reserved_poi",
-        "visit", "work", "heeft_polygon", "heeft_source_id",
-        "poi_leeftijd_dagen", "dagen_sinds_update",
-        ] if col in df_uitgebreid.columns
+            col for col in [
+            "name_enc", "country_enc", "source_enc", "priority_enc",
+            "brand_id", "main_category_id", "cluster",
+            "is_sensitive", "is_reserved_poi",
+            "visit", "work", "heeft_polygon", "heeft_source_id",
+            "poi_leeftijd_dagen", "dagen_sinds_update",
+            ] if col in df_uitgebreid.columns
         ]
         
         MOB_COLS = ["gem_bezoekers", "std_bezoekers", "max_bezoekers"]
@@ -625,6 +631,7 @@ Tot slot zijn de resultaten van het mobiliteitsexperiment gebaseerd op kunstmati
 \section{Implementatiedetails}
 De volledige POC is geïmplementeerd in Python 3.12.8. Tabel~\ref{tab:bibliotheken} geeft een overzicht van de gebruikte bibliotheken.
 
+%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         DATA_PATH   = "../../data accurat/Data_accurat.csv"
