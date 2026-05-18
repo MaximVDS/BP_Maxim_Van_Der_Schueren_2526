@@ -446,8 +446,8 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit ond
         # Numerieke kolommen omzetten
         for col in ["brand_id", "main_category_id", "cluster",
         "is_deleted", "is_sensitive", "is_reserved_poi", "visit", "work"]:
-        if col in df_mob_basis.columns:
-        df_mob_basis[col] = pd.to_numeric(df_mob_basis[col], errors="coerce")
+            if col in df_mob_basis.columns:
+               df_mob_basis[col] = pd.to_numeric(df_mob_basis[col], errors="coerce")
         
         if "polygon" in df_mob_basis.columns:
             df_mob_basis["heeft_polygon"] = df_mob_basis["polygon"].notna().astype(int)
@@ -459,14 +459,14 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit ond
                 df_mob_basis[col] = pd.to_datetime(df_mob_basis[col], errors="coerce")
         
         if "inserted_at" in df_mob_basis.columns:
-        df_mob_basis["poi_leeftijd_dagen"] = (
+            df_mob_basis["poi_leeftijd_dagen"] = (
         df_mob_basis["inserted_at"].max() - df_mob_basis["inserted_at"]
-        ).dt.days
+            ).dt.days
         
         if "updated_at" in df_mob_basis.columns:
-        df_mob_basis["dagen_sinds_update"] = (
+            df_mob_basis["dagen_sinds_update"] = (
         df_mob_basis["updated_at"].max() - df_mob_basis["updated_at"]
-        ).dt.days
+            ).dt.days
     \end{minted}
     \caption[Voorbereiding Basisinfo-dataset]{Encoding en feature constructie op de momentopname-dataset als voorbereiding op het mobiliteitsexperiment.}
 \end{listing}

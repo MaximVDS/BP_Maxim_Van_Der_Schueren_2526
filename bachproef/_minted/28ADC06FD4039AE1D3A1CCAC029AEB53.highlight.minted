@@ -11,8 +11,8 @@
 \PYG{c+c1}{\PYGZsh{} Numerieke kolommen omzetten}
 \PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}category\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
 \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{]:}
-\PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
-\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{to\PYGZus{}numeric}\PYG{p}{(}\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{],} \PYG{n}{errors}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}coerce\PYGZdq{}}\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
+       \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{to\PYGZus{}numeric}\PYG{p}{(}\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{],} \PYG{n}{errors}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}coerce\PYGZdq{}}\PYG{p}{)}
 
 \PYG{k}{if} \PYG{l+s+s2}{\PYGZdq{}polygon\PYGZdq{}} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
     \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}polygon\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}polygon\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{notna}\PYG{p}{()}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{int}\PYG{p}{)}
@@ -24,12 +24,12 @@
         \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{to\PYGZus{}datetime}\PYG{p}{(}\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{],} \PYG{n}{errors}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}coerce\PYGZdq{}}\PYG{p}{)}
 
 \PYG{k}{if} \PYG{l+s+s2}{\PYGZdq{}inserted\PYGZus{}at\PYGZdq{}} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
-\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}leeftijd\PYGZus{}dagen\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}
+    \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}leeftijd\PYGZus{}dagen\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}
 \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}inserted\PYGZus{}at\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{max}\PYG{p}{()} \PYG{o}{\PYGZhy{}} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}inserted\PYGZus{}at\PYGZdq{}}\PYG{p}{]}
-\PYG{p}{)}\PYG{o}{.}\PYG{n}{dt}\PYG{o}{.}\PYG{n}{days}
+    \PYG{p}{)}\PYG{o}{.}\PYG{n}{dt}\PYG{o}{.}\PYG{n}{days}
 
 \PYG{k}{if} \PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZdq{}} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
-\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}dagen\PYGZus{}sinds\PYGZus{}update\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}
+    \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}dagen\PYGZus{}sinds\PYGZus{}update\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}
 \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{max}\PYG{p}{()} \PYG{o}{\PYGZhy{}} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZdq{}}\PYG{p}{]}
-\PYG{p}{)}\PYG{o}{.}\PYG{n}{dt}\PYG{o}{.}\PYG{n}{days}
+    \PYG{p}{)}\PYG{o}{.}\PYG{n}{dt}\PYG{o}{.}\PYG{n}{days}
 \end{MintedVerbatim}
