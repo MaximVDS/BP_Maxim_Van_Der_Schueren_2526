@@ -46,9 +46,7 @@
 \chapter*{\IfLanguageName{dutch}{Samenvatting}{Abstract}}
 Point of Interest (POI) databanken vormen de basis van locatiegebaseerde analyses zoals marktstudies en inzicht over concurrentie binnen een gebied. Een veelvoorkomend probleem is dat de operationele status van POI's in databanken vaak verouderd of onvolledig is. Dit kan leiden tot foutieve beslissingen en ondermijnt de betrouwbaarheid van locatiegebaseerde toepassingen. Momenteel gebeurt de controle van de gegevens grotendeels handmatig. Dit zorgt voor een aanzienlijke vertraging tussen de werkelijke toestand van een POI en de registratie ervan.
 
-De centrale onderzoeksvraag van dit onderzoek is: \textit{In welke mate kan artificiële intelligentie ingezet worden om de operationele status van supermarkten automatisch en betrouwbaar te detecteren op basis van historische POI-data?}. 
-
-Om dit te onderzoeken werd een proof of concept ontwikkeld op basis van de interne POI databank van Accurat BV voor België, Nederland, Luxemburg en Frankrijk.
+De centrale onderzoeksvraag van dit onderzoek is: \textit{Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open of gesloten status van Points of Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?}. Om dit te onderzoeken werd een proof of concept ontwikkeld op basis van de interne POI databank van Accurat BV voor België, Nederland, Luxemburg en Frankrijk.
 
 Voor de proof of concept werd een uitgebreide feature engineering fase opgezet waarbij relevante kenmerken werden ontwikkeld voor het trainen van de modellen, zoals \texttt{poi\_leeftijd\_maanden}, \texttt{n\_observaties\_poi} en \texttt{heeft\_openingsuren}. Er werden drie machine learning modellen getraind en met elkaar vergeleken: Logistische Regressie, Random Forest en XGBoost. De modellen werden geëvalueerd op basis van accuracy, precision, recall, F1-score en ROC-AUC, waarbij de detectie van gesloten vestigingen als voornaamste doelstelling werd gebruikt.
 

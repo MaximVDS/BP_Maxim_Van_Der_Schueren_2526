@@ -17,8 +17,8 @@
 %  \item \ldots
 %\end{itemize}
 
-In een wereld die steeds meer gedreven wordt door data, is de accuraatheid van locatiegegevens cruciaal. POI-databanken spelen een belangrijke rol in locatiegebaseerde toepassingen, zoals navigatiesoftware of marktanalyse. Wanneer deze gegevens niet langer overeenkomen met de fysieke werkelijkheid, heeft dit gevolgen voor de betrouwbaarheid van de beslissingen die hierop gebaseerd worden. Deze bachelorproef onderzoekt hoe artificiële 
-intelligentie kan ingezet worden om de status van Points-of-Interest (POI) automatisch te monitoren.
+In een wereld die steeds meer gedreven wordt door data, is de accuraatheid van locatiegegevens cruciaal. Point of Interest (POI) databanken spelen een belangrijke rol in locatiegebaseerde toepassingen, zoals navigatiesoftware of marktanalyse. Wanneer deze gegevens niet langer overeenkomen met de fysieke werkelijkheid, heeft dit gevolgen voor de betrouwbaarheid van de beslissingen die hierop gebaseerd worden. Deze bachelorproef onderzoekt hoe artificiële 
+intelligentie kan ingezet worden om de status van POI's automatisch te monitoren.
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
@@ -27,16 +27,16 @@ intelligentie kan ingezet worden om de status van Points-of-Interest (POI) autom
 
 Iedereen heeft het wel al eens meegemaakt: je zoekt online naar een supermarkt in de buurt en je vertrekt op basis van deze gegevens, maar eenmaal aangekomen blijkt dat de winkel gesloten of zelfs verdwenen is. Voor consumenten is dit vervelend, maar voor bedrijven die hun beslissingen baseren op deze locatiegegevens kan het drastische gevolgen hebben. Denk bijvoorbeeld aan een logistiek bedrijf dat zijn bezorgroutes optimaliseert op basis van verouderde POI data. Deze bachelorproef onderzoekt hoe we met artificiële intelligentie dit probleem kunnen aanpakken.
 
-Organisaties die werken met locatiedata, maken gebruik van Point-of-interest (POI) gegevens om analyses te maken rond bezoekersgedrag, marktpotentieel en concurrentie. Daarbij is het cruciaal dat de gegevens kwalitatief en up-to-date zijn. In de praktijk blijkt echter dat POI databanken vertraging oplopen, zo openen of sluiten winkels zonder dat dit meteen wordt weergegeven. Dat leidt tot foutieve inzichten en beïnvloedt de betrouwbaarheid van locatiegebaseerde toepassingen.
+Organisaties die werken met locatiedata, maken gebruik van Point of Interest gegevens om analyses te maken rond bezoekersgedrag, marktpotentieel en concurrentie. Daarbij is het cruciaal dat de gegevens kwalitatief en up-to-date zijn. In de praktijk blijkt echter dat POI databanken vertraging oplopen, zo openen of sluiten winkels zonder dat dit meteen wordt weergegeven. Dit kan leiden tot foutieve inzichten en kan de betrouwbaarheid van locatiegebaseerde toepassingen beïnvloeden.
 
-Huidige methoden om deze statuswijzigingen te monitoren zijn vaak handmatig, wat resulteert in een aanzienlijke vertraging tussen de daadwerkelijke status van de POI en de databanken.
+Huidige methoden om deze statuswijzigingen te monitoren zijn vaak handmatig, wat resulteert in een aanzienlijke vertraging tussen de daadwerkelijke status van de POI en de databank.
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
 %Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
 
-De centrale onderzoeksvraag van deze bachelorproef is: \textit{“Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open of gesloten status van Points-of-Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?”}.
+De centrale onderzoeksvraag van deze bachelorproef is: \textit{“Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open of gesloten status van Points of Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?”}.
 
 Het onderzoek focust zich op supermarkten als POI type. Dit omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en de beschikbaarheid van voldoende publieke data via platformen zoals OpenStreetMap, Google Maps of Tripadvisor. 
 
@@ -52,7 +52,7 @@ Om deze centrale onderzoeksvraag te beantwoorden, worden onderstaande deelvragen
 \textbf{Deelvragen oplossingsdomein:}
 \begin{itemize}
     \item Welke AI- en machine learning technieken zijn geschikt voor de detectie van historische POI openingen en sluitingen, en wat zijn de voor en nadelen?
-    \item Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI’s worden gevalideerd?
+    \item Hoe kan de betrouwbaarheid van automatisch gedetecteerde wijzigingen in de bedrijfstoestand van POI's worden gevalideerd?
 \end{itemize}
 
 
@@ -61,7 +61,7 @@ Om deze centrale onderzoeksvraag te beantwoorden, worden onderstaande deelvragen
 
 %Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
 
-Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waarmee voorspeld kan worden of een supermarkt op een bepaald moment open of gesloten is. Hiervoor worden drie supervised classificatiemodellen geïmplementeerd en vergeleken: Logistische Regressie als interpreteerbaar baseline model, Random Forest en XGBoost als complexere ensemblemethoden. Aanvullend wordt onderzocht of synthetische mobiliteitsdata een significante meerwaarde biedt ten opzichte van een model dat uitsluitend op statische metadata gebaseerd is. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, recall en precision. Het eindresultaat is een werkend prototype, aangevuld met een evaluatie van de modellen en aanbevelingen voor verdere onderzoeken. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
+Het doel van deze bachelorproef is het ontwikkelen van een proof of concept waarmee voorspeld kan worden of een supermarkt op een bepaald moment open of gesloten is. Hiervoor worden drie supervised classificatiemodellen geïmplementeerd en vergeleken: Logistische Regressie als interpreteerbaar baseline model, Random Forest en XGBoost als complexere ensemblemethoden. Aanvullend wordt onderzocht of synthetische mobiliteitsdata een significante meerwaarde biedt ten opzichte van een model dat uitsluitend op statische metadata gebaseerd is. De verschillende modellen worden geëvalueerd en met elkaar vergeleken op basis van prestatiecriteria zoals accuracy, recall, precision, F1-score en ROC-AUC. Het eindresultaat is een werkend prototype, aangevuld met een evaluatie van de modellen en aanbevelingen voor verdere onderzoeken. De doelgroep van dit onderzoek bestaat uit organisaties die werken met POI data.
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
 \label{sec:opzet-bachelorproef}
@@ -70,7 +70,7 @@ Het doel van deze bachelorproef is het ontwikkelen van een proof-of-concept waar
 % geven van de opbouw van de rest van de tekst. Deze sectie bevat al een aanzet
 % die je kan aanvullen/aanpassen in functie van je eigen tekst.
 
-De rest van deze bachelorproef is als volgt opgebouwd:
+Het vervolg van deze bachelorproef is als volgt opgebouwd:
 
 In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie.
 
