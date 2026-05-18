@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{missing} \PYG{o}{=} \PYG{n}{df\PYGZus{}raw}\PYG{o}{.}\PYG{n}{isnull}\PYG{p}{()}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{()}
+\PYG{n}{missing\PYGZus{}pct} \PYG{o}{=} \PYG{p}{(}\PYG{n}{missing} \PYG{o}{/} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{df\PYGZus{}raw}\PYG{p}{)} \PYG{o}{*} \PYG{l+m+mi}{100}\PYG{p}{)}\PYG{o}{.}\PYG{n}{round}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{missing\PYGZus{}df} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{DataFrame}\PYG{p}{(\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}missing\PYGZdq{}}\PYG{p}{:} \PYG{n}{missing}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}percentage\PYGZdq{}}\PYG{p}{:} \PYG{n}{missing\PYGZus{}pct}\PYG{p}{\PYGZcb{})}
+\PYG{n}{missing\PYGZus{}df}\PYG{p}{[}\PYG{n}{missing\PYGZus{}df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}missing\PYGZdq{}}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{sort\PYGZus{}values}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}percentage\PYGZdq{}}\PYG{p}{,} \PYG{n}{ascending}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+\end{MintedVerbatim}

@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{df} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{sort\PYGZus{}values}\PYG{p}{([}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZus{}history\PYGZdq{}}\PYG{p}{])}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}leeftijd\PYGZus{}maanden\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{p}{(}
+\PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZus{}history\PYGZdq{}}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{df}\PYG{o}{.}\PYG{n}{groupby}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}id\PYGZdq{}}\PYG{p}{)[}\PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZus{}history\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{transform}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}min\PYGZdq{}}\PYG{p}{))}
+\PYG{o}{.}\PYG{n}{dt}\PYG{o}{.}\PYG{n}{days} \PYG{o}{/} \PYG{l+m+mi}{30}\PYG{p}{)}\PYG{o}{.}\PYG{n}{round}\PYG{p}{()}
+\PYG{n}{df}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}n\PYGZus{}observaties\PYGZus{}poi\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{df}\PYG{o}{.}\PYG{n}{groupby}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}id\PYGZdq{}}\PYG{p}{)[}\PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}id\PYGZdq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{transform}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}count\PYGZdq{}}\PYG{p}{)}
+\end{MintedVerbatim}

@@ -1,0 +1,17 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{neg}\PYG{p}{,} \PYG{n}{pos}    \PYG{o}{=} \PYG{p}{(}\PYG{n}{y\PYGZus{}train} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(),} \PYG{p}{(}\PYG{n}{y\PYGZus{}train} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{()}
+\PYG{n}{scale\PYGZus{}pw}    \PYG{o}{=} \PYG{n}{neg} \PYG{o}{/} \PYG{n}{pos} \PYG{k}{if} \PYG{n}{pos} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{k}{else} \PYG{l+m+mi}{1}
+
+\PYG{n}{xgb\PYGZus{}model} \PYG{o}{=} \PYG{n}{xgb}\PYG{o}{.}\PYG{n}{XGBClassifier}\PYG{p}{(}
+\PYG{n}{n\PYGZus{}estimators}\PYG{o}{=}\PYG{l+m+mi}{300}\PYG{p}{,}
+\PYG{n}{max\PYGZus{}depth}\PYG{o}{=}\PYG{l+m+mi}{6}\PYG{p}{,}
+\PYG{n}{learning\PYGZus{}rate}\PYG{o}{=}\PYG{l+m+mf}{0.05}\PYG{p}{,}
+\PYG{n}{subsample}\PYG{o}{=}\PYG{l+m+mf}{0.8}\PYG{p}{,}
+\PYG{n}{colsample\PYGZus{}bytree}\PYG{o}{=}\PYG{l+m+mf}{0.8}\PYG{p}{,}
+\PYG{n}{scale\PYGZus{}pos\PYGZus{}weight}\PYG{o}{=}\PYG{n}{scale\PYGZus{}pw}\PYG{p}{,}
+\PYG{n}{eval\PYGZus{}metric}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}logloss\PYGZdq{}}\PYG{p}{,}
+\PYG{n}{random\PYGZus{}state}\PYG{o}{=}\PYG{n}{RANDOM\PYGZus{}SEED}\PYG{p}{,}
+\PYG{n}{n\PYGZus{}jobs}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}
+\PYG{p}{)}
+\PYG{n}{xgb\PYGZus{}model}\PYG{o}{.}\PYG{n}{fit}\PYG{p}{(}\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{,} \PYG{n}{eval\PYGZus{}set}\PYG{o}{=}\PYG{p}{[(}\PYG{n}{X\PYGZus{}test}\PYG{p}{,} \PYG{n}{y\PYGZus{}test}\PYG{p}{)],} \PYG{n}{verbose}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+\end{MintedVerbatim}

@@ -1,0 +1,21 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{DATA\PYGZus{}PATH}   \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}../../data accurat/Data\PYGZus{}accurat.csv\PYGZdq{}}
+\PYG{n}{MODEL\PYGZus{}DIR}   \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}./models\PYGZdq{}}
+\PYG{n}{RANDOM\PYGZus{}SEED} \PYG{o}{=} \PYG{l+m+mi}{42}
+\PYG{n}{TEST\PYGZus{}SIZE}   \PYG{o}{=} \PYG{l+m+mf}{0.2}
+
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{pandas}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{pd}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{matplotlib.pyplot}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{plt}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{seaborn}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{sns}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.model\PYGZus{}selection}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{train\PYGZus{}test\PYGZus{}split}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.ensemble}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{RandomForestClassifier}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.preprocessing}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{LabelEncoder}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.metrics}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{p}{(}
+\PYG{n}{accuracy\PYGZus{}score}\PYG{p}{,} \PYG{n}{precision\PYGZus{}score}\PYG{p}{,} \PYG{n}{recall\PYGZus{}score}\PYG{p}{,}
+\PYG{n}{f1\PYGZus{}score}\PYG{p}{,} \PYG{n}{roc\PYGZus{}auc\PYGZus{}score}
+\PYG{p}{)}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.linear\PYGZus{}model}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{LogisticRegression}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{joblib}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{xgboost}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{xgb}
+\end{MintedVerbatim}

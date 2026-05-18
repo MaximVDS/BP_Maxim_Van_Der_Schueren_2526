@@ -1,0 +1,16 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Datumkolommen parsen}
+\PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}status\PYGZus{}start\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}status\PYGZus{}end\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}inserted\PYGZus{}at.poi\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}updated\PYGZus{}at\PYGZus{}history\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}start\PYGZus{}valid\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}end\PYGZus{}valid\PYGZdq{}}\PYG{p}{]:}
+\PYG{n}{df}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{to\PYGZus{}datetime}\PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{n}{col}\PYG{p}{],} \PYG{n}{errors}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}coerce\PYGZdq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Numerieke kolommen saneren}
+\PYG{n}{numerieke\PYGZus{}cols} \PYG{o}{=} \PYG{p}{[}
+\PYG{l+s+s2}{\PYGZdq{}day\PYGZus{}of\PYGZus{}week\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}closed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}ok\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
+\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}priority\PYGZdq{}}
+\PYG{p}{]}
+\PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{numerieke\PYGZus{}cols}\PYG{p}{:}
+\PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
+\PYG{n}{df}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{to\PYGZus{}numeric}\PYG{p}{(}\PYG{n}{df}\PYG{p}{[}\PYG{n}{col}\PYG{p}{],} \PYG{n}{errors}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}coerce\PYGZdq{}}\PYG{p}{)}
+\end{MintedVerbatim}
