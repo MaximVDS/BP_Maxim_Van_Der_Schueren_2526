@@ -147,9 +147,9 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
         
         # Numerieke kolommen saneren
         numerieke_cols = [
-        "day_of_week", "visit", "work", "closed", "ok",
-        "is_deleted", "is_sensitive", "is_reserved_poi", "cluster",
-        "brand_id", "priority"
+            "day_of_week", "visit", "work", "closed", "ok",
+            "is_deleted", "is_sensitive", "is_reserved_poi", "cluster",
+            "brand_id", "priority"
         ]
         for col in numerieke_cols:
             if col in df.columns:
@@ -162,6 +162,12 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
     \begin{minted}{python}
         df["is_weekend"] = (df["day_of_week"] >= 5).astype(int)
         
+        def tijd_naar_minuten(tijdstr):
+            try:
+                parts = str(tijdstr).split(":")
+                return int(parts[0]) * 60 + int(parts[1])
+            except:
+                return 0
         df["heeft_openingsuren"] = (df["start.oh"].notna() & df["stop.oh"].notna()).astype(int)
         df["start_min"] = df["start.oh"].apply(lambda x: tijd_naar_minuten(x) if pd.notna(x) else np.nan)
         df["stop_min"]  = df["stop.oh"].apply(lambda x: tijd_naar_minuten(x) if pd.notna(x) else np.nan)
@@ -193,6 +199,22 @@ Daarnaast werden ook enkele andere features aangemaakt. Zo werd een feature \tex
 
 De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden omgezet naar numerieke waarden aan de hand van een Label Encoding voor ze als feature aan het model werden aangeboden. Hoewel Label Encoding een ordinale relatie voorstelt die niet noodzakelijk aanwezig is tussen merken of landen, werd voor deze aanpak gekozen omdat dit beter schaalbaar is en beter aansloot bij de gebruikte modelarchitecturen.
 
+\begin{listing}[H]
+    \begin{minted}{python}
+        FEATURE_COLS = [
+            col for col in [
+                "is_weekend", "day_of_week", "start_min", "stop_min", "heeft_openingsuren",
+                "verwachte_openingsduur_min", "brand_id_enc", "country_enc",
+                "poi_leeftijd_maanden", "n_observaties_poi", "is_deleted",
+            ]
+            if col in df.columns
+        ]
+        
+        TARGET_COL = "is_active"
+    \end{minted}
+    \caption[Feature selectie]{Definitie van de finale feature set en de doelvariabele.}
+\end{listing}
+
 \subsection{Train- en testopsplitsing}
 De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) met een willekeurige seed van 42. Oorspronkelijk werd een temporele splitsing toegepast op basis van de kolom \texttt{updated\_at\_history}, waarbij de eerste 80\% van de observaties aan de trainingsset werden toegewezen. Deze aanpak zorgde echter voor een bias in de klasseverdeling: de testset bevatte 88\% open POI's tegenover 72\% in de trainingsset. Hierdoor was de modelevaluatie onbetrouwbaar. Daarom werd er gekozen om een gelaagde splitsing te gebruiken dat de klasseverdeling van 74,67\% open en 25,33\% gesloten bewaarde in zowel de trainingsset als de testset. Het resultaat hiervan was 1.069.823 trainingsrecords en 267.456 testrecords.
 
@@ -200,17 +222,17 @@ De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) met e
     \begin{minted}{python}
         df_model = df[FEATURE_COLS + [TARGET_COL]].dropna(subset=[TARGET_COL])
         df_model[FEATURE_COLS] = df_model[FEATURE_COLS].fillna(
-        df_model[FEATURE_COLS].median(numeric_only=True)
+            df_model[FEATURE_COLS].median(numeric_only=True)
         )
         
         X = df_model[FEATURE_COLS]
         y = df_model[TARGET_COL].astype(int)
         
         X_train, X_test, y_train, y_test = train_test_split(
-        X, y,
-        test_size=0.2,
-        random_state=RANDOM_SEED,
-        stratify=y
+            X, y,
+            test_size=0.2,
+            random_state=RANDOM_SEED,
+            stratify=y
         )
         
         print(f"Train: {len(X_train):,} | Test: {len(X_test):,}")
@@ -230,9 +252,9 @@ de absolute waarde van een coëfficiënt geeft rechtstreeks aan in welke mate ee
 \begin{listing}[H]
     \begin{minted}{python}
         lr = LogisticRegression(
-        class_weight="balanced",
-        max_iter=5000,
-        random_state=RANDOM_SEED
+            class_weight="balanced",
+            max_iter=5000,
+            random_state=RANDOM_SEED
         )
         lr.fit(X_train, y_train)
     \end{minted}
@@ -245,12 +267,12 @@ Random Forest is een ensemblemethode dat een groot aantal beslissingsbomen train
 \begin{listing}[H]
     \begin{minted}{python}
         rf = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=None,
-        min_samples_leaf=5,
-        class_weight="balanced",
-        random_state=RANDOM_SEED,
-        n_jobs=-1
+            n_estimators=200,
+            max_depth=None,
+            min_samples_leaf=5,
+            class_weight="balanced",
+            random_state=RANDOM_SEED,
+            n_jobs=-1
         )
         rf.fit(X_train, y_train)
     \end{minted}
@@ -289,15 +311,15 @@ prestaties op gestructureerde tabeldata en maakte gebruik van de hyperparameters
         scale_pw    = neg / pos if pos > 0 else 1
         
         xgb_model = xgb.XGBClassifier(
-        n_estimators=300,
-        max_depth=6,
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        scale_pos_weight=scale_pw,
-        eval_metric="logloss",
-        random_state=RANDOM_SEED,
-        n_jobs=-1
+            n_estimators=300,
+            max_depth=6,
+            learning_rate=0.05,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            scale_pos_weight=scale_pw,
+            eval_metric="logloss",
+            random_state=RANDOM_SEED,
+            n_jobs=-1
         )
         xgb_model.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)
     \end{minted}
@@ -431,7 +453,6 @@ De drie voorgaande modellen baseerden zich uitsluitend op statische metadata. Zo
 \subsection{Datageneratie}
 Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit onderzoek, werd deze data per POI gesimuleerd. 
 
-%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         df_mob_basis = df_basis.copy()
@@ -479,7 +500,6 @@ De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een 
     \item Gesloten fase: het bezoekersaantal is nagenoeg nul, met een gemiddelde van circa twee bezoekers per dag als gevolg van occasioneel bezoek.
 \end{itemize}
 
-%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         WEEK_PATROON = np.array([0.75, 0.80, 0.82, 0.85, 1.00, 0.95, 0.45])
@@ -547,7 +567,6 @@ Uit de gegenereerde tijdreeksen werden de volgende features geaggregeerd op POI-
     \item trend\_coefficient: geeft aan of het bezoekersaantal stijgt of daalt over de tijd, een negatieve waarde wijst op een dalende trend
 \end{itemize}
 
-%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         open_ids = df_mob_basis[df_mob_basis["is_active"] == 1]["id"].tolist()
@@ -560,6 +579,13 @@ Uit de gegenereerde tijdreeksen werden de volgende features geaggregeerd op POI-
             alle_profielen.append(genereer_bezoekersprofiel(poi_id, is_actief=False))
         
         df_mob_raw = pd.concat(alle_profielen, ignore_index=True)
+        
+        df_mob_sorted = df_mob_raw.sort_values(["poi_id", "week", "dag"])
+        
+        def bereken_trend(serie):
+            if len(serie) < 2:
+                return 0.0
+            return float(np.polyfit(np.arange(len(serie)), serie, 1)[0])
         
         agg_per_poi = (
             df_mob_sorted.groupby("poi_id")["bezoekers"]
@@ -582,21 +608,20 @@ De features \texttt{pct\_nul\_dagen} en \texttt{trend\_coefficient} zijn wel ber
 \subsection{Experimentopzet}
 De mobiliteitsmodellen maakten gebruik van een combinatie van statische metadata en mobiliteitsfeatures. Vervolgens werden ze vergeleken met de baseline modellen (die enkel op statische metadata gebaseerd zijn). Voor dit experiment werden dezelfde drie modellen gebruikt: Random Forest, XGBoost en Logistische Regressie. De resultaten zijn weergegeven in Tabel~\ref{tab:resultaten}.
 
-%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         FEATURE_COLS_BASIS = [
             col for col in [
-            "name_enc", "country_enc", "source_enc", "priority_enc",
-            "brand_id", "main_category_id", "cluster",
-            "is_sensitive", "is_reserved_poi",
-            "visit", "work", "heeft_polygon", "heeft_source_id",
-            "poi_leeftijd_dagen", "dagen_sinds_update",
+                "name_enc", "country_enc", "source_enc", "priority_enc",
+                "brand_id", "main_category_id", "cluster",
+                "is_sensitive", "is_reserved_poi",
+                "visit", "work", "heeft_polygon", "heeft_source_id",
+                "poi_leeftijd_dagen", "dagen_sinds_update",
             ] if col in df_uitgebreid.columns
         ]
         
-        MOB_COLS = ["gem_bezoekers", "std_bezoekers", "max_bezoekers"]
         FEATURE_COLS_MOB = FEATURE_COLS_BASIS + MOB_COLS
+        TARGET_COL = "is_active"
         
         df_m = df_uitgebreid[FEATURE_COLS_MOB + [TARGET_COL]].dropna(subset=[TARGET_COL])
         df_m[FEATURE_COLS_MOB] = df_m[FEATURE_COLS_MOB].fillna(
@@ -631,7 +656,6 @@ Tot slot zijn de resultaten van het mobiliteitsexperiment gebaseerd op kunstmati
 \section{Implementatiedetails}
 De volledige POC is geïmplementeerd in Python 3.12.8. Tabel~\ref{tab:bibliotheken} geeft een overzicht van de gebruikte bibliotheken.
 
-%TODO
 \begin{listing}[H]
     \begin{minted}{python}
         DATA_PATH   = "../../data accurat/Data_accurat.csv"
@@ -647,8 +671,8 @@ De volledige POC is geïmplementeerd in Python 3.12.8. Tabel~\ref{tab:bibliothek
         from sklearn.ensemble import RandomForestClassifier
         from sklearn.preprocessing import LabelEncoder
         from sklearn.metrics import (
-        accuracy_score, precision_score, recall_score,
-        f1_score, roc_auc_score
+            accuracy_score, precision_score, recall_score,
+            f1_score, roc_auc_score
         )
         from sklearn.linear_model import LogisticRegression
         import joblib

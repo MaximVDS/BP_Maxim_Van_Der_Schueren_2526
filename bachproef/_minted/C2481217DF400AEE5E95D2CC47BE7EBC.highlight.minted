@@ -12,8 +12,8 @@
 \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.ensemble}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{RandomForestClassifier}
 \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.preprocessing}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{LabelEncoder}
 \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.metrics}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{p}{(}
-\PYG{n}{accuracy\PYGZus{}score}\PYG{p}{,} \PYG{n}{precision\PYGZus{}score}\PYG{p}{,} \PYG{n}{recall\PYGZus{}score}\PYG{p}{,}
-\PYG{n}{f1\PYGZus{}score}\PYG{p}{,} \PYG{n}{roc\PYGZus{}auc\PYGZus{}score}
+    \PYG{n}{accuracy\PYGZus{}score}\PYG{p}{,} \PYG{n}{precision\PYGZus{}score}\PYG{p}{,} \PYG{n}{recall\PYGZus{}score}\PYG{p}{,}
+    \PYG{n}{f1\PYGZus{}score}\PYG{p}{,} \PYG{n}{roc\PYGZus{}auc\PYGZus{}score}
 \PYG{p}{)}
 \PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{sklearn.linear\PYGZus{}model}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{LogisticRegression}
 \PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{joblib}

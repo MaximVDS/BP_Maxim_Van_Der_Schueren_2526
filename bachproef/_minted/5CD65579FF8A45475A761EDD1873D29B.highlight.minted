@@ -6,9 +6,9 @@
 
 \PYG{c+c1}{\PYGZsh{} Numerieke kolommen saneren}
 \PYG{n}{numerieke\PYGZus{}cols} \PYG{o}{=} \PYG{p}{[}
-\PYG{l+s+s2}{\PYGZdq{}day\PYGZus{}of\PYGZus{}week\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}closed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}ok\PYGZdq{}}\PYG{p}{,}
-\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
-\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}priority\PYGZdq{}}
+    \PYG{l+s+s2}{\PYGZdq{}day\PYGZus{}of\PYGZus{}week\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}closed\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}ok\PYGZdq{}}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
+    \PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}priority\PYGZdq{}}
 \PYG{p}{]}
 \PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{numerieke\PYGZus{}cols}\PYG{p}{:}
     \PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}

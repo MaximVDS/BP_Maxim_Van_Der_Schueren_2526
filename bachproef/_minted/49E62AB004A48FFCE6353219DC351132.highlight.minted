@@ -1,8 +1,8 @@
 \begin{MintedVerbatim}[commandchars=\\\{\}]
 \PYG{n}{lr} \PYG{o}{=} \PYG{n}{LogisticRegression}\PYG{p}{(}
-\PYG{n}{class\PYGZus{}weight}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}balanced\PYGZdq{}}\PYG{p}{,}
-\PYG{n}{max\PYGZus{}iter}\PYG{o}{=}\PYG{l+m+mi}{5000}\PYG{p}{,}
-\PYG{n}{random\PYGZus{}state}\PYG{o}{=}\PYG{n}{RANDOM\PYGZus{}SEED}
+    \PYG{n}{class\PYGZus{}weight}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}balanced\PYGZdq{}}\PYG{p}{,}
+    \PYG{n}{max\PYGZus{}iter}\PYG{o}{=}\PYG{l+m+mi}{5000}\PYG{p}{,}
+    \PYG{n}{random\PYGZus{}state}\PYG{o}{=}\PYG{n}{RANDOM\PYGZus{}SEED}
 \PYG{p}{)}
 \PYG{n}{lr}\PYG{o}{.}\PYG{n}{fit}\PYG{p}{(}\PYG{n}{X\PYGZus{}train}\PYG{p}{,} \PYG{n}{y\PYGZus{}train}\PYG{p}{)}
 \end{MintedVerbatim}
