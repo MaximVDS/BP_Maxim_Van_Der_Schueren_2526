@@ -32,7 +32,7 @@ Deze dataset bevat enkel de meest recente operationele toestand van elke POI op 
         label_counts = df_basis["is_active"].value_counts().sort_index()
         label_pct    = label_counts / len(df_basis) * 100
     \end{minted}
-    \caption[Inladen Basisinfo-dataset]{Inladen van de momentopname-dataset gebruikt als basis voor het mobiliteitsexperiment.}
+    \caption[Inladen Basisinfo-dataset]{Inladen van de basisinfo-dataset gebruikt als basis voor het mobiliteitsexperiment.}
 \end{listing}
 
 \vspace{1em}
@@ -184,7 +184,7 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
         .dt.days / 30).round()
         df["n_observaties_poi"] = df.groupby("poi_id")["poi_id"].transform("count")
     \end{minted}
-    \caption[Feature engineering: temporele kenmerken]{Constructie van de temporele en gedragsmatige features op basis van de historische dataset.}
+    \caption[Feature engineering: temporele features]{Constructie van de temporele en gedragsmatige features op basis van de historische dataset.}
 \end{listing}
 
 Drie van de features verdienen bijzondere aandacht vanwege hun relevantie voor POI-statusdetectie. Ten eerste gaf \texttt{n\_observaties\_poi} het totaal aantal geregistreerde observaties per POI weer. Dit gaf een indicatie van de datadichtheid per vestiging. Ten tweede weerspiegelde \texttt{poi\_leeftijd\_maanden} de periode tussen het eerste geregistreerde record van een POI in de databank en het huidige observatiemoment. Deze feature was relevant voor het model omdat jonge POI's, die nog geen stabiel bezoekpatroon hadden opgebouwd, gevoeliger zijn voor het cold-start probleem, zoals besproken in de literatuurstudie. Ten derde was \texttt{brand\_id\_enc} een label-encoded versie van de naam van het merk. Dit liet toe om merkspecifieke patronen te capteren.
@@ -468,7 +468,7 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit ond
         df_mob_basis["updated_at"].max() - df_mob_basis["updated_at"]
             ).dt.days
     \end{minted}
-    \caption[Voorbereiding Basisinfo-dataset]{Encoding en feature constructie op de momentopname-dataset als voorbereiding op het mobiliteitsexperiment.}
+    \caption[Voorbereiding Basisinfo-dataset]{Encoding en feature engineering op de dataset als voorbereiding op het mobiliteitsexperiment.}
 \end{listing}
 
 De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een POI:
@@ -513,7 +513,7 @@ De simulatie onderscheidt drie fasen die aansluiten bij de levenscyclus van een 
                     records.append({"poi_id": poi_id, "week": week, "dag": dag, "bezoekers": bezoekers})
             return pd.DataFrame(records)
     \end{minted}
-    \caption[Generatiefunctie synthetische mobiliteitsdata]{Parameters en functie voor het simuleren van dagelijkse bezoekersaantallen per POI over 26 weken.}
+    \caption[Generatiefunctie kunstmatige mobiliteitsdata]{Parameters en functie voor het simuleren van dagelijkse bezoekersaantallen per POI over 26 weken.}
 \end{listing}
 
 Elk POI-profiel werd gegenereerd over een periode van 26 weken. Om het verschil in bezoekersaantal tussen vestigingen te simuleren, kreeg elk POI een individuele variatiefactor toegepast.
