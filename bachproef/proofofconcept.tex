@@ -23,8 +23,7 @@ Deze dataset vormt de primaire bron voor het trainen van de drie modellen en bev
 \end{listing}
 
 \paragraph{Basisinfo dataset}
-%TODO: aantal records controleren
-Deze dataset bevat enkel de meest recente operationele toestand van elke POI op het moment, zonder de historische statusregistraties. Deze dataset telt 120.422 records en 29 kolommen, en werd gebruikt als basis voor het uitbreidingsexperiment met kunstmatig gegenereerde mobiliteitsdata (zie sectie~\ref{sec:mobiliteitsdata}).
+Deze dataset bevat enkel de meest recente operationele toestand van elke POI op het moment, zonder de historische statusregistraties. Deze dataset telt 57.082 records en 29 kolommen, en werd gebruikt als basis voor het uitbreidingsexperiment met kunstmatig gegenereerde mobiliteitsdata (zie sectie~\ref{sec:mobiliteitsdata}).
 
 \begin{listing}[H]
     \begin{minted}{python}
@@ -41,7 +40,7 @@ Deze dataset bevat enkel de meest recente operationele toestand van elke POI op 
 Beide datasets worden op regelmatige basis bijgewerkt: de data van Accurat wordt elke 30 dagen ververst. Dit betekent dat er steeds een validatieachterstand kan optreden van maximaal één maand tussen de werkelijke toestand van een POI en de toestand die in de databank is geregistreerd. Dit is een uitdaging die aansluit bij de bespreking van de data-actualiteit in sectie~\ref{sec:uitdagingen}.
 
 % TODO: Nagaan of de vermelding van Locatus en andere externe bronnen (naast zelf gescrapte data) expliciet vermeld mag worden in de bachelorproef. De data van Accurat is afkomstig uit een combinatie van eigen scraping en externe dataleveranciers zoals Locatus.
-De data is afkomstig uit meerdere bronnen: enerzijds vergaart Accurat zelf data van de POI's via HTML en API scraping, anderzijds worden ook data van externe dataleveranciers gebruikt. Dezen aanpak vergroot de dekking maar introduceert ook de uitdagingen van POI-conflation zoals besproken in sectie~\ref{sec:gegevensbronnen}.
+% De data is afkomstig uit meerdere bronnen: enerzijds vergaart Accurat zelf data van de POI's via HTML en API scraping, anderzijds worden ook data van externe dataleveranciers gebruikt. Dezen aanpak vergroot de dekking maar introduceert ook de uitdagingen van POI-conflation zoals besproken in sectie~\ref{sec:gegevensbronnen}.
 
 \section{Data-analyse}
 
@@ -144,7 +143,7 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
         # Datumkolommen parsen
         for col in ["status_start", "status_end", "inserted_at.poi",
         "updated_at_history", "start_valid", "end_valid"]:
-        df[col] = pd.to_datetime(df[col], errors="coerce")
+            df[col] = pd.to_datetime(df[col], errors="coerce")
         
         # Numerieke kolommen saneren
         numerieke_cols = [
@@ -153,8 +152,8 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
         "brand_id", "priority"
         ]
         for col in numerieke_cols:
-        if col in df.columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
     \end{minted}
     \caption[Datatype conversie]{Omzetting van datumkolommen naar het datetime-formaat en numerieke kolommen naar het juiste datatype.}
 \end{listing}
@@ -439,10 +438,9 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit ond
         # Categorische kolommen omzetten
         le = LabelEncoder()
         for col in ["name", "country", "source", "priority"]:
-        if col in df_mob_basis.columns:
-        df_mob_basis[f"{col}_enc"] = le.fit_transform(
-        df_mob_basis[col].fillna("onbekend").astype(str)
-        )
+            if col in df_mob_basis.columns:
+                df_mob_basis[f"{col}_enc"] = le.fit_transform(df_mob_basis[col].fillna("onbekend").astype(str)
+            )
         
         # Numerieke kolommen omzetten
         for col in ["brand_id", "main_category_id", "cluster",

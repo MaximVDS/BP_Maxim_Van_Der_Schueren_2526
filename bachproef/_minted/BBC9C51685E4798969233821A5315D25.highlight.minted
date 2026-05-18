@@ -4,10 +4,9 @@
 \PYG{c+c1}{\PYGZsh{} Categorische kolommen omzetten}
 \PYG{n}{le} \PYG{o}{=} \PYG{n}{LabelEncoder}\PYG{p}{()}
 \PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}name\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}country\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}source\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}priority\PYGZdq{}}\PYG{p}{]:}
-\PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
-\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{col}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}enc\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{le}\PYG{o}{.}\PYG{n}{fit\PYGZus{}transform}\PYG{p}{(}
-\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]}\PYG{o}{.}\PYG{n}{fillna}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}onbekend\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{)}
-\PYG{p}{)}
+    \PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
+        \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{l+s+sa}{f}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}}\PYG{n}{col}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{\PYGZus{}enc\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{le}\PYG{o}{.}\PYG{n}{fit\PYGZus{}transform}\PYG{p}{(}\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]}\PYG{o}{.}\PYG{n}{fillna}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}onbekend\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{astype}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{)}
+    \PYG{p}{)}
 
 \PYG{c+c1}{\PYGZsh{} Numerieke kolommen omzetten}
 \PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}category\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
