@@ -39,9 +39,6 @@ Deze dataset bevat enkel de meest recente operationele toestand van elke POI op 
 
 Beide datasets worden op regelmatige basis bijgewerkt: de data van Accurat wordt elke 30 dagen ververst. Dit betekent dat er steeds een validatieachterstand kan optreden van maximaal één maand tussen de werkelijke toestand van een POI en de toestand die in de databank is geregistreerd. Dit is een uitdaging die aansluit bij de bespreking van de data-actualiteit in sectie~\ref{sec:uitdagingen}.
 
-% TODO: Nagaan of de vermelding van Locatus en andere externe bronnen (naast zelf gescrapte data) expliciet vermeld mag worden in de bachelorproef. De data van Accurat is afkomstig uit een combinatie van eigen scraping en externe dataleveranciers zoals Locatus.
-% De data is afkomstig uit meerdere bronnen: enerzijds vergaart Accurat zelf data van de POI's via HTML en API scraping, anderzijds worden ook data van externe dataleveranciers gebruikt. Dezen aanpak vergroot de dekking maar introduceert ook de uitdagingen van POI-conflation zoals besproken in sectie~\ref{sec:gegevensbronnen}.
-
 \section{Data-analyse}
 
 \subsection{Verhouding van actieve en inactieve records}
@@ -105,7 +102,16 @@ De sluitingsratio verschilt eveneens per land. Luxemburg kent de hoogste sluitin
 \section{Feature Engineering}
 Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken opgesteld die relevant zijn voor de statusdetectie. De features werden afgeleid uit de beschikbare timestamps, openingstijden en historische statusregistraties. Tabel~\ref{tab:features} geeft een overzicht van alle gebruikte features en hun betekenis.
 
-Alvorens de features af te leiden, werden records met \texttt{is\_deleted = 1} en \texttt{is\_reserved\_poi = 1} uit de dataset verwijderd. Verwijderde records zijn het gevolg van een soft delete mechanisme in de databank en zijn niet relevant voor de statusdetectie. Gereserveerde POI's zijn intern gemarkeerde records die nog niet volledig in productie zijn genomen.
+Alvorens de features af te leiden, werden records met \texttt{is\_deleted = 1} en \texttt{is\_reserved\_poi = 1} uit de dataset verwijderd. Verwijderde records zijn het gevolg van een soft delete mechanisme in de databank en zijn niet relevant voor de statusdetectie. Gereserveerde POI's zijn intern gemarkeerde records die nog niet volledig in productie zijn genomen. Na deze filtering bleven 1.140.895 records over voor de verdere analyse.
+
+\begin{listing}[H]
+    \begin{minted}{python}
+        df = df[df["is_deleted"] == 0]
+        df = df[df["is_reserved_poi"] == 0]
+    \end{minted}
+    \caption[Filtering records]{Verwijdering van records met \texttt{is\_deleted = 1} en \texttt{is\_reserved\_poi = 1} 
+        uit de dataset.}
+\end{listing}
 
 \begin{table}[H]
     \centering
@@ -138,7 +144,6 @@ Alvorens de features af te leiden, werden records met \texttt{is\_deleted = 1} e
 
 Alvorens de features te construeren, werden de datumkolommen en numerieke kolommen omgezet naar het juiste datatype.
 
-%TODO: is_deleted en reserved aanpassen
 \begin{listing}[H]
     \begin{minted}{python}
         # Datumkolommen parsen
@@ -149,7 +154,7 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
         # Numerieke kolommen saneren
         numerieke_cols = [
             "day_of_week", "visit", "work", "closed", "ok",
-            "is_deleted", "is_sensitive", "is_reserved_poi", "cluster",
+            "is_sensitive", "cluster",
             "brand_id", "priority"
         ]
         for col in numerieke_cols:
@@ -159,7 +164,6 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
     \caption[Datatype conversie]{Omzetting van datumkolommen naar het datetime-formaat en numerieke kolommen naar het juiste datatype.}
 \end{listing}
 
-%TODO: aanpassen
 \begin{listing}[H]
     \begin{minted}{python}
         df["is_weekend"] = (df["day_of_week"] >= 5).astype(int)
@@ -174,8 +178,6 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
         df["start_min"] = df["start.oh"].apply(lambda x: tijd_naar_minuten(x) if pd.notna(x) else np.nan)
         df["stop_min"]  = df["stop.oh"].apply(lambda x: tijd_naar_minuten(x) if pd.notna(x) else np.nan)
         df["verwachte_openingsduur_min"] = df["stop_min"] - df["start_min"]
-        
-        df["is_deleted"] = df["is_deleted"].fillna(0).astype(int)
         
         le = LabelEncoder()
         df["brand_id_enc"] = le.fit_transform(df["name"].astype(str))
@@ -197,7 +199,7 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
 
 Drie van de features verdienen bijzondere aandacht vanwege hun relevantie voor POI-statusdetectie. Ten eerste gaf \texttt{n\_observaties\_poi} het totaal aantal geregistreerde observaties per POI weer. Dit gaf een indicatie van de datadichtheid per vestiging. Ten tweede weerspiegelde \texttt{poi\_leeftijd\_maanden} de periode tussen het eerste geregistreerde record van een POI in de databank en het huidige observatiemoment. Deze feature was relevant voor het model omdat jonge POI's, die nog geen stabiel bezoekpatroon hadden opgebouwd, gevoeliger zijn voor het cold-start probleem, zoals besproken in de literatuurstudie. Ten derde was \texttt{brand\_id\_enc} een label-encoded versie van de naam van het merk. Dit liet toe om merkspecifieke patronen te capteren.
 
-Daarnaast werden ook enkele andere features aangemaakt. Zo werd een feature \texttt{heeft\_openingsuren} gemaakt die aangaf of voor een gegeven observatie zowel een start- als een sluitingsuur aanwezig was. Wanneer openingsuren ontbraken, werd dit geïnterpreteerd als een duidelijk signaal. Een POI zonder geregistreerde openingsuren in de databank kan aangeven dat een Point of Interest gesloten is, aangezien actieve vestigingen doorgaans  een start- en einduur hebben. De numerieke features \texttt{start\_min} en \texttt{stop\_min} werden bij ontbrekende waarden niet ingevuld met een defaultwaarde. In plaats daarvan werden ze als \texttt{NaN} doorgegeven aan het model.
+Daarnaast werden ook enkele andere features aangemaakt. Zo werd een feature \texttt{heeft\_openingsuren} gemaakt die aangaf of voor een gegeven observatie zowel een start- als een sluitingsuur aanwezig was. Wanneer openingsuren ontbraken, betekende dit niet noodzakelijk dat de POI gesloten was. Het ontbreken van uren gaf aan dat er geen betrouwbare openingstijden gevonden werden voor deze vestiging. De feature \texttt{heeft\_openingsuren} werd daarom opgenomen als indicator voor de beschikbaarheid van openingsuurdata, niet als directe statusindicator. De numerieke features \texttt{start\_min} en \texttt{stop\_min} werden bij ontbrekende waarden niet ingevuld met een defaultwaarde. In plaats daarvan werden ze als \texttt{NaN} doorgegeven aan het model.
 
 De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden omgezet naar numerieke waarden aan de hand van een Label Encoding voor ze als feature aan het model werden aangeboden. Hoewel Label Encoding een ordinale relatie voorstelt die niet noodzakelijk aanwezig is tussen merken of landen, werd voor deze aanpak gekozen omdat dit beter schaalbaar is en beter aansloot bij de gebruikte modelarchitecturen.
 
@@ -205,9 +207,9 @@ De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden omge
     \begin{minted}{python}
         FEATURE_COLS = [
             col for col in [
-                "is_weekend", "day_of_week", "start_min", "stop_min", "heeft_openingsuren",
-                "verwachte_openingsduur_min", "brand_id_enc", "country_enc",
-                "poi_leeftijd_maanden", "n_observaties_poi", "is_deleted",
+                "is_weekend","day_of_week", "start_min", "stop_min", "heeft_openingsuren",
+                "verwachte_openingsduur_min", "brand_id_enc", "country_enc", "poi_leeftijd_maanden",
+                "n_observaties_poi",
             ]
             if col in df.columns
         ]
@@ -218,7 +220,8 @@ De twee categorische kolommen \texttt{brand\_id} en \texttt{country} werden omge
 \end{listing}
 
 \subsection{Train- en testopsplitsing}
-De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) met een willekeurige seed van 42. Oorspronkelijk werd een temporele splitsing toegepast op basis van de kolom \texttt{updated\_at\_history}, waarbij de eerste 80\% van de observaties aan de trainingsset werden toegewezen. Deze aanpak zorgde echter voor een bias in de klasseverdeling: de testset bevatte 88\% open POI's tegenover 72\% in de trainingsset. Hierdoor was de modelevaluatie onbetrouwbaar. Daarom werd er gekozen om een gelaagde splitsing te gebruiken dat de klasseverdeling van 74,67\% open en 25,33\% gesloten bewaarde in zowel de trainingsset als de testset. Het resultaat hiervan was 1.069.823 trainingsrecords en 267.456 testrecords.
+De dataset werd opgedeeld in een trainingsset (80\%) en een testset (20\%) met een willekeurige seed van 42. Oorspronkelijk werd een temporele splitsing toegepast op basis van de kolom \texttt{updated\_at\_history}, waarbij de eerste 80\% van de observaties aan de trainingsset werden toegewezen. Deze aanpak zorgde echter voor een bias in de klasseverdeling: de testset bevatte 88\% open POI's tegenover 72\% in de trainingsset. Hierdoor was de modelevaluatie onbetrouwbaar. Daarom werd er gekozen om een gelaagde splitsing te gebruiken dat de klasseverdeling van 73,79\% open en 26,21\% gesloten bewaarde in zowel 
+de trainingsset als de testset. Het resultaat hiervan was 912.716 trainingsrecords en 228.179 testrecords.
 
 \begin{listing}[H]
     \begin{minted}{python}
@@ -347,14 +350,14 @@ De resultaten van de definitieve evaluatie op de volledige dataset worden weerge
         \midrule
         \multicolumn{6}{l}{\textit{Baseline — historische metadata}} \\
         \midrule
-        Logistische Regressie  & 0.66 & 0.81 & 0.71 & 0.76 & 0.65 \\
-        Random Forest          & 0.78 & 0.94 & 0.76 & 0.84 & 0.86 \\
-        XGBoost                & 0.76 & 0.92 & 0.74 & 0.82 & 0.86 \\
+        Logistische Regressie  & 0.6463 & 0.8002 & 0.6941 & 0.7434 & 0.6434 \\
+        Random Forest          & 0.7646 & 0.9345 & 0.7324 & 0.8212 & 0.8417 \\
+        XGBoost                & 0.7451 & 0.9125 & 0.7240 & 0.8074 & 0.8376 \\
         \midrule
         \multicolumn{6}{l}{\textit{Uitbreiding — kunstmatig gegenereerde mobiliteitsdata}} \\
         \midrule
         Logistische Regressie (mob.) & 0.9992 & 0.9997 & 0.9989 & 0.9993 & 1.00 \\
-        Random Forest (mob.)         & 0.9989 & 0.9990 & 0.9990 & 0.9990 & 1.00 \\
+        Random Forest (mob.)         & 0.9990 & 0.9992 & 0.9990 & 0.9991 & 1.00 \\
         XGBoost (mob.)               & 0.9996 & 1.00   & 0.9993 & 0.9997 & 1.00 \\
         \bottomrule
     \end{tabular}
@@ -372,7 +375,7 @@ Figuur~\ref{fig:eindvergelijking} geeft een visueel overzicht van alle modellen 
 \end{figure}
 
 \subsubsection{Bespreking baseline modellen}
-Het Random Forest model behaalde de hoogste F1-score (0.84) en ROC-AUC (0.86). Het XGBoost model behaalde een F1 score van 0.82 en een AUC van 0.86. Logistische Regressie presteert veel slechter met een F1 score van 0.76 en een AUC van 0.65. Dit bevestigt dat de relatie tussen de features en de doelvariabele niet lineair is.
+Het Random Forest model behaalde de hoogste F1-score (0.82) en ROC-AUC (0.84). Het XGBoost model behaalde een F1 score van 0.81 en een AUC van 0.84. Logistische Regressie presteert veel slechter met een F1 score van 0.74 en een AUC van 0.64. Dit bevestigt dat de relatie tussen de features en de doelvariabele niet lineair is.
 
 \begin{table}[H]
     \centering
@@ -384,16 +387,16 @@ Het Random Forest model behaalde de hoogste F1-score (0.84) en ROC-AUC (0.86). H
         \cmidrule(lr){2-3} \cmidrule(lr){4-5}
         & \textbf{Precision} & \textbf{F1} & \textbf{Precision} & \textbf{F1} \\
         \midrule
-        Random Forest         & 0.54 & 0.67 & 0.94 & 0.84 \\
-        XGBoost               & 0.52 & 0.63 & 0.92 & 0.82 \\
-        Logistische Regressie & 0.38 & 0.43 & 0.81 & 0.76 \\
+        Random Forest         & 0.53 & 0.66 & 0.93 & 0.82 \\
+        XGBoost               & 0.51 & 0.62 & 0.91 & 0.81 \\
+        Logistische Regressie & 0.37 & 0.43 & 0.80 & 0.74 \\
         \bottomrule
     \end{tabular}
     \caption[Per-klasse resultaten baseline modellen]{%
         \label{tab:perklasse}Per-klasse precision en F1-score voor de baseline modellen op de testset.}
 \end{table}
 
-De gesloten klasse behaalde een F1-score van 0.67 bij Random Forest en 0.63 bij XGBoost. Dit suggereert dat statische metadata op zichzelf onvoldoende is om gesloten POI's betrouwbaar te detecteren. Deze vaststelling vormt meteen de motivatie voor de uitbreiding met kunstmatig gegenereerde mobiliteitsdata.
+De gesloten klasse behaalde een F1-score van 0.66 bij Random Forest en 0.62 bij XGBoost. Dit suggereert dat statische metadata op zichzelf onvoldoende is om gesloten POI's betrouwbaar te detecteren. Deze vaststelling vormt meteen de motivatie voor de uitbreiding met kunstmatig gegenereerde mobiliteitsdata.
 
 Figuur~\ref{fig:cm_rf}, \ref{fig:cm_xgb} en \ref{fig:cm_lr} tonen de confusion matrices voor de drie baseline modellen.
 
@@ -467,8 +470,7 @@ Omdat echte GPS-mobiliteitsdata niet beschikbaar was binnen de scope van dit ond
             )
         
         # Numerieke kolommen omzetten
-        for col in ["brand_id", "main_category_id", "cluster",
-        "is_deleted", "is_sensitive", "is_reserved_poi", "visit", "work"]:
+        for col in ["brand_id", "main_category_id", "cluster", "is_sensitive", "visit", "work"]:
             if col in df_mob_basis.columns:
                df_mob_basis[col] = pd.to_numeric(df_mob_basis[col], errors="coerce")
         
@@ -616,8 +618,7 @@ De mobiliteitsmodellen maakten gebruik van een combinatie van statische metadata
             col for col in [
                 "name_enc", "country_enc", "source_enc", "priority_enc",
                 "brand_id", "main_category_id", "cluster",
-                "is_sensitive", "is_reserved_poi",
-                "visit", "work", "heeft_polygon", "heeft_source_id",
+                "is_sensitive", "visit", "work", "heeft_polygon", "heeft_source_id",
                 "poi_leeftijd_dagen", "dagen_sinds_update",
             ] if col in df_uitgebreid.columns
         ]

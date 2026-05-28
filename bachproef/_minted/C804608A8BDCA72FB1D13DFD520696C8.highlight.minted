@@ -3,8 +3,7 @@
     \PYG{n}{col} \PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}
         \PYG{l+s+s2}{\PYGZdq{}name\PYGZus{}enc\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}country\PYGZus{}enc\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}source\PYGZus{}enc\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}priority\PYGZus{}enc\PYGZdq{}}\PYG{p}{,}
         \PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}category\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
-        \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,}
-        \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}polygon\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}source\PYGZus{}id\PYGZdq{}}\PYG{p}{,}
+        \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}polygon\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}heeft\PYGZus{}source\PYGZus{}id\PYGZdq{}}\PYG{p}{,}
         \PYG{l+s+s2}{\PYGZdq{}poi\PYGZus{}leeftijd\PYGZus{}dagen\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}dagen\PYGZus{}sinds\PYGZus{}update\PYGZdq{}}\PYG{p}{,}
     \PYG{p}{]} \PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}uitgebreid}\PYG{o}{.}\PYG{n}{columns}
 \PYG{p}{]}

@@ -9,8 +9,7 @@
     \PYG{p}{)}
 
 \PYG{c+c1}{\PYGZsh{} Numerieke kolommen omzetten}
-\PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}category\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,}
-\PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}deleted\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}reserved\PYGZus{}poi\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{]:}
+\PYG{k}{for} \PYG{n}{col} \PYG{o+ow}{in} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}brand\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}main\PYGZus{}category\PYGZus{}id\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}cluster\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}is\PYGZus{}sensitive\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}visit\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}work\PYGZdq{}}\PYG{p}{]:}
     \PYG{k}{if} \PYG{n}{col} \PYG{o+ow}{in} \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{o}{.}\PYG{n}{columns}\PYG{p}{:}
        \PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{]} \PYG{o}{=} \PYG{n}{pd}\PYG{o}{.}\PYG{n}{to\PYGZus{}numeric}\PYG{p}{(}\PYG{n}{df\PYGZus{}mob\PYGZus{}basis}\PYG{p}{[}\PYG{n}{col}\PYG{p}{],} \PYG{n}{errors}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}coerce\PYGZdq{}}\PYG{p}{)}
 
