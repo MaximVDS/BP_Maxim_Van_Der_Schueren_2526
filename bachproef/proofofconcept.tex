@@ -105,6 +105,8 @@ De sluitingsratio verschilt eveneens per land. Luxemburg kent de hoogste sluitin
 \section{Feature Engineering}
 Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken opgesteld die relevant zijn voor de statusdetectie. De features werden afgeleid uit de beschikbare timestamps, openingstijden en historische statusregistraties. Tabel~\ref{tab:features} geeft een overzicht van alle gebruikte features en hun betekenis.
 
+Alvorens de features af te leiden, werden records met \texttt{is\_deleted = 1} en \texttt{is\_reserved\_poi = 1} uit de dataset verwijderd. Verwijderde records zijn het gevolg van een soft delete mechanisme in de databank en zijn niet relevant voor de statusdetectie. Gereserveerde POI's zijn intern gemarkeerde records die nog niet volledig in productie zijn genomen.
+
 \begin{table}[H]
     \centering
     \small
@@ -120,9 +122,7 @@ Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken 
         \texttt{verwachte\_openingsduur\_min} & Openingsuren & Verwacht aantal minuten dat de winkel open is \\
         \texttt{closed} & Openingsuren & Binaire vlag uit de openingsuren-tabel \\
         \texttt{ok} & Kwaliteitsvlag & Kwaliteitsvlag van het openingsurenrecord \\
-        \texttt{is\_deleted} & POI-status &  1 indien POI verwijderd is \\
         \texttt{is\_sensitive} & POI-metadata & Binaire vlag voor gevoelige locaties \\
-        \texttt{is\_reserved\_poi} & POI-metadata & Binaire vlag voor gereserveerde POI's \\
         \texttt{cluster} & POI-metadata & Clusteridentificatie van de POI \\
         \texttt{brand\_id\_enc} & POI-metadata & Label-encoded merkid \\
         \texttt{country\_enc} & POI-metadata & Label-encoded landcode \\
@@ -138,6 +138,7 @@ Op basis van de ruwe dataset werden zowel temporele als gedragsmatige kenmerken 
 
 Alvorens de features te construeren, werden de datumkolommen en numerieke kolommen omgezet naar het juiste datatype.
 
+%TODO: is_deleted en reserved aanpassen
 \begin{listing}[H]
     \begin{minted}{python}
         # Datumkolommen parsen
@@ -158,6 +159,7 @@ Alvorens de features te construeren, werden de datumkolommen en numerieke kolomm
     \caption[Datatype conversie]{Omzetting van datumkolommen naar het datetime-formaat en numerieke kolommen naar het juiste datatype.}
 \end{listing}
 
+%TODO: aanpassen
 \begin{listing}[H]
     \begin{minted}{python}
         df["is_weekend"] = (df["day_of_week"] >= 5).astype(int)
@@ -433,7 +435,7 @@ Figuur~\ref{fig:fi_rf} toont de top 15 features op basis van de Gini importance 
 \begin{figure}[H]
          \centering
          \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_random_forest.png}
-         \caption[Feature importance Random Forest]{\label{fig:fi_rf}Top 15 features van het Random Forest model.}\\
+         \caption[Feature importance Random Forest]{\label{fig:fi_rf}Top 15 features van het Random Forest model.}
 \end{figure}
 
 Figuur~\ref{fig:fi_xgb} geeft de top 15 features weer voor het XGBoost model. De feature importance lijkt sterk op dat van het Random Forest model: \texttt{n\_observaties\_poi}, \texttt{brand\_id\_enc} en \texttt{country\_enc} zijn opnieuw de belangrijkste features. Aangezien deze twee modellen leiden tot dezelfde conclusies, kunnen we concluderen dat deze kenmerken effectief relevante informatie bevatten voor de statusdetectie.
