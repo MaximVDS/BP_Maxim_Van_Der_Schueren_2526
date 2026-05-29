@@ -52,7 +52,7 @@ Een eerste stap in de data-analyse bestond uit het in kaart brengen van de verde
 
 De dataset bevatte circa 26.400 gesloten en 31.000 open vestigingen, wat overeenkwam met 46,1\% gesloten en 53,9\% open vestigingen. Dit maakte de dataset relatief gunstig voor een binair classificatieprobleem, aangezien er geen sprake was van een ernstige klasse-onevenwichtigheid die de modelprestaties zou beïnvloeden.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../proof_of_concept/Grafieken/verdeling_status.png}
     \caption[Verdeling: open vs.\ gesloten]{\label{fig:verdeling open/gesloten}Verdeling van de open en geslotenstatus voor alle merken in de dataset.}
@@ -79,7 +79,7 @@ Om de verdeling van de operationele status per merk in kaart te brengen, werden 
 
 Uit de analyse bleek dat er een aanzienlijke variatie bestond in de verhouding tussen open en gesloten vestigingen per merk. Aldi was het meest voorkomende merk in de dataset en vertoonde een opvallend hoog aantal gesloten registraties ten opzichte van open, wat kon wijzen op een \textit{decaying}-fase binnen de POI-levenscyclus zoals besproken in sectie~\ref{sec:Levenscyclus}. Hetzelfde patroon was zichtbaar bij Intermarché, Spar, Vival en Super U. Aan de andere kant waren merken zoals E.Leclerc, Carrefour market en Carrefour express bijna uitsluitend vertegenwoordigd met open vestigingen, wat duidde op een stabiele operationele toestand. Hieruit kon worden geconcludeerd dat bij de interpretatie van de modelresultaten rekening diende te worden gehouden met een mogelijke geospatiale bias: merken die sterk vertegenwoordigd waren in de dataset oefenden een grotere invloed uit op de geleerde patronen dan merken met weinig records.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{../proof_of_concept/Grafieken/top_brands.png}
     \caption[Top 15 merken: open vs.\ gesloten]{\label{fig:top15merken}Verdeling van de open en gesloten status voor de 15 meest voorkomende merken in de dataset.}
@@ -93,7 +93,7 @@ Frankrijk is het best vertegenwoordigde land in de dataset met circa 42.000 POI-
 
 De sluitingsratio verschilt eveneens per land. Luxemburg kent de hoogste sluitingsratio met circa 53\%, gevolgd door Frankrijk met circa 49\%, België met circa 44\% en Nederland met circa 38\%. Deze variatie suggereert dat landspecifieke factoren, zoals marktdynamiek en de mate van dataveroudering per regio, een rol spelen in de statusverdeling. Dit sluit aan bij de bevindingen uit sectie~\ref{sec:Afhankelijkheid}, waarbij \textcite{Boskovic2026} aantonen dat de socio-economische context van een regio samenhangt met de operationele stabiliteit van commerciële vestigingen.
 
-\begin{figure}[h]
+\begin{figure}[H]
       \centering
       \includegraphics[width=\textwidth]{../proof_of_concept/Grafieken/land_status.png}
       \caption[Verdeling per land]{\label{fig:verdelingland}Aantal POI's per land (links) en sluitingsratio per land (rechts).}
@@ -350,9 +350,9 @@ De resultaten van de definitieve evaluatie op de volledige dataset worden weerge
         \midrule
         \multicolumn{6}{l}{\textit{Baseline — historische metadata}} \\
         \midrule
-        Logistische Regressie  & 0.6463 & 0.8002 & 0.6941 & 0.7434 & 0.6434 \\
-        Random Forest          & 0.7646 & 0.9345 & 0.7324 & 0.8212 & 0.8417 \\
-        XGBoost                & 0.7451 & 0.9125 & 0.7240 & 0.8074 & 0.8376 \\
+        Logistische Regressie  & 0.65 & 0.80 & 0.69 & 0.74 & 0.64 \\
+        Random Forest          & 0.76 & 0.93 & 0.73 & 0.82 & 0.84 \\
+        XGBoost                & 0.75 & 0.91 & 0.73 & 0.81 & 0.84 \\
         \midrule
         \multicolumn{6}{l}{\textit{Uitbreiding — kunstmatig gegenereerde mobiliteitsdata}} \\
         \midrule
@@ -418,9 +418,6 @@ Figuur~\ref{fig:cm_rf}, \ref{fig:cm_xgb} en \ref{fig:cm_lr} tonen de confusion m
     \caption[Confusion matrix Logistische Regressie]{\label{fig:cm_lr}Confusion matrix van het Logistische Regressie model op de testset.}
 \end{figure}
 
-\subsubsection{Bespreking mobiliteitsmodellen}
-De modellen getraind op kunstmatig gegenereerde mobiliteitsdata behaalden opvallend hoge scores. Dit was een rechtstreeks gevolg van de aard van de data. Omdat de bezoekersprofielen gegenereerd worden op basis van expliciete faseregels, zijn de klassen nagenoeg perfect scheidbaar. De feature importance analyse toont aan dat \texttt{gem\_bezoekers} (0.247) en \texttt{std\_bezoekers} (0.178) de sterkste voorspellers zijn. Dit bevestigt dat de dynamische bezoekerspatronen theoretisch een sterk signaal vormen voor statusdetectie, zoals besproken in sectie~\ref{sec:gegevensbronnen}. Deze resultaten geven dus eerder een indicatie van wat mogelijk zou zijn met echte mobiliteitsdata.
-
 \subsection{Feature importance}
 
 Een analyse van de feature importance laat toe om te begrijpen welke kenmerken het sterkst bijdragen aan het model. Voor het Random Forest model werd de Gini-importance gebruikt. Dit geeft weer hoeveel de gemiddelde onzuiverheid van de knooppunten afneemt wanneer een bepaalde feature wordt gebruikt voor de splitsing. Voor het XGBoost-model werd de ingebouwde feature importance score berekend op basis van het gemiddeld aantal keren dat een feature wordt gebruikt in de “boosting” rondes. Voor de Logistische Regressie werd de absolute waarde van de modelcoëfficiënt als norm gebruikt.
@@ -430,23 +427,23 @@ Figuur~\ref{fig:fi_lr} geeft de feature importance voor het Logistische Regressi
 \begin{figure}[H]
          \centering
          \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_lr.png}
-         \caption[Feature importance Logistische Regressie]{\label{fig:fi_lr}Top 15 features van het Logistisch Regressie model.}
+         \caption[Feature importance Logistische Regressie]{\label{fig:fi_lr}Top 10 features van het Logistisch Regressie model.}
 \end{figure}
 
-Figuur~\ref{fig:fi_rf} toont de top 15 features op basis van de Gini importance voor het Random Forest model. De feature \texttt{n\_observaties\_poi} scoort veruit het hoogst met een importance van 0.30. Dit geeft aan dat het aantal keren dat een POI werd geobserveerd een sterk signaal is voor de operationele status van de POI. Daarnaast blijkt het merk \texttt{brand\_id\_enc} en het land \texttt{country\_enc} ook belangrijk te zijn. Dit is logisch, want uit de data-analyse bleek al dat de sluitingsratio sterk verschilt per merk en per land.
+Figuur~\ref{fig:fi_rf} toont de top tien features op basis van de Gini importance voor het Random Forest model. De feature \texttt{n\_observaties\_poi} scoort veruit het hoogst met een importance van 0.30. Dit geeft aan dat het aantal keren dat een POI werd geobserveerd een sterk signaal is voor de operationele status van de POI. Daarnaast blijkt het merk \texttt{brand\_id\_enc} en het land \texttt{country\_enc} ook belangrijk te zijn. Dit is logisch, want uit de data-analyse bleek al dat de sluitingsratio sterk verschilt per merk en per land.
     
 \begin{figure}[H]
          \centering
          \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_random_forest.png}
-         \caption[Feature importance Random Forest]{\label{fig:fi_rf}Top 15 features van het Random Forest model.}
+         \caption[Feature importance Random Forest]{\label{fig:fi_rf}Top 10 features van het Random Forest model.}
 \end{figure}
 
-Figuur~\ref{fig:fi_xgb} geeft de top 15 features weer voor het XGBoost model. De feature importance lijkt sterk op dat van het Random Forest model: \texttt{n\_observaties\_poi}, \texttt{brand\_id\_enc} en \texttt{country\_enc} zijn opnieuw de belangrijkste features. Aangezien deze twee modellen leiden tot dezelfde conclusies, kunnen we concluderen dat deze kenmerken effectief relevante informatie bevatten voor de statusdetectie.
+Figuur~\ref{fig:fi_xgb} geeft de top tien features weer voor het XGBoost model. De feature importance lijkt sterk op dat van het Random Forest model: \texttt{n\_observaties\_poi}, \texttt{brand\_id\_enc} en \texttt{country\_enc} zijn opnieuw de belangrijkste features. Aangezien deze twee modellen leiden tot dezelfde conclusies, kunnen we concluderen dat deze kenmerken effectief relevante informatie bevatten voor de statusdetectie.
 
 \begin{figure}[H]
          \centering
          \includegraphics[width=0.9\textwidth]{../proof_of_concept/Grafieken/feature_importance_xgboost.png}
-         \caption[Feature importance XGBoost]{\label{fig:fi_xgb}Top 15 features van het XGBoost model.}
+         \caption[Feature importance XGBoost]{\label{fig:fi_xgb}Top 10 features van het XGBoost model.}
 \end{figure}
 
 \section{Uitbreiding: kunstmatig gegenereerde mobiliteitsdata}
@@ -640,6 +637,9 @@ De mobiliteitsmodellen maakten gebruik van een combinatie van statische metadata
     \end{minted}
     \caption[Train/test-splitsing mobiliteitsmodellen]{Opbouw van de feature set en gelaagde splitsing voor de mobiliteitsmodellen.}
 \end{listing}
+
+\subsubsection{Bespreking mobiliteitsmodellen}
+De modellen getraind op kunstmatig gegenereerde mobiliteitsdata behaalden opvallend hoge scores. Dit was een rechtstreeks gevolg van de aard van de data. Omdat de bezoekersprofielen gegenereerd worden op basis van expliciete faseregels, zijn de klassen nagenoeg perfect scheidbaar. De feature importance analyse toont aan dat \texttt{gem\_bezoekers} (0.247) en \texttt{std\_bezoekers} (0.178) de sterkste voorspellers zijn. Dit bevestigt dat de dynamische bezoekerspatronen theoretisch een sterk signaal vormen voor statusdetectie, zoals besproken in sectie~\ref{sec:gegevensbronnen}. Deze resultaten geven dus eerder een indicatie van wat mogelijk zou zijn met echte mobiliteitsdata.
 
 \section{Beperkingen van de huidige POC}
 De huidige implementatie heeft een aantal beperkingen die belangrijk zijn bij de interpretatie van de resultaten.
