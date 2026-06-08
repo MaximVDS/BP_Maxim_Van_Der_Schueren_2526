@@ -38,7 +38,7 @@ POI-databanken vormen de basis van locatiegebaseerde analyses zoals marktstudies
 
 POI-databanken vormen de basis van locatiegebaseerde toepassingen zoals navigatiesoftware, marktanalyses en logistieke planning. In de praktijk is de operationele status van vestigingen er systematisch verouderd: winkels openen of sluiten zonder onmiddellijke registratie. Huidige controlemethoden zijn grotendeels handmatig, wat resulteert in een aanzienlijke vertraging tussen de daadwerkelijke status van een POI en de databank.
 
-De centrale onderzoeksvraag van die onderzoek is: \textit{``Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open of gesloten status van Points of Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?''}
+De centrale onderzoeksvraag van dit onderzoek is: \textit{``Hoe kan artificiële intelligentie worden ingezet om automatisch de (historische) open of gesloten status van Points of Interest te detecteren, en hoe kan deze aanpak zorgen voor actuelere data in locatiegebaseerde toepassingen?''}
 
 Het onderzoek focust zich op supermarkten als POI type, omwille van hun relevantie, hun duidelijk statusgedrag (open of gesloten) en de beschikbaarheid van voldoende publieke data.
 
@@ -56,7 +56,7 @@ Het onderzoek focust zich op supermarkten als POI type, omwille van hun relevant
 
 \section{Methodologie}
 
-Het onderzoek werd uitgewerkt in zes opeenvolgende fasen, weergegeven in figuur~\ref{fig:gantt}. De dataset werd ter beschikking gesteld door Accurat BV en bevat 1.337.279 POI-records voor België, Nederland, Luxemburg en Frankrijk. Na filtering bleven 1.140.895 bruikbare records over, met een klassebalans van 53,9\% open en 46,1\% gesloten. De dataset werd opgedeeld in een trainingsset (80\%) en testset (20\%) via een gelaagde splitsing. Drie supervised classificatiemodellen werden getraind en vergeleken — Logistische Regressie, Random Forest en XGBoost — en geëvalueerd op accuracy, precision, recall, F1-score en ROC-AUC.
+Het onderzoek werd uitgewerkt in zes opeenvolgende fasen, weergegeven in figuur~\ref{fig:gantt}. De dataset werd ter beschikking gesteld door Accurat BV en bevat 1.337.279 POI-records voor België, Nederland, Luxemburg en Frankrijk. Na filtering bleven 1.140.895 bruikbare records over, met een klassebalans van 73,79\% open en 26,21\% gesloten vestigingen. De dataset werd opgedeeld in een trainingsset (80\%) en testset (20\%) via een gelaagde splitsing. Drie supervised classificatiemodellen werden getraind en vergeleken: Logistische Regressie, Random Forest en XGBoost, geëvalueerd op accuracy, precision, recall, F1-score en ROC-AUC.
 
 \begin{center}
     \captionsetup{type=figure}
@@ -66,7 +66,7 @@ Het onderzoek werd uitgewerkt in zes opeenvolgende fasen, weergegeven in figuur~
 \end{center} 
 
 \section{Uitbreiding: mobiliteitsdata}
-Dynamische mobiliteitspatronen vormen volgens de literatuur een sterk aanvullend signaal voor statusdetectie. Omdat echte GPS-data echter niet beschikbaar was binnen de scope van dit onderzoek, werd een uitbreidingsexperiment opgezet. Mobiliteitsdata werd per POI gesimuleerd over 26 weken op basis van de POI-levenscyclus: een stabiele fase met realistisch weekpatroon (piek vrijdag--zaterdag), een decay-fase met lineair dalend bezoekersaantal over tien weken voor de sluiting, en een gesloten fase met nagenoeg nul bezoekers. Op POI-niveau werden drie features geaggregeerd: \texttt{gem\_bezoekers}, \texttt{std\_bezoekers} en \texttt{max\_bezoekers}.
+Dynamische mobiliteitspatronen vormen volgens de literatuur een sterk aanvullend signaal voor statusdetectie. Omdat echte GPS-data echter niet beschikbaar was voor dit onderzoek, werd een uitbreidingsexperiment opgezet op basis van de basisinfo-dataset, met een klassebalans van 53,9\% open en 46,1\% gesloten vestigingen. Mobiliteitsdata werd per POI gesimuleerd over 26 weken op basis van de POI-levenscyclus: een stabiele fase met realistisch weekpatroon (piek op vrijdag en zaterdag), een decay-fase met lineair dalend bezoekersaantal over tien weken voor de sluiting, en een gesloten fase met nagenoeg nul bezoekers. Op POI-niveau werden drie features geaggregeerd: \texttt{gem\_bezoekers}, \texttt{std\_bezoekers} en \texttt{max\_bezoekers}.
 
 \section{Resultaten}
 
@@ -89,14 +89,14 @@ Dynamische mobiliteitspatronen vormen volgens de literatuur een sterk aanvullend
         XGBoost        & 0.9996 & 1.00   & 0.9993 & 0.9997 & 1.00 \\
         \bottomrule
     \end{tabular}
-    \captionof{table}{Vergelijking van alle modellen op de testset.}
+    \captionof{table}{Resultaten van de getrainde modellen.}
     \label{tab:resultaten}
 \end{center}
 
-Het Random Forest model behaalde de hoogste F1-score (0.82) en ROC-AUC (0.84). Het XGBoost model behaalde een F1-score van 0.81 en een ROC-AUC van 0.84. Logistische Regressie presteerde aanzienlijk slechter met een F1-score van 0.74 en een ROC-AUC van 0.64, wat bevestigt dat de relatie tussen de features en de doelvariabele niet lineair is. De sterkste voorspellers waren \texttt{n\_observaties\_poi} (Gini-importance: 0.30), \texttt{brand\_id\_enc} en \texttt{poi\_leeftijd\_maanden}. De mobiliteitsmodellen behaalden scores van circa 99,9\%, maar dit was een artefact van de gegenereerde data: de bezoekersprofielen werden aangemaakt op basis van expliciete faseregels, waardoor de klassen nagenoeg perfect scheidbaar zijn. Deze resultaten geven dan ook eerder een indicatie van wat mogelijk zou zijn met echte mobiliteitsdata.
+Het Random Forest model behaalde de hoogste F1-score (0.82) en ROC-AUC (0.84). Het XGBoost model behaalde een F1-score van 0.81 en een ROC-AUC van 0.84. Logistische Regressie presteerde aanzienlijk slechter met een F1-score van 0.74 en een ROC-AUC van 0.64, wat bevestigt dat de relatie tussen de features en de doelvariabele niet lineair is. De sterkste voorspellers waren \texttt{n\_observaties\_poi} (Gini-importance: 0.30), \texttt{brand\_id\_enc} en \texttt{poi\_leeftijd\_maanden}. De mobiliteitsmodellen behaalden scores van circa 99,9\%, maar dit was een rechtstreeks gevolg van de gegenereerde data: de bezoekersprofielen werden aangemaakt op basis van expliciete faseregels, waardoor de klassen nagenoeg perfect scheidbaar zijn. Deze resultaten geven dan ook eerder een indicatie van wat mogelijk zou zijn met echte mobiliteitsdata.
 
 \section{Conclusies}
-Deze bachelorproef toont aan dat het automatisch detecteren van de operationele status van supermarkten via supervised machine learning technisch haalbaar is. Het sterkst presterende model was Random Forest, met een accuracy van 0.76 en een F1-score van 0.82. Dit geeft aan dat structurele en gedragsmatige kenmerken van een POI, zoals het merk, het land en het aantal historische observaties, al voldoende informatie bevatten om een eerste classificatie te maken zonder dat externe dynamische bronnen nodig zijn. De precision voor de gesloten klasse bleef echter relatief laag (0.53 bij Random Forest), wat betekent dat het model regelmatig een open vestiging onterecht als gesloten classificeert. In een productieomgeving vraagt dit om een menselijke validatiestap. De meerwaarde voor organisaties zoals Accurat BV ligt in het aantonen dat een geautomatiseerd classificatiesysteem realiseerbaar is op basis van intern beschikbare data.
+Deze bachelorproef toont aan dat het automatisch detecteren van de operationele status van supermarkten via supervised machine learning technisch haalbaar is. Het best presterende model was Random Forest, met een accuracy van 0.76 en een F1-score van 0.82. Dit geeft aan dat structurele en gedragsmatige kenmerken van een POI, zoals het merk, het land en het aantal historische observaties, al voldoende informatie bevatten om een eerste classificatie te maken zonder dat externe dynamische bronnen nodig zijn. De precision voor de gesloten klasse bleef echter relatief laag (0.53 bij Random Forest), wat betekent dat het model regelmatig een open vestiging onterecht als gesloten classificeert. In een productieomgeving vraagt dit om een menselijke validatiestap. De meerwaarde voor organisaties zoals Accurat BV ligt in het aantonen dat een geautomatiseerd classificatiesysteem realiseerbaar is op basis van intern beschikbare data.
 
 \section{Toekomstig onderzoek}
 
